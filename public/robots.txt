@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://capturadoresflashkiller.com/sitemap-index.xml

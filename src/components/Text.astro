@@ -1,0 +1,20 @@
+---
+interface Props {
+  as?: any;
+  variant?: 'vr1' | 'vr2' | 'vr3' | 'body' | 'sub';
+  class?: string;
+}
+
+const { as: Tag = 'p', variant = 'body', class: className, ...props } = Astro.props;
+
+const variants = {
+  vr1: 'text-4xl md:text-6xl font-bold leading-tight tracking-tight',
+  vr2: 'text-2xl md:text-3xl font-semibold leading-snug',
+  vr3: 'text-sm md:text-base font-medium uppercase tracking-widest text-industrial-text',
+  body: 'text-base md:text-lg leading-relaxed text-industrial-dark',
+  sub: 'text-sm text-industrial-text uppercase',
+};
+---
+<Tag class:list={[variants[variant], className]} {...props}>
+  <slot />
+</Tag>

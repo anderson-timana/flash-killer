@@ -1,0 +1,24 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import ContactForm from '../components/ContactForm.astro';
+import Section from '../components/Section.astro';
+import Text from '../components/Text.astro';
+import Footer from '../components/Footer.astro';
+
+---
+
+<Layout 
+  title="Cotizar Insectocutores y Trampas de Luz | Contacto Flash Killer"
+  description="Solicite una cotización para sus equipos de control de insectos. Atención inmediata para plantas industriales y almacenes en todo el Perú."
+>
+  <Navbar />
+  <main class="mt-20">
+    <ContactForm 
+      title="Contáctenos"
+      hook="Solicite su Cotización" 
+      body="Estamos listos para atender sus requerimientos de higiene industrial. Complete el formulario y nos pondremos en contacto en menos de 24 horas." 
+    />
+  </main>
+  <Footer />
+</Layout>

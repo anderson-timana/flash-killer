@@ -1,0 +1,37 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Section from '../components/Section.astro';
+import Text from '../components/Text.astro';
+import ProductCard from '../components/ProductCard.astro';
+import ContactForm from '../components/ContactForm.astro';
+import Footer from '../components/Footer.astro';
+import { products } from '../data/products';
+---
+
+<Layout 
+  title="Catálogo de Insectocutores y Trampas de Luz UV | Flash Killer"
+  description="Explore nuestra gama de trampas de luz UV, placas adhesivas y repuestos industriales. Soluciones certificadas para el control de plagas en áreas sensibles."
+>
+  <Navbar />
+  <main class="mt-20">
+    <Section padding="medium">
+      <div class="text-center mb-12">
+        <Text as="h1" variant="vr2">Catálogo de Soluciones y Repuestos</Text>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {products.map(product => (
+          <ProductCard 
+            name={product.name} 
+            spec={product.spec} 
+            imageAlt={product.name}
+            href={`/productos/${product.id}`}
+            image={product.images[0]} 
+          />
+        ))}
+      </div>
+    </Section>
+    <ContactForm hook="¿Necesita Asesoría?" body="Contáctenos para recomendarle el equipo ideal para su planta." />
+  </main>
+  <Footer />
+</Layout>

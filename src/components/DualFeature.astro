@@ -1,0 +1,25 @@
+---
+import Section from './Section.astro';
+import Text from './Text.astro';
+
+interface Props {
+  leftTitle: string;
+  leftDesc: string;
+  rightTitle: string;
+  rightDesc: string;
+}
+
+const { leftTitle, leftDesc, rightTitle, rightDesc } = Astro.props;
+---
+<Section padding="large" class="grid md:grid-cols-2 gap-8 md:gap-16">
+  <div class="p-8 border border-industrial-grey/10 bg-white hover:border-primary/30 transition-all">
+    <Text as="h3" variant="vr2" class="mb-4">{leftTitle}</Text>
+    <Text variant="body" class="mb-6">{leftDesc}</Text>
+    <a href="/productos/trampas-luz-uv-para-insectos" class="text-primary font-bold uppercase tracking-wider text-sm">Ver Modelo FK-20W &rarr;</a>
+  </div>
+  <div class="p-8 border border-industrial-grey/10 bg-white hover:border-primary/30 transition-all">
+    <Text as="h3" variant="vr2" class="mb-4">{rightTitle}</Text>
+    <Text variant="body" class="mb-6">{rightDesc}</Text>
+    <a href="/productos/insectocutor-industrial" class="text-primary font-bold uppercase tracking-wider text-sm">Ver Modelo Insectocutor &rarr;</a>
+  </div>
+</Section>

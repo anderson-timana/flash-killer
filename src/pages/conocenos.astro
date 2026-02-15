@@ -1,0 +1,89 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Section from '../components/Section.astro';
+import Text from '../components/Text.astro';
+import ContactForm from '../components/ContactForm.astro';
+import Footer from '../components/Footer.astro';
+
+const values = [
+    {
+        title: "Experiencia Certificada",
+        desc: "25+ años ejecutando protocolos de desinsectación en plantas industriales de alto riesgo.",
+        icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" /></svg>`
+    },
+    {
+        title: "Cumplimiento Normativo",
+        desc: "Equipos diseñados bajo estándares HACCP y DIGESA para auditorías sanitarias exitosas.",
+        icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" /></svg>`
+    },
+    {
+        title: "Ingeniería Simplificada",
+        desc: "Diseño funcional que facilita el mantenimiento, la limpieza y el reemplazo de insumos sin herramientas.",
+        icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>`
+    }
+];
+---
+
+<Layout 
+  title="Sobre Nosotros | Flash Killer: Expertos en Higiene Industrial"
+  description="Conozca a Flash Killer, fabricantes peruanos de equipos de captura de insectos en acero inoxidable 304. Más de 10 años garantizando inocuidad industrial."
+>
+  <Navbar />
+  <main class="mt-20">
+    <!-- Hero / Story Section -->
+    <Section padding="large" class="bg-industrial-white overflow-hidden relative">
+      <div class="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+        <div>
+          <Text variant="sub" class="text-primary font-bold mb-4">Nuestra Trayectoria</Text>
+          <Text as="h1" variant="vr2" class="mb-6">25 Años Liderando el Control de Vectores Industriales</Text>
+          <Text variant="body" class="mb-6">
+            Entendemos que el cierre de una línea de producción por contaminación biológica no es una opción. En Flash Killer, nos especializamos en blindar sus instalaciones contra plagas voladoras.
+          </Text>
+          <Text variant="body" class="mb-8">
+            Combinamos ingeniería mecánica nacional (Acero C-304) con componentes UV de clase mundial para entregar equipos que superan las exigencias de cualquier auditoría de calidad (ISO/HACCP).
+          </Text>
+        </div>
+        <div class="relative">
+            <div class="bg-industrial-dark p-12 aspect-square flex flex-col justify-center items-center text-center text-white rounded-full border-4 border-industrial-grey/20">
+                <Text variant="vr1" class="text-white mb-0 leading-none">25+</Text>
+                <Text variant="sub" class="text-primary font-bold mt-2">Años de Ingeniería</Text>
+            </div>
+        </div>
+      </div>
+    </Section>
+
+    <!-- Mission Section -->
+    <Section padding="medium">
+      <div class="max-w-4xl mx-auto bg-white border border-industrial-grey/10 p-12 shadow-sm text-center">
+        <Text variant="sub" class="text-primary font-bold mb-4 italic">Misión Corporativa</Text>
+        <Text variant="vr2" class="mb-6 leading-relaxed">"Asumir la responsabilidad total de su higiene ambiental, permitiendo que la gerencia se enfoque exclusivamente en la producción."</Text>
+        <Text variant="body">
+            Desarrollamos tecnología de captura que elimina la complejidad operativa: equipos silenciosos, estéticos y de mantenimiento cero-riesgo para el personal de planta.
+        </Text>
+      </div>
+    </Section>
+
+    <!-- Values Grid -->
+    <Section padding="medium" class="bg-industrial-dark text-white mb-24">
+      <div class="text-center mb-16">
+        <Text variant="vr2" class="text-white">Pilares de Nuestra Ingeniería</Text>
+      </div>
+      <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        {values.map(value => (
+          <div class="text-center p-8 border border-white/10 hover:bg-white/5 transition-colors group">
+            <div class="text-primary mb-4 group-hover:scale-110 transition-transform inline-block" set:html={value.icon} />
+            <Text as="h3" variant="vr2" class="text-xl text-white mb-4">{value.title}</Text>
+            <Text variant="body" class="text-sm text-industrial-grey">{value.desc}</Text>
+          </div>
+        ))}
+      </div>
+    </Section>
+
+    <ContactForm 
+      hook="Alianza Estratégica" 
+      body="Únase a las industrias líderes en Perú que ya han blindado sus procesos con Flash Killer." 
+    />
+  </main>
+  <Footer />
+</Layout>

@@ -1,0 +1,36 @@
+---
+import Section from './Section.astro';
+import Text from './Text.astro';
+---
+<footer class="bg-white border-t border-industrial-grey/10 py-12">
+    <Section padding="none" class="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div class="col-span-1 md:col-span-1">
+        <Text variant="vr2" class="text-primary font-bold italic mb-4">FLASH KILLER</Text>
+        <Text variant="sub" class="normal-case">Especialistas en higiene industrial y control de plagas voladoras en Perú.</Text>
+      </div>
+      <div>
+        <Text class="font-bold mb-4">Productos</Text>
+        <ul class="space-y-2 text-base text-industrial-text">
+          <li><a href="/productos/trampas-luz-uv-para-insectos" class="hover:text-primary-dark transition-colors">Trampas Adhesivas</a></li>
+                      <li><a href="/productos/insectocutor-industrial" class="hover:text-primary-dark transition-colors">Insectocutores</a></li>
+                      <li><a href="/productos/fluorescentes-uv-matamoscas" class="hover:text-primary-dark transition-colors">Repuestos UV</a></li>
+                    </ul>      </div>
+      <div>
+        <Text class="font-bold mb-4">Contacto</Text>
+        <ul class="space-y-2 text-base text-industrial-text">
+          <li class="break-words">
+            <a href="mailto:ventas@capturadoresflashkiller.com" class="hover:text-primary transition-colors">
+              ventas@capturadoresflashkiller.com
+            </a>
+          </li>
+          <li>Lima, Perú</li>
+        </ul>
+      </div>
+      <div>
+        <Text class="font-bold mb-4">Empresa</Text>
+        <Text variant="sub" class="normal-case">RUC: 10096044262</Text>
+        <Text variant="sub" class="mt-2 normal-case block">Certificación C-304</Text>
+        <Text variant="sub" class="mt-2 normal-case">© 2026 Flash Killer. Todos los derechos reservados.</Text>
+      </div>
+    </Section>
+  </footer>

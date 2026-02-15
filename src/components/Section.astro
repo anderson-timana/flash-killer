@@ -1,0 +1,20 @@
+---
+interface Props {
+  as?: any;
+  class?: string;
+  padding?: 'none' | 'small' | 'medium' | 'large';
+  [key: string]: any;
+}
+
+const { as: Tag = 'section', class: className, padding = 'medium', ...props } = Astro.props;
+
+const paddings = {
+  none: '',
+  small: 'py-8pt md:py-16pt',
+  medium: 'py-32pt md:py-64pt',
+  large: 'py-64pt md:py-96pt',
+};
+---
+<Tag class:list={['container mx-auto px-4', paddings[padding], className]} {...props}>
+  <slot />
+</Tag>

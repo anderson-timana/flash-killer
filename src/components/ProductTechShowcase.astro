@@ -1,0 +1,57 @@
+---
+import Text from './Text.astro';
+
+interface Props {
+  specs: { label: string; value: string }[];
+  safety: string[];
+}
+
+const { specs, safety } = Astro.props;
+---
+
+<div class="grid md:grid-cols-2 gap-8 items-stretch">
+  
+  {/* Column 1: Specs from Concept 1 */}
+  <div class="bg-white p-1 border-t-2 border-industrial-dark shadow-sm">
+    <div class="p-8">
+        <Text variant="sub" class="text-primary font-bold mb-2">Especificaciones</Text>
+        <Text as="h3" variant="vr2" class="mb-8 text-industrial-dark tracking-tight">Ficha Técnica de Ingeniería</Text>
+        <div class="space-y-4">
+          {specs.map((spec) => (
+            <div class="flex justify-between items-end border-b border-industrial-grey/20 pb-2">
+              <span class="text-xs uppercase font-bold text-industrial-grey tracking-widest">{spec.label}</span>
+              <span class="text-industrial-dark font-semibold text-right">{spec.value}</span>
+            </div>
+          ))}
+        </div>
+    </div>
+  </div>
+
+  {/* Column 2: Safety from Concept 2 (Refined Colors) */}
+  <div class="bg-industrial-white/30 border border-industrial-grey/20 rounded-sm relative shadow-sm">
+    {/* Neutral/Primary Accent Top Border (Replacing Yellow) */}
+    <div class="absolute top-0 left-0 w-full h-1 bg-primary"></div>
+    
+    <div class="p-8 h-full flex flex-col">
+      <Text as="h3" variant="vr2" class="mb-6 text-industrial-dark">Normativa & Seguridad</Text>
+      <div class="space-y-6 flex-grow">
+          {safety.map(item => (
+              <div class="flex gap-4">
+                  <div class="w-1.5 h-1.5 bg-primary rounded-full mt-2.5 flex-shrink-0"></div>
+                  <Text variant="body" class="text-sm text-industrial-dark leading-relaxed">{item}</Text>
+              </div>
+          ))}
+      </div>
+      
+      {/* Certification Footer */}
+      <div class="mt-8 pt-6 border-t border-industrial-grey/10">
+          <span class="text-xs font-bold text-industrial-text uppercase tracking-widest block mb-1">Estado de Certificación</span>
+          <span class="text-green-600 font-bold flex items-center gap-2">
+              <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+              C-304 COMPLIANT (Industrial Grade)
+          </span>
+      </div>
+    </div>
+  </div>
+
+</div>

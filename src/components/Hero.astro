@@ -1,0 +1,76 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Text from './Text.astro';
+
+interface Props {
+  intent: string;
+  hook: string;
+  body: string;
+  image?: any;
+  imageMobile?: any;
+}
+
+const { intent, hook, body, image, imageMobile } = Astro.props;
+const optimizedMobileImage = imageMobile ? await getImage({src: imageMobile, format: 'webp'}) : null;
+---
+
+<section class="relative mt-16 min-h-[80vh] flex items-center justify-center overflow-hidden">
+  {image && (
+    <div class="absolute inset-0 z-0 h-full w-full pointer-events-none">
+      <picture>
+        {optimizedMobileImage && <source srcset={optimizedMobileImage.src} media="(max-width: 768px)">}
+        <Image 
+          src={image} 
+          alt="" 
+          class="w-full h-full object-cover"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </picture>
+      <!-- Radial Glow Overlay -->
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_80%_25%_at_center,_rgba(0,123,255,0.35)_0%,rgba(0,123,255,0.30)_50%,transparent_85%)] md:bg-[radial-gradient(ellipse_65%_50%_at_center,_rgba(0,123,255,0.35)_0%,rgba(0,123,255,0.30)_50%,transparent_85%)]"></div>
+    </div>
+  )}
+
+  <div class="relative z-10 container mx-auto px-4 text-center flex flex-col items-center">
+    <Text as="h1" variant="vr3" class="mb-4 text-white/90 [text-shadow:0_1px_16px_rgba(0,0,0,0.7)]">
+      {intent}
+    </Text>
+    <Text as="h2" variant="vr1" class="max-w-4xl mb-6 text-white [text-shadow:0_1px_16px_rgba(0,0,0,0.7)]">
+      {hook}
+    </Text>
+    <Text variant="body" class="max-w-2xl mb-10 text-white/95 [text-shadow:0_1px_4px_rgba(0,0,0,0.5)]">
+      {body}
+    </Text>
+    <a href="/productos" class="bg-primary text-white px-8 py-4 rounded-sm text-lg font-bold hover:scale-105 transition-transform shadow-lg">
+      Ver Catálogo
+    </a>
+  </div>
+
+  <!-- UV Glow Effect - Enhanced -->
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100%] h-[100%] pointer-events-none z-[5]">
+    <div class="absolute inset-0 bg-primary/40 blur-[140px] rounded-full animate-uv-pulse"></div>
+    <div class="absolute inset-0 bg-primary/20 blur-[100px] rounded-full animate-uv-pulse-delayed"></div>
+  </div>
+</section>
+
+
+
+
+<style>
+  @keyframes uv-pulse {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.05); }
+  }
+  @keyframes uv-pulse-delayed {
+    0%, 100% { opacity: 0.3; transform: scale(1.1); }
+    50% { opacity: 0.5; transform: scale(1); }
+  }
+  .animate-uv-pulse {
+    animation: uv-pulse 8s ease-in-out infinite;
+  }
+  .animate-uv-pulse-delayed {
+    animation: uv-pulse-delayed 12s ease-in-out infinite;
+    animation-delay: 2s;
+  }
+</style>

@@ -1,0 +1,109 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Hero from '../components/Hero.astro';
+import DualFeature from '../components/DualFeature.astro';
+import Section from '../components/Section.astro';
+import Text from '../components/Text.astro';
+import ProductCard from '../components/ProductCard.astro';
+import ContactForm from '../components/ContactForm.astro';
+import Footer from '../components/Footer.astro';
+import { products } from '../data/products';
+import heroImage from '../assets/images/Insectocapturador-encendido.webp';
+import heroImageMobile from '../assets/images/Insectocapturador-encendido-vertical.webp';
+
+// Hard-Wired Messaging Data
+const heroData = {
+  intent: "Insectocutores y Trampas de Luz UV Industriales en Perú",
+  hook: "Cumplimiento Sanitario Absoluto para su Planta Industrial",
+  body: "Equipos de Acero Inoxidable 304 certificados para auditorías DIGESA/HACCP. Proteja su producción con tecnología de captura de alta eficiencia.",
+  image: heroImage,
+  imageMobile: heroImageMobile
+};
+
+const dualFeatureData = {
+  leftTitle: "Trampas Adhesivas (Luz UV)",
+  leftDesc: "Silenciosas e higiénicas. Ideales para áreas de alimentos como cocinas y líneas de producción críticas.",
+  rightTitle: "Insectocutores (Electroshock)",
+  rightDesc: "Alta potencia de choque. Ideales para almacenes, zonas de carga y pasillos industriales de alto tránsito."
+};
+
+const contactData = {
+  hook: "¿Auditoría próxima?",
+  body: "Obtenga una cotización formal en menos de 24 horas."
+};
+---
+
+<Layout 
+  title="Flash Killer | Insectocutores y Trampas de Luz UV en Perú"
+  description="Líderes en trampas de luz UV e insectocutores de acero inoxidable 304 en Perú. Cumplimiento garantizado para auditorías DIGESA y HACCP."
+>
+  <Navbar />
+  
+  <main>
+    <!-- LCP Element: fetchpriority="high" applied internally -->
+    <Hero 
+      intent={heroData.intent} 
+      hook={heroData.hook} 
+      body={heroData.body}
+      image={heroData.image}
+      imageMobile={heroData.imageMobile}
+    />
+
+    <DualFeature 
+      leftTitle={dualFeatureData.leftTitle}
+      leftDesc={dualFeatureData.leftDesc}
+      rightTitle={dualFeatureData.rightTitle}
+      rightDesc={dualFeatureData.rightDesc}
+    />
+
+    <Section padding="medium">
+      <div class="text-center mb-12">
+        <Text as="h2" variant="vr2">Catálogo de Soluciones y Repuestos</Text>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        {products.slice(0, 4).map(product => (
+          <ProductCard 
+            name={product.name} 
+            spec={product.spec} 
+            imageAlt={product.name}
+            href={`/productos/${product.id}`}
+            image={product.images[0]} 
+          />
+        ))}
+      </div>
+      <div class="text-center">
+        <a href="/productos" class="inline-block border-2 border-primary text-primary px-8 py-3 font-bold uppercase tracking-widest hover:bg-primary hover:text-white transition-all">
+          Ver Todo el Catálogo
+        </a>
+      </div>
+    </Section>
+
+    <Section padding="medium" class="bg-industrial-white border-y border-industrial-grey/10">
+      <div class="max-w-4xl mx-auto text-center">
+        <Text as="h2" variant="vr2" class="mb-8">¿Por qué elegir Flash Killer?</Text>
+        <div class="grid md:grid-cols-3 gap-12 text-left">
+          <div>
+            <Text as="h3" class="font-bold mb-2 text-primary">Certificación C-304</Text>
+            <Text variant="body" class="text-sm">Acero Inoxidable real, resistente a la corrosión y químicos exigidos en plantas industriales.</Text>
+          </div>
+          <div>
+            <Text as="h3" class="font-bold mb-2 text-primary">Cobertura 120m²</Text>
+            <Text variant="body" class="text-sm">Potencia real de 40W UV. Rango de atracción superior para grandes áreas de trabajo.</Text>
+          </div>
+          <div>
+            <Text as="h3" class="font-bold mb-2 text-primary">Industria Peruana</Text>
+            <Text variant="body" class="text-sm">Fabricación nacional con stock permanente de repuestos y soporte técnico inmediato.</Text>
+          </div>
+        </div>
+      </div>
+    </Section>
+
+    <ContactForm 
+      hook={contactData.hook} 
+      body={contactData.body} 
+    />
+  </main>
+
+  <Footer />
+</Layout>

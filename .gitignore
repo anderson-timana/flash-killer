@@ -1,0 +1,10 @@
+# Node & Astro
+/node_modules
+/dist
+/.astro
+
+# Dev
+/artifacts
+/prompts
+/context
+session_summary.md

@@ -1,0 +1,276 @@
+---
+import Section from './Section.astro';
+import Text from './Text.astro';
+
+interface Props {
+  title?: string;
+  hook: string;
+  body: string;
+  initialProduct?: string;
+}
+
+const { title, hook, body, initialProduct } = Astro.props;
+---
+<div class="bg-industrial-dark text-white">
+  <Section id="contacto" padding="large" class="grid md:grid-cols-12 gap-x-12 lg:gap-x-24 gap-y-12 items-center">
+    {title && (
+      <div class="md:col-span-12 text-center">
+        <Text as="h1" variant="vr3" class="text-white">{title}</Text>
+      </div>
+    )}
+    <div class="md:col-span-5">
+      <Text as="h2" variant="vr1" class="text-white mb-6 leading-snug">{hook}</Text>
+      <Text variant="body" class="text-industrial-grey text-lg md:text-xl leading-relaxed">{body}</Text>
+      
+      <div class="mt-12 pt-12 border-t border-white/10 space-y-8 hidden md:block">
+        <div>
+          <Text variant="sub" class="text-primary mb-2 font-bold">Email Corporativo</Text>
+          <Text variant="body" class="text-white">
+            <a href="mailto:ventas@capturadoresflashkiller.com" class="hover:text-primary transition-colors">
+              ventas@capturadoresflashkiller.com
+            </a>
+          </Text>
+        </div>
+        <div>
+          <Text variant="sub" class="text-primary mb-2 font-bold">Respuesta Garantizada</Text>
+          <Text variant="body" class="text-white">Atención técnica en menos de 24 horas hábiles.</Text>
+        </div>
+      </div>
+    </div>
+
+    <div class="md:col-span-7 bg-white/5 p-8 md:p-12 border border-white/10 rounded-sm">
+      <form 
+        action="https://api.web3forms.com/submit" 
+        method="POST" 
+        class="grid grid-cols-1 md:grid-cols-2 gap-6 group" 
+        id="contact-form"
+      >
+        <div>
+          <!-- Web3Forms Configuration -->
+          <input type="hidden" name="access_key" value="3ad4e15e-5839-47ce-a916-bb7378131805">
+          <input type="hidden" name="subject" id="email_subject" value="Nuevo Mensaje desde Web Flash Killer">
+          <input type="hidden" name="from_name" value="Flash Killer Web">
+          <input type="hidden" name="redirect" value="https://capturadoresflashkiller.com/gracias">
+          <!-- End of Web3Forms Configuration -->
+
+          <label for="nombre" class="sr-only">Nombre</label>
+          <input 
+            id="nombre" 
+            type="text" 
+            name="nombre"
+            placeholder="Nombre completo *" 
+            autocomplete="name"
+            class="w-full bg-white/10 border border-white/20 p-4 text-white focus:outline-primary placeholder-industrial-grey group-[.submitted]:invalid:border-red-500 focus:invalid:border-red-500" 
+            required
+            minlength="3"
+            pattern="^[a-zA-ZÀ-ÿ\s\.]+$"
+            title="Solo letras y puntos permitidos"
+          />
+        </div>
+        <div>
+          <label for="empresa" class="sr-only">Empresa</label>
+          <input 
+            id="empresa" 
+            type="text" 
+            name="empresa"
+            placeholder="Empresa *" 
+            autocomplete="organization"
+            class="w-full bg-white/10 border border-white/20 p-4 text-white focus:outline-primary placeholder-industrial-grey group-[.submitted]:invalid:border-red-500 focus:invalid:border-red-500" 
+            required 
+            minlength="3"
+            pattern="^[a-zA-ZÀ-ÿ0-9\s\.\,\-\&]+$"
+            title="Nombre de la empresa"
+          />
+        </div>
+        <div>
+          <label for="email" class="sr-only">Email corporativo</label>
+          <input 
+            id="email" 
+            type="email" 
+            name="email"
+            placeholder="Email corporativo *" 
+            autocomplete="email"
+            class="w-full bg-white/10 border border-white/20 p-4 text-white focus:outline-primary placeholder-industrial-grey group-[.submitted]:invalid:border-red-500 focus:invalid:border-red-500" 
+            required 
+          />
+        </div>
+        <div>
+          <label for="telefono" class="sr-only">Teléfono / WhatsApp</label>
+          <input 
+            id="telefono" 
+            type="tel" 
+            name="telefono"
+            placeholder="Teléfono / WhatsApp *" 
+            autocomplete="tel"
+            class="w-full bg-white/10 border border-white/20 p-4 text-white focus:outline-primary placeholder-industrial-grey group-[.submitted]:invalid:border-red-500 focus:invalid:border-red-500" 
+            required 
+            pattern="^[\d\+\-\s]{9,11}$"
+            title="Ingrese un número de teléfono válido (9 dígitos)"
+          />
+        </div>
+        <div>
+            <label for="ciudad" class="sr-only">Ciudad</label>
+            <input 
+              id="ciudad" 
+              type="text" 
+              name="ciudad"
+              placeholder="Ciudad (Envío a todo el Perú) *" 
+              class="w-full bg-white/10 border border-white/20 p-4 text-white focus:outline-primary placeholder-industrial-grey group-[.submitted]:invalid:border-red-500 focus:invalid:border-red-500" 
+              required 
+              minlength="3"
+              pattern="^[a-zA-ZÀ-ÿ\s\.]+$"
+              title="Solo letras y espacios"
+            />
+        </div>
+        <div>
+            <label for="producto" class="sr-only">Producto de Interés</label>
+            <select 
+              id="producto" 
+              name="producto"
+              class="w-full bg-white/10 border border-white/20 p-4 text-white focus:outline-primary appearance-none cursor-pointer group-[.submitted]:invalid:border-red-500 focus:invalid:border-red-500" 
+              required
+            >
+              <option value="" disabled selected={!initialProduct} class="text-industrial-dark">Producto de Interés *</option>
+                        <option value="flash-killer-20w" selected={initialProduct === 'flash-killer-20w'} class="text-industrial-dark">Flash Killer 20W (Trampa Adhesiva)</option>
+                        <option value="insectocutor" selected={initialProduct === 'insectocutor'} class="text-industrial-dark">Insectocutor (Electroshock)</option>
+                        <option value="tubos-uv" selected={initialProduct === 'tubos-uv'} class="text-industrial-dark">Tubos UV de Repuesto</option>
+                        <option value="placas-adhesivas" selected={initialProduct === 'placas-adhesivas'} class="text-industrial-dark">Placas Adhesivas (Repuestos)</option>
+                        <option value="balastros" selected={initialProduct === 'balastros'} class="text-industrial-dark">Balastros Eléctricos</option>
+                        <option value="otros" selected={initialProduct === 'otros'} class="text-industrial-dark">Asesoría / Otro</option>
+            </select>        
+          </div>
+        <div class="md:col-span-2">
+          <label for="mensaje" class="sr-only">Mensaje o requerimiento especial</label>
+          <textarea 
+            id="mensaje" 
+            name="mensaje"
+            placeholder="Describa su requerimiento (ej: cantidad, dimensiones de la planta)" 
+            class="w-full bg-white/10 border border-white/20 p-4 text-white h-32 focus:outline-primary placeholder-industrial-grey"
+          ></textarea>
+        </div>
+        <!-- hCaptcha Protection -->
+        <div class="h-captcha md:col-span-2 min-h-[78px]" data-captcha="true" data-theme="dark"></div>
+
+        <!-- Spam Protection (Honeypot) -->
+        <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+
+        <div id="result" class="md:col-span-2 hidden"></div>
+
+        <button type="submit" class="md:col-span-2 bg-primary text-white py-4 font-bold uppercase tracking-widest hover:bg-primary-dark transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+          Solicitar Cotización
+        </button>
+      </form>
+    </div>
+  </Section>
+</div>
+
+<script>
+  function initContactForm() {
+    const form = document.getElementById('contact-form') as HTMLFormElement;
+    if (!form) return;
+
+    let scriptLoaded = false;
+
+    // 1. Smart Script Loader
+    const loadScript = () => {
+      if (scriptLoaded) return;
+      scriptLoaded = true;
+      const script = document.createElement('script');
+      script.src = "https://web3forms.com/client/script.js";
+      script.async = true;
+      script.defer = true;
+      document.body.appendChild(script);
+    };
+
+    // A. Viewport Trigger
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        loadScript();
+        observer.disconnect();
+      }
+    }, { rootMargin: '300px' });
+    observer.observe(form);
+
+    // B. Navbar/Intent Trigger
+    const contactLinks = document.querySelectorAll('a[href*="#contacto"], a[href*="/contactanos"]');
+    contactLinks.forEach(link => {
+      link.addEventListener('click', loadScript, { once: true });
+      link.addEventListener('mouseenter', loadScript, { once: true });
+    });
+
+    // 2. Product Preselection Logic
+    const urlParams = new URLSearchParams(window.location.search);
+    const productParam = urlParams.get('product');
+    const select = document.getElementById('producto') as HTMLSelectElement;
+
+    if (select && productParam) {
+      const option = Array.from(select.options).find(opt => opt.value === productParam);
+      if (option) {
+        select.value = productParam;
+      }
+    }
+
+    // 3. Security & Anti-Spam Logic
+    const pageLoadTime = Date.now();
+
+    form.addEventListener('submit', (e) => {
+      // Mark as submitted to trigger visual validation
+      form.classList.add('submitted');
+
+      // A. hCaptcha Validation (Official Recommendation)
+      const hCaptcha = form.querySelector('textarea[name=h-captcha-response]') as HTMLTextAreaElement;
+      if (hCaptcha && !hCaptcha.value) {
+        e.preventDefault();
+        alert("Por favor, complete el captcha de seguridad.");
+        return;
+      }
+
+      // B. Time Trap: If submitted in < 3 seconds, it's likely a bot.
+      if (Date.now() - pageLoadTime < 3000) {
+        e.preventDefault();
+        console.warn("Submission rejected: Too fast.");
+        return;
+      }
+
+      // C. Link Trap: Prevent URLs in Name, Company, City, Phone
+      const textInputs = form.querySelectorAll('input[type="text"], input[type="tel"]');
+      const linkPattern = /(https?:\/\/|www\.|ftp:\/\/)/i;
+      
+      for (const input of Array.from(textInputs) as HTMLInputElement[]) {
+          if (linkPattern.test(input.value)) {
+              e.preventDefault();
+              alert('Por seguridad, no se permiten enlaces (URLs) en los campos de contacto.');
+              input.focus();
+              return;
+          }
+      }
+
+      // D. Script Trap: Block Cyrillic/Russian
+      const mensajeField = document.getElementById('mensaje') as HTMLTextAreaElement;
+      if (mensajeField && mensajeField.value) {
+          const cyrillicPattern = /[\u0400-\u04FF]/;
+          if (cyrillicPattern.test(mensajeField.value)) {
+              e.preventDefault();
+              alert('Por seguridad, solo se permiten caracteres latinos (español/inglés).');
+              mensajeField.focus();
+              return;
+          }
+      }
+
+      // E. Dynamic Subject Line
+      const subjectInput = document.getElementById('email_subject') as HTMLInputElement;
+      const nombreInput = document.getElementById('nombre') as HTMLInputElement;
+      const empresaInput = document.getElementById('empresa') as HTMLInputElement;
+      
+      if (subjectInput && nombreInput && empresaInput) {
+          subjectInput.value = `Cotización: ${empresaInput.value} | ${nombreInput.value}`;
+      }
+    });
+  }
+
+  // Run on initial load
+  initContactForm();
+
+  // Run on view transitions
+  document.addEventListener('astro:page-load', initContactForm);
+</script>
