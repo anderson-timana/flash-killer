@@ -16,6 +16,7 @@ export const products = [
         name: "Flash Killer 20W", 
         subtitle: "Trampa de Luz UV con Placa Adhesiva",
         spec: "Trampa Adhesiva UV | Cobertura 120m²",
+        metaDescription: "Trampa de luz UV Flash Killer 20W en acero inoxidable 304. Captura higiénica y silenciosa de insectos voladores. Ideal para auditorías HACCP y DIGESA en Perú.",
         desc: "Las trampas de luz UV son un eficiente y seguro dispositivo orientado a la captura, control y monitoreo de insectos voladores en áreas sensibles. Silenciosas e higiénicas.",
         images: [
             InsectocapturadorEncendido,
@@ -36,6 +37,7 @@ export const products = [
         name: "Insectocutor", 
         subtitle: "Barras Electroshock | Acero Inoxidable",
         spec: "Barras Electroshock | Acero Inoxidable",
+        metaDescription: "Insectocutor industrial Flash Killer en acero inoxidable C-304. Alta potencia de choque de 2500mA para control de plagas en almacenes y zonas de carga en Perú.",
         desc: "Alta potencia de choque. Ideales para almacenes y zonas de carga. 2500 miliamperios en barras.",
         images: [
             InsectocutorEncendido,
@@ -56,6 +58,7 @@ export const products = [
         name: "Tubos de Luz Ultravioleta", 
         subtitle: "Repuestos FK-20 | Vida útil 8000h",
         spec: "Repuestos FK-20 | Vida útil 8000h",
+        metaDescription: "Tubos de luz ultravioleta UV-A para trampas de insectos. Repuestos FK-20 de alta eficiencia con vida útil de 8000h. Compatibles con equipos industriales 24/7.",
         desc: "Dispositivos emisores de luz ultravioleta diseñados para ser usados en trampas de luz. Fabricados para funcionar 24/7.",
         images: [
             FluorescentesUV,
@@ -75,6 +78,7 @@ export const products = [
         name: "Placas Adhesivas FKY/FKB", 
         subtitle: "Insumos FKY/FKB | 100% Inerte",
         spec: "Insumos FKY/FKB | 100% Inerte",
+        metaDescription: "Placas adhesivas FKY/FKB para captura de insectos. Insumos 100% inertes y no tóxicos. Repuestos certificados para mantenimiento de trampas de luz UV en Perú.",
         desc: "Trampas de pegamento de cartón con una duración promedio de 60/90 días. Adhesivo 100% inerte, sin tóxicos.",
         images: [
             TrampasAdhesivas,
@@ -94,6 +98,7 @@ export const products = [
         name: "Balastros Eléctricos", 
         subtitle: "Componentes de Ingeniería | Estabilidad UV",
         spec: "Repuestos 30W/40W | Estabilidad Eléctrica",
+        metaDescription: "Balastros electrónicos para lámparas UV industriales. Garantizan estabilidad eléctrica y maximizan la vida útil de sus equipos de captura de insectos Flash Killer.",
         desc: "Los balastros eléctricos son fundamentales para garantizar la estabilidad eléctrica y la vida útil de sus lámparas UV. Diseñados específicamente para funcionar en condiciones industriales 24/7.",
         images: [
             BalastroElectronico

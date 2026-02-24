@@ -1,15 +1,29 @@
 ---
 import Section from './Section.astro';
 import Text from './Text.astro';
+import { products } from '../data/products.js';
+import { services } from '../data/services.js';
+
+interface Option {
+  id: string;
+  name: string;
+}
 
 interface Props {
   title?: string;
   hook: string;
   body: string;
   initialProduct?: string;
+  formOptions?: Option[];
 }
 
-const { title, hook, body, initialProduct } = Astro.props;
+const { title, hook, body, initialProduct, formOptions } = Astro.props;
+
+const allProducts = products.map(p => ({ id: p.id, name: p.name }));
+const allServices = services.map(s => ({ id: s.id, name: s.name }));
+
+const defaultOptions = [...allProducts, ...allServices];
+const optionsToRender = formOptions ?? defaultOptions;
 ---
 <div class="bg-industrial-dark text-white">
   <Section id="contacto" padding="large" class="grid md:grid-cols-12 gap-x-12 lg:gap-x-24 gap-y-12 items-center">
@@ -20,7 +34,7 @@ const { title, hook, body, initialProduct } = Astro.props;
     )}
     <div class="md:col-span-5">
       <Text as="h2" variant="vr1" class="text-white mb-6 leading-snug">{hook}</Text>
-      <Text variant="body" class="text-industrial-grey text-lg md:text-xl leading-relaxed">{body}</Text>
+      <Text variant="body" class="text-gray-300 text-lg md:text-xl leading-relaxed">{body}</Text>
       
       <div class="mt-12 pt-12 border-t border-white/10 space-y-8 hidden md:block">
         <div>
@@ -130,13 +144,11 @@ const { title, hook, body, initialProduct } = Astro.props;
               class="w-full bg-white/10 border border-white/20 p-4 text-white focus:outline-primary appearance-none cursor-pointer group-[.submitted]:invalid:border-red-500 focus:invalid:border-red-500" 
               required
             >
-              <option value="" disabled selected={!initialProduct} class="text-industrial-dark">Producto de Interés *</option>
-                        <option value="flash-killer-20w" selected={initialProduct === 'flash-killer-20w'} class="text-industrial-dark">Flash Killer 20W (Trampa Adhesiva)</option>
-                        <option value="insectocutor" selected={initialProduct === 'insectocutor'} class="text-industrial-dark">Insectocutor (Electroshock)</option>
-                        <option value="tubos-uv" selected={initialProduct === 'tubos-uv'} class="text-industrial-dark">Tubos UV de Repuesto</option>
-                        <option value="placas-adhesivas" selected={initialProduct === 'placas-adhesivas'} class="text-industrial-dark">Placas Adhesivas (Repuestos)</option>
-                        <option value="balastros" selected={initialProduct === 'balastros'} class="text-industrial-dark">Balastros Eléctricos</option>
-                        <option value="otros" selected={initialProduct === 'otros'} class="text-industrial-dark">Asesoría / Otro</option>
+              <option value="" disabled selected={!initialProduct} class="text-industrial-dark">Producto o Servicio de Interés *</option>
+              {optionsToRender.map(option => (
+                <option value={option.id} selected={initialProduct === option.id} class="text-industrial-dark">{option.name}</option>
+              ))}
+              <option value="otros" selected={initialProduct === 'otros'} class="text-industrial-dark">Asesoría / Otro</option>
             </select>        
           </div>
         <div class="md:col-span-2">

@@ -10,11 +10,28 @@ const { as: Tag = 'p', variant = 'body', class: className, ...props } = Astro.pr
 const variants = {
   vr1: 'text-4xl md:text-6xl font-bold leading-tight tracking-tight',
   vr2: 'text-2xl md:text-3xl font-semibold leading-snug',
-  vr3: 'text-sm md:text-base font-medium uppercase tracking-widest text-industrial-text',
-  body: 'text-base md:text-lg leading-relaxed text-industrial-dark',
-  sub: 'text-sm text-industrial-text uppercase',
+  vr3: 'text-sm md:text-base font-medium uppercase tracking-widest',
+  body: 'text-base md:text-lg leading-relaxed',
+  sub: 'text-sm uppercase',
 };
+
+const defaultColors = {
+  vr1: '',
+  vr2: '',
+  vr3: 'text-industrial-text',
+  body: 'text-industrial-dark',
+  sub: 'text-industrial-text',
+};
+
+// Check if className contains a text-color class. 
+// We exclude alignment, sizing and other non-color text utilities.
+const hasExplicitColor = className?.split(' ').some(cls => 
+  cls.startsWith('text-') && 
+  !/text-(left|center|right|justify|start|end|xs|sm|base|lg|xl|2xl|3xl|4xl|5xl|6xl|7xl|8xl|9xl)/.test(cls)
+);
+
+const finalColor = hasExplicitColor ? '' : defaultColors[variant];
 ---
-<Tag class:list={[variants[variant], className]} {...props}>
+<Tag class:list={[variants[variant], finalColor, className]} {...props}>
   <slot />
 </Tag>

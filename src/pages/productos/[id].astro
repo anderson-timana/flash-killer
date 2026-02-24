@@ -16,13 +16,42 @@ export function getStaticPaths() {
   }));
 }
 
-const { name, subtitle, desc, specs, safety, images } = Astro.props;
+const { name, subtitle, desc, specs, safety, images, metaDescription } = Astro.props;
+
+// Use explicit metaDescription if provided, otherwise fallback to truncated desc
+const finalMetaDescription = metaDescription || `${desc.slice(0, 155)}...`;
+
+// Get the first image URL for OG tags
+const ogImage = images && images.length > 0 ? images[0].src : undefined;
+
+// JSON-LD Structured Data
+const jsonLd = {
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": name,
+  "description": desc,
+  "image": ogImage ? new URL(ogImage, Astro.site).toString() : undefined,
+  "brand": {
+    "@type": "Brand",
+    "name": "Flash Killer"
+  },
+  "offers": {
+    "@type": "Offer",
+    "url": Astro.url.toString(),
+    "availability": "https://schema.org/InStock",
+    "priceCurrency": "PEN"
+  }
+};
 ---
 
 <Layout 
   title={`${name} | ${subtitle} | Flash Killer`}
-  description={`${desc.slice(0, 155)}...`}
+  description={finalMetaDescription}
+  image={ogImage}
 >
+  <!-- Schema.org JSON-LD -->
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
   <Navbar />
   <main class="mt-20">
     <!-- Block 1: Product Hero (Conversion Cluster) -->
@@ -140,11 +169,12 @@ const { name, subtitle, desc, specs, safety, images } = Astro.props;
     const images = Array.from(thumbnails).map(t => t.getAttribute('data-image'));
 
     function updateGallery(index) {
-        if (!images[index]) return;
+        const imageUrl = images[index];
+        if (!imageUrl) return;
         
         mainImage.style.opacity = '0.5';
         setTimeout(() => {
-            mainImage.src = images[index];
+            mainImage.src = imageUrl;
             mainImage.style.opacity = '1';
         }, 150);
 
