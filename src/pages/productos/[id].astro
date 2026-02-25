@@ -16,7 +16,7 @@ export function getStaticPaths() {
   }));
 }
 
-const { name, subtitle, desc, specs, safety, images, metaDescription } = Astro.props;
+const { name, subtitle, desc, specs, safety, images, metaDescription, pdf } = Astro.props;
 
 // Use explicit metaDescription if provided, otherwise fallback to truncated desc
 const finalMetaDescription = metaDescription || `${desc.slice(0, 155)}...`;
@@ -123,7 +123,7 @@ const jsonLd = {
             <a href="#cotizar" class="bg-primary text-white px-8 py-4 rounded-sm text-lg font-bold hover:scale-105 transition-transform inline-block">
                 Cotizar este Equipo
             </a>
-            <a href="#" class="text-primary font-bold uppercase tracking-wider text-sm flex items-center gap-2 hover:underline">
+            <a href={pdf} target="_blank" rel="noopener noreferrer" class="text-primary font-bold uppercase tracking-wider text-sm flex items-center gap-2 hover:underline">
                 <span class="text-xl">↓</span> Descargar Ficha Técnica (PDF)
             </a>
           </div>

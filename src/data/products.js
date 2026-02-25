@@ -2,6 +2,8 @@ import InsectocapturadorEncendido from '../assets/images/Insectocapturador-Indus
 import InsectocapturadorApagado from '../assets/images/Insectocapturador-Industrial-Apagado.webp';
 import InsectocutorEncendido from '../assets/images/Insectocutor-Encendido.webp';
 import InsectocutorApagado from '../assets/images/Insectocutor-Apagado.webp';
+import InsectocapturadorTrapecio from '../assets/images/Insectocapturador-Trapecio.webp';
+import InsectocapturadorPollo from '../assets/images/Insectocapturador-Pollo.webp';
 import FluorescentesUV from '../assets/images/Fluorescentes-UV.webp';
 import FluorescenteUVA20W from '../assets/images/Fluorescente-UV-A-20W.webp';
 import FluorescenteUVA15W from '../assets/images/Fluorescente-UV-A-15W.webp';
@@ -22,6 +24,7 @@ export const products = [
             InsectocapturadorEncendido,
             InsectocapturadorApagado
         ],
+        pdf: "/fichas-tecnicas/capturador.pdf",
         specs: [
             { label: "Material", value: "Acero Inoxidable 304 Mate" },
             { label: "Dimensiones", value: "61 x 30 x 7 cm" },
@@ -43,6 +46,7 @@ export const products = [
             InsectocutorEncendido,
             InsectocutorApagado
         ],
+        pdf: "/fichas-tecnicas/insectocutores.pdf",
         specs: [
             { label: "Material", value: "Acero Inoxidable C-304 certificada" },
             { label: "Dimensiones", value: "25 x 63 x 6 cm" },
@@ -52,6 +56,29 @@ export const products = [
             { label: "Balastro", value: "Electrónico 2x20w" }
         ],
         safety: ["Voltaje solo para insectos voladores", "Usar zapatos dieléctricos para instalación"]
+    },
+    { 
+        id: 'trampas-luz-uv-decorativas',
+        name: "Flash Killer Decorativo", 
+        subtitle: "Trampa de Luz UV Decorativa con Placa Adhesiva",
+        spec: "Trampa Decorativa UV Adhesiva | Cobertura 80 m²",
+        metaDescription: "Trampa de luz UV Flash Killer con diseño decorativo. Captura higiénica de insectos voladores. Ideal para auditorías HACCP y DIGESA en Perú.",
+        desc: "Las trampas de luz UV decorativas no disrumpen el diseño de sus espacios y son igual de eficientes para la captura, control y monitoreo de insectos voladores en áreas sensibles. Silenciosas e higiénicas.",
+        images: [
+            InsectocapturadorTrapecio,
+            InsectocapturadorPollo
+        ],
+        pdf: "/fichas-tecnicas/capturador-decorativo.pdf",
+        specs: [
+            { label: "Material", value: "Acero Inoxidable 304 Mate" },
+            { label: "Dimensiones", value: "49 x 49 x 19 cm" },
+            { label: "Voltaje", value: "220V, 50 Hz" },
+            { label: "Cobertura", value: "80 m²" },
+            { label: "Tubos", value: "Fluorescentes UV-A" },
+            { label: "Balastro", value: "1 x 2 de 10 Watts" },
+            { label: "Peso", value: "Variable" }
+        ],
+        safety: ["No tóxico", "Sin químicos", "Apagar antes de limpiar"]
     },
     { 
         id: 'fluorescentes-uv-matamoscas',
@@ -65,6 +92,7 @@ export const products = [
             FluorescenteUVA20W,
             FluorescenteUVA15W
         ],
+        pdf: "/fichas-tecnicas/fluorescentes.pdf",
         specs: [
             { label: "Largo", value: "60 cm" },
             { label: "Diámetro", value: "3 cm (T8)" },
@@ -85,6 +113,7 @@ export const products = [
             TrampaAdhesivaNegra,
             TrampaAdhesivaAmarilla
         ],
+        pdf: "/fichas-tecnicas/balastros-y-laminas.pdf",
         specs: [
             { label: "Dimensiones", value: "0.50 x 0.29 cm" },
             { label: "Presentación", value: "12 Pz" },
@@ -103,6 +132,7 @@ export const products = [
         images: [
             BalastroElectronico
         ],
+        pdf: "/fichas-tecnicas/balastros-y-laminas.pdf",
         specs: [
             { label: "Potencia", value: "30W / 40W" },
             { label: "Tipo", value: "Balastro Electrónico" },
