@@ -92,9 +92,11 @@ This phase exemplifies the commitment to going beyond "just works" to "works per
 
 *   **LCP Optimization:** The Largest Contentful Paint (LCP) element—the hero image—was optimized by implementing responsive **`<link rel="preload">`** tags. This instructs the browser to fetch this critical asset with the highest priority, significantly improving perceived load time.
 
-*   **Third-Party Script Sanitization:** Google Tag Manager, a common performance bottleneck, was integrated using **Astro's Partytown**. This moves the script off the main thread and into a web worker, preventing it from blocking rendering or degrading user interactivity.
+*   **Third-Party Script Sanitization & Proxying:** Google Tag Manager, a common performance bottleneck, was integrated using **Astro's Partytown**. To resolve production CORS errors and further protect user privacy, a **custom Serverless Proxy** was implemented via **Cloudflare Pages Functions**. This ensures all analytics requests originate from the same domain, keeping the console clean and the main thread completely unblocked.
 
-*   **Dependency Management (`chore: Update dependency...`):** The project's dependencies are actively managed, ensuring security and stability by staying current with patch releases.
+*   **Zero-Request Styling:** Implemented full **CSS inlining** (`inlineStylesheets: 'always'`) to eliminate render-blocking network requests for stylesheets. This optimized the critical discovery chain, allowing the browser to prioritize the Inter font family and the LCP hero image significantly earlier in the waterfall.
+
+*   **Context-Aware Image Optimization:** Refined the asset pipeline to generate specifically sized thumbnails (450px for grids, 100px for galleries) and hero images (800px). This ensures mobile users receive the smallest possible payload without compromising the visual fidelity of the high-end industrial products.
 
 ---
 

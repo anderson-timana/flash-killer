@@ -43,7 +43,25 @@ function initContactForm() {
     }
   }
 
-  // 3. Security & Anti-Spam Logic
+  // 3. Dynamic Iframe Fix (hCaptcha)
+  const fixHCaptchaIframe = () => {
+    const container = form.querySelector('.h-captcha');
+    if (!container) return;
+
+    const observer = new MutationObserver(() => {
+      const iframe = container.querySelector('iframe');
+      if (iframe) {
+        iframe.setAttribute('title', 'Verificación de seguridad hCaptcha');
+        iframe.setAttribute('loading', 'lazy');
+        observer.disconnect();
+      }
+    });
+
+    observer.observe(container, { childList: true, subtree: true });
+  };
+  fixHCaptchaIframe();
+
+  // 4. Security & Anti-Spam Logic
   const pageLoadTime = Date.now();
   const resultDiv = document.getElementById('result');
   const submitBtn = form.querySelector('button[type="submit"]');

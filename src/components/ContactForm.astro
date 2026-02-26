@@ -160,7 +160,13 @@ const optionsToRender = formOptions ?? defaultOptions;
           ></textarea>
         </div>
         <!-- hCaptcha Protection -->
-        <div class="h-captcha md:col-span-2 min-h-[78px]" data-captcha="true" data-theme="dark"></div>
+        <div 
+          class="h-captcha md:col-span-2 min-h-[78px]" 
+          data-captcha="true" 
+          data-theme="dark"
+          title="Verificación de seguridad hCaptcha"
+          data-loading="lazy"
+        ></div>
 
         <!-- Spam Protection (Honeypot) -->
         <input type="checkbox" name="botcheck" class="hidden" style="display: none;">

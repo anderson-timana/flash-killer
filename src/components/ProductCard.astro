@@ -20,6 +20,8 @@ const { name, spec, imageAlt, href, image } = Astro.props;
         <Image 
           src={image} 
           alt={imageAlt} 
+          width={450}
+          height={450}
           class="w-full h-full object-contain p-4" 
           loading="lazy"
           decoding="async"

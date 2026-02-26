@@ -14,7 +14,7 @@ const { intent, hook, body, image, imageMobile } = Astro.props;
 const optimizedMobileImage = imageMobile ? await getImage({src: imageMobile, format: 'webp'}) : null;
 ---
 
-<section class="relative mt-16 min-h-[80vh] flex items-center justify-center overflow-hidden">
+<section class="relative mt-16 min-h-[80vh] bg-gray-400 flex items-center justify-center overflow-hidden">
   {image && (
     <div class="absolute inset-0 z-0 h-full w-full pointer-events-none">
       <picture>

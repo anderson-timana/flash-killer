@@ -24,13 +24,15 @@ const finalMetaDescription = metaDescription || `${desc.slice(0, 155)}...`;
 // Get the first image URL for OG tags
 const ogImage = images && images.length > 0 ? images[0].src : undefined;
 
+const siteUrl = Astro.site || new URL(Astro.url.origin);
+
 // JSON-LD Structured Data
 const jsonLd = {
   "@context": "https://schema.org/",
   "@type": "Product",
   "name": name,
   "description": desc,
-  "image": ogImage ? new URL(ogImage, Astro.site).toString() : undefined,
+  "image": ogImage ? new URL(ogImage, siteUrl).toString() : undefined,
   "brand": {
     "@type": "Brand",
     "name": "Flash Killer"
@@ -63,6 +65,8 @@ const jsonLd = {
                   id="main-image" 
                   src={images[0]} 
                   alt={name} 
+                  width={800}
+                  height={800}
                   class="w-full h-full object-contain p-8 animate-fade-in transition-opacity duration-300"
                   loading="eager"
                   decoding="async"
@@ -102,6 +106,8 @@ const jsonLd = {
                    <Image 
                     src={img} 
                     alt="" 
+                    width={100}
+                    height={100}
                     class="w-full h-full object-contain p-2" 
                     loading="lazy"
                     decoding="async"

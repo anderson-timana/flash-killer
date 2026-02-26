@@ -19,7 +19,10 @@ const {
     preloadMobileImage
 } = Astro.props;
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+// siteUrl is used to resolve absolute URLs for SEO and social sharing.
+const siteUrl = Astro.site ? new URL(Astro.site) : new URL(Astro.url.origin);
+const canonicalURL = new URL(Astro.url.pathname, siteUrl);
+const resolvedOgImage = new URL(image, siteUrl);
 ---
 
 <!doctype html>
@@ -35,9 +38,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 		<link rel="icon" type="image/png" href="/images/favicon-small.png" />
 		<meta name="generator" content={Astro.generator} />
 
-        {/* The strict Content Security Policy is only applied in production builds. */}
+        {/* The Content Security Policy is applied in production. */}
         {import.meta.env.PROD && (
-            <meta http-equiv="Content-Security-Policy" content="default-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://web3forms.com https://hcaptcha.com https://newassets.hcaptcha.com https://www.googletagmanager.com https://ssl.google-analytics.com https://www.google-analytics.com; connect-src 'self' https://api.web3forms.com https://hcaptcha.com https://newassets.hcaptcha.com https://www.google-analytics.com; frame-src 'self' https://hcaptcha.com https://www.google.com; img-src 'self' data: https://web3forms.com https://hcaptcha.com; style-src 'self' 'unsafe-inline';" />
+            <meta http-equiv="Content-Security-Policy" content="default-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://web3forms.com https://hcaptcha.com https://newassets.hcaptcha.com https://www.googletagmanager.com https://ssl.google-analytics.com https://www.google-analytics.com; connect-src 'self' https://api.web3forms.com https://hcaptcha.com https://newassets.hcaptcha.com https://www.google-analytics.com; frame-src 'self' https://hcaptcha.com https://www.google.com; img-src 'self' data: https://web3forms.com https://hcaptcha.com; style-src 'self' 'unsafe-inline'; font-src 'self' data:;" />
         )}
 
         <!-- Google Tag Manager -->
@@ -63,14 +66,14 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         <meta property="og:url" content={Astro.url} />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
-        <meta property="og:image" content={new URL(image, Astro.url)} />
+        <meta property="og:image" content={resolvedOgImage} />
 
         <!-- Twitter -->
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content={Astro.url} />
         <meta property="twitter:title" content={title} />
         <meta property="twitter:description" content={description} />
-        <meta property="twitter:image" content={new URL(image, Astro.url)} />
+        <meta property="twitter:image" content={resolvedOgImage} />
 	</head>
 	<body>
         <!-- Google Tag Manager (noscript) -->
