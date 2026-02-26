@@ -3,10 +3,12 @@ import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
 import compress from '@playform/compress';
 
+import partytown from '@astrojs/partytown';
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://capturadoresflashkiller.com',
-  integrations: [tailwind(), sitemap(), compress()],
+  integrations: [tailwind(), sitemap(), compress(), partytown()],
   redirects: {
     '/contacto': '/contactanos',
     '/cotiza': '/contactanos',

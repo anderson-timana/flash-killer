@@ -3,6 +3,9 @@
 /dist
 /.astro
 
+# Secrets
+.env
+
 # Dev
 /artifacts
 /prompts

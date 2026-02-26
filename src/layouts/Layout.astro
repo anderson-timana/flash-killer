@@ -7,12 +7,16 @@ interface Props {
 	title: string;
     description?: string;
     image?: string;
+    preloadDesktopImage?: string;
+    preloadMobileImage?: string;
 }
 
 const { 
     title, 
     description = "Líderes en trampas de luz UV e insectocutores de acero inoxidable 304 en Perú. Cumplimiento garantizado para auditorías DIGESA y HACCP.",
-    image = defaultOgImage.src
+    image = defaultOgImage.src,
+    preloadDesktopImage,
+    preloadMobileImage
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -25,7 +29,22 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="icon" type="image/png" href="/images/favicon-small.png" />
 		<meta name="generator" content={Astro.generator} />
-        
+
+        <!-- Content Security Policy -->
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://web3forms.com https://hcaptcha.com https://newassets.hcaptcha.com https://www.googletagmanager.com https://ssl.google-analytics.com 'report-sample' 'strict-dynamic'; connect-src 'self' https://api.web3forms.com https://hcaptcha.com https://newassets.hcaptcha.com https://www.google-analytics.com; frame-src 'self' https://hcaptcha.com https://www.google.com; img-src 'self' data: https://web3forms.com https://hcaptcha.com; style-src 'self' 'unsafe-inline';" />
+
+        <!-- Google Tag Manager -->
+        <script type="text/partytown">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-PZT4D69');</script>
+        <!-- End Google Tag Manager -->
+
+        <!-- LCP Preload -->
+        {preloadDesktopImage && <link rel="preload" as="image" href={preloadDesktopImage} media="(min-width: 768px)" />}
+        {preloadMobileImage && <link rel="preload" as="image" href={preloadMobileImage} media="(max-width: 767px)" />}
+
         <!-- Resource Hints -->
         <link rel="preconnect" href="https://api.web3forms.com">
         <link rel="preconnect" href="https://hcaptcha.com">
@@ -51,6 +70,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         <meta property="twitter:image" content={new URL(image, Astro.url)} />
 	</head>
 	<body>
+        <!-- Google Tag Manager (noscript) -->
+        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PZT4D69"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <!-- End Google Tag Manager (noscript) -->
 		<slot />
         <WhatsAppFab />
 	</body>
