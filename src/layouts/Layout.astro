@@ -37,7 +37,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
         {/* The strict Content Security Policy is only applied in production builds. */}
         {import.meta.env.PROD && (
-            <meta http-equiv="Content-Security-Policy" content="default-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://web3forms.com https://hcaptcha.com https://newassets.hcaptcha.com https://www.googletagmanager.com https://ssl.google-analytics.com 'report-sample' 'strict-dynamic'; connect-src 'self' https://api.web3forms.com https://hcaptcha.com https://newassets.hcaptcha.com https://www.google-analytics.com; frame-src 'self' https://hcaptcha.com https://www.google.com; img-src 'self' data: https://web3forms.com https://hcaptcha.com; style-src 'self' 'unsafe-inline';" />
+            <meta http-equiv="Content-Security-Policy" content="default-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://web3forms.com https://hcaptcha.com https://newassets.hcaptcha.com https://www.googletagmanager.com https://ssl.google-analytics.com https://www.google-analytics.com; connect-src 'self' https://api.web3forms.com https://hcaptcha.com https://newassets.hcaptcha.com https://www.google-analytics.com; frame-src 'self' https://hcaptcha.com https://www.google.com; img-src 'self' data: https://web3forms.com https://hcaptcha.com; style-src 'self' 'unsafe-inline';" />
         )}
 
         <!-- Google Tag Manager -->

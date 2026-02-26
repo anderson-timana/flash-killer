@@ -98,6 +98,18 @@ This phase exemplifies the commitment to going beyond "just works" to "works per
 
 ---
 
+## Security Trade-offs & Lessons Learned
+
+### The CSP "Strict-Dynamic" Challenge: A Study in Pragmatic Security
+During the final optimization phase, a robust Content Security Policy (CSP) was implemented. However, a critical conflict was discovered post-deployment—a scenario common when local development environments differ from production security headers.
+
+*   **The Technical Conflict:** The initial policy utilized `'strict-dynamic'`, a modern standard that effectively mandates **Cryptographic Nonces** (unique, per-request tokens) to authorize inline scripts. 
+*   **The AI-First Reflection:** The initial configuration was influenced by an **AI bias toward theoretical maximum security**. While highly secure, this model assumes a dynamic server-side environment capable of generating tokens on the fly.
+*   **The Strategic Pivot:** As Flash Killer is an ultra-fast **static site** on a CDN, generating nonces would have required introducing Cloudflare Workers—adding unnecessary architectural complexity and operational costs. 
+*   **The Result:** I performed a **cost-benefit analysis** and pivoted to a "Classic Domain Allow-list." This ensures the site remains 100% static and maintenance-free while providing a hardened defense-in-depth against XSS by restricting execution to a verified list of industrial-grade providers (Google, hCaptcha, Web3Forms). This choice prioritizes **operational simplicity and performance** without compromising the security requirements of a B2B lead-generation platform.
+
+---
+
 ## Technical Best Practices Implemented
 
 This project is a living portfolio of modern web development best practices:
