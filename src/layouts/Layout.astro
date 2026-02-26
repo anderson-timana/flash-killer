@@ -27,11 +27,18 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <!-- LCP Preload - Positioned at top of <head> for earliest discovery -->
+        {preloadDesktopImage && <link rel="preload" as="image" href={preloadDesktopImage} media="(min-width: 768px)" fetchpriority="high" />}
+        {preloadMobileImage && <link rel="preload" as="image" href={preloadMobileImage} media="(max-width: 767px)" fetchpriority="high" />}
+
 		<link rel="icon" type="image/png" href="/images/favicon-small.png" />
 		<meta name="generator" content={Astro.generator} />
 
-        <!-- Content Security Policy -->
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://web3forms.com https://hcaptcha.com https://newassets.hcaptcha.com https://www.googletagmanager.com https://ssl.google-analytics.com 'report-sample' 'strict-dynamic'; connect-src 'self' https://api.web3forms.com https://hcaptcha.com https://newassets.hcaptcha.com https://www.google-analytics.com; frame-src 'self' https://hcaptcha.com https://www.google.com; img-src 'self' data: https://web3forms.com https://hcaptcha.com; style-src 'self' 'unsafe-inline';" />
+        {/* The strict Content Security Policy is only applied in production builds. */}
+        {import.meta.env.PROD && (
+            <meta http-equiv="Content-Security-Policy" content="default-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://web3forms.com https://hcaptcha.com https://newassets.hcaptcha.com https://www.googletagmanager.com https://ssl.google-analytics.com 'report-sample' 'strict-dynamic'; connect-src 'self' https://api.web3forms.com https://hcaptcha.com https://newassets.hcaptcha.com https://www.google-analytics.com; frame-src 'self' https://hcaptcha.com https://www.google.com; img-src 'self' data: https://web3forms.com https://hcaptcha.com; style-src 'self' 'unsafe-inline';" />
+        )}
 
         <!-- Google Tag Manager -->
         <script type="text/partytown">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -40,10 +47,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
         })(window,document,'script','dataLayer','GTM-PZT4D69');</script>
         <!-- End Google Tag Manager -->
-
-        <!-- LCP Preload -->
-        {preloadDesktopImage && <link rel="preload" as="image" href={preloadDesktopImage} media="(min-width: 768px)" />}
-        {preloadMobileImage && <link rel="preload" as="image" href={preloadMobileImage} media="(max-width: 767px)" />}
 
         <!-- Resource Hints -->
         <link rel="preconnect" href="https://api.web3forms.com">

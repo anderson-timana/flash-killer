@@ -33,7 +33,7 @@ const optimizedMobileImage = imageMobile ? await getImage({src: imageMobile, for
     </div>
   )}
 
-  <div id="hero-text-container" class="relative z-10 container mx-auto px-4 text-center flex flex-col items-center opacity-0 transition-opacity duration-700 ease-out">
+  <div id="hero-text-container" class="relative z-10 container mx-auto px-4 text-center flex flex-col items-center transition-opacity duration-700 ease-out">
     <Text as="h1" variant="vr3" class="mb-4 text-white/90 [text-shadow:0_1px_16px_rgba(0,0,0,0.7)]">
       {intent}
     </Text>
@@ -57,57 +57,6 @@ const optimizedMobileImage = imageMobile ? await getImage({src: imageMobile, for
     <div class="absolute inset-0 bg-primary/20 blur-[100px] rounded-full animate-uv-pulse-delayed"></div>
   </div>
 </section>
-
-<script>
-  function initHeroTextAnimation() {
-    const heroImage = document.getElementById('hero-main-image') as HTMLImageElement;
-    const heroTextContainer = document.getElementById('hero-text-container');
-
-    if (heroImage && heroTextContainer) {
-      if (heroImage.complete) {
-        // Image is already loaded (e.g., from cache), show text immediately
-        heroTextContainer.style.opacity = '1';
-      } else {
-        // Image not yet loaded, wait for it
-        heroImage.addEventListener('load', () => {
-          heroTextContainer.style.opacity = '1';
-        }, { once: true }); // Use 'once' to ensure the listener is cleaned up automatically
-        heroImage.addEventListener('error', () => {
-          // Fallback: show text even if image fails to load
-          heroTextContainer.style.opacity = '1';
-        }, { once: true });
-      }
-    }
-  }
-
-  // Run on initial page load
-  initHeroTextAnimation();
-
-  // Run on subsequent client-side navigations
-  document.addEventListener('astro:page-load', initHeroTextAnimation);
-</script>
-
-<style>
-  @keyframes uv-pulse {
-    0%, 100% { opacity: 0.4; transform: scale(1); }
-    50% { opacity: 0.6; transform: scale(1.05); }
-  }
-  @keyframes uv-pulse-delayed {
-    0%, 100% { opacity: 0.3; transform: scale(1.1); }
-    50% { opacity: 0.5; transform: scale(1); }
-  }
-  .animate-uv-pulse {
-    animation: uv-pulse 8s ease-in-out infinite;
-  }
-  .animate-uv-pulse-delayed {
-    animation: uv-pulse-delayed 12s ease-in-out infinite;
-    animation-delay: 2s;
-  }
-</style>
-
-
-
-
 
 <style>
   @keyframes uv-pulse {
