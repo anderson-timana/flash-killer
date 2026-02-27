@@ -31,6 +31,14 @@ function initContactForm() {
     link.addEventListener('mouseenter', loadScript, { once: true });
   });
 
+  // C. Instant Validation Feedback on Blur
+  const inputsWithValidation = form.querySelectorAll('[required], [pattern], [minlength]');
+  inputsWithValidation.forEach(input => {
+    input.addEventListener('blur', () => {
+      input.classList.add('interacted');
+    });
+  });
+
   // 2. Product Preselection Logic
   const urlParams = new URLSearchParams(window.location.search);
   const productParam = urlParams.get('product');

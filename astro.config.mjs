@@ -15,6 +15,15 @@ export default defineConfig({
       config: {
         proxyUrl: '/api/partytown-proxy',
         forward: ['dataLayer.push'],
+        resolveUrl: function (url, location, type) {
+          if (url.hostname.includes('google-analytics.com') || 
+              url.hostname.includes('googletagmanager.com')) {
+            var proxyUrl = new URL('/api/partytown-proxy', location.href);
+            proxyUrl.searchParams.set('url', url.href);
+            return proxyUrl;
+          }
+          return url;
+        },
       },
     })
   ],

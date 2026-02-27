@@ -24,6 +24,12 @@ const allServices = services.map(s => ({ id: s.id, name: s.name }));
 
 const defaultOptions = [...allProducts, ...allServices];
 const optionsToRender = formOptions ?? defaultOptions;
+
+// We use variables to prevent the HTML minifier from stripping backslashes
+const nombrePattern = "^[a-zA-ZÀ-ÿ0-9 .]+$";
+const empresaPattern = "^[a-zA-ZÀ-ÿ0-9 .,\\&\\-]+$";
+const telefonoPattern = "^[\\d\\+\\-\\s]{9,11}$";
+const ciudadPattern = "^[a-zA-ZÀ-ÿ0-9 .]+$";
 ---
 <div class="bg-industrial-dark text-white">
   <Section id="contacto" padding="large" class="grid md:grid-cols-12 gap-x-12 lg:gap-x-24 gap-y-12 items-center">
@@ -73,12 +79,13 @@ const optionsToRender = formOptions ?? defaultOptions;
             name="nombre"
             placeholder="Nombre completo *" 
             autocomplete="name"
-            class="w-full bg-white/10 border border-white/20 p-4 text-white focus:outline-primary placeholder-industrial-grey group-[.submitted]:invalid:border-red-500 focus:invalid:border-red-500" 
+            class="w-full bg-white/10 border border-white/20 p-4 text-white focus:outline-primary placeholder-industrial-grey [&.interacted]:invalid:border-red-500 focus:invalid:border-red-500" 
             required
             minlength="3"
-            pattern="^[a-zA-ZÀ-ÿ\s\.]+$"
-            title="Solo letras y puntos permitidos"
+            pattern={nombrePattern}
+            title="Solo letras, números, espacios y puntos permitidos"
           />
+          <span class="validation-message">Por favor, ingrese un nombre válido.</span>
         </div>
         <div>
           <label for="empresa" class="sr-only">Empresa</label>
@@ -88,12 +95,13 @@ const optionsToRender = formOptions ?? defaultOptions;
             name="empresa"
             placeholder="Empresa *" 
             autocomplete="organization"
-            class="w-full bg-white/10 border border-white/20 p-4 text-white focus:outline-primary placeholder-industrial-grey group-[.submitted]:invalid:border-red-500 focus:invalid:border-red-500" 
+            class="w-full bg-white/10 border border-white/20 p-4 text-white focus:outline-primary placeholder-industrial-grey [&.interacted]:invalid:border-red-500 focus:invalid:border-red-500" 
             required 
             minlength="3"
-            pattern="^[a-zA-ZÀ-ÿ0-9\s.,&\-]+$"
-            title="Nombre de la empresa"
+            pattern={empresaPattern}
+            title="Solo letras, números, espacios y puntos permitidos"
           />
+          <span class="validation-message">Por favor, ingrese un nombre de empresa válido.</span>
         </div>
         <div>
           <label for="email" class="sr-only">Email corporativo</label>
@@ -103,9 +111,11 @@ const optionsToRender = formOptions ?? defaultOptions;
             name="email"
             placeholder="Email corporativo *" 
             autocomplete="email"
-            class="w-full bg-white/10 border border-white/20 p-4 text-white focus:outline-primary placeholder-industrial-grey group-[.submitted]:invalid:border-red-500 focus:invalid:border-red-500" 
-            required 
+            class="w-full bg-white/10 border border-white/20 p-4 text-white focus:outline-primary placeholder-industrial-grey [&.interacted]:invalid:border-red-500 focus:invalid:border-red-500" 
+            required
+            title="Ingresa un correo válido" 
           />
+          <span class="validation-message">Por favor, ingrese un email válido.</span>
         </div>
         <div>
           <label for="telefono" class="sr-only">Teléfono / WhatsApp</label>
@@ -115,11 +125,12 @@ const optionsToRender = formOptions ?? defaultOptions;
             name="telefono"
             placeholder="Teléfono / WhatsApp *" 
             autocomplete="tel"
-            class="w-full bg-white/10 border border-white/20 p-4 text-white focus:outline-primary placeholder-industrial-grey group-[.submitted]:invalid:border-red-500 focus:invalid:border-red-500" 
+            class="w-full bg-white/10 border border-white/20 p-4 text-white focus:outline-primary placeholder-industrial-grey [&.interacted]:invalid:border-red-500 focus:invalid:border-red-500" 
             required 
-            pattern="^[\d\+\-\s]{9,11}$"
+            pattern={telefonoPattern}
             title="Ingrese un número de teléfono válido (9 dígitos)"
           />
+          <span class="validation-message">Por favor, ingrese un teléfono válido.</span>
         </div>
         <div>
             <label for="ciudad" class="sr-only">Ciudad</label>
@@ -128,19 +139,20 @@ const optionsToRender = formOptions ?? defaultOptions;
               type="text" 
               name="ciudad"
               placeholder="Ciudad (Envío a todo el Perú) *" 
-              class="w-full bg-white/10 border border-white/20 p-4 text-white focus:outline-primary placeholder-industrial-grey group-[.submitted]:invalid:border-red-500 focus:invalid:border-red-500" 
+              class="w-full bg-white/10 border border-white/20 p-4 text-white focus:outline-primary placeholder-industrial-grey [&.interacted]:invalid:border-red-500 focus:invalid:border-red-500" 
               required 
               minlength="3"
-              pattern="^[a-zA-ZÀ-ÿ\s\.]+$"
-              title="Solo letras y espacios"
+              pattern={ciudadPattern}
+              title="Solo letras, números, espacios y puntos"
             />
+            <span class="validation-message">Por favor, ingrese una ciudad válida.</span>
         </div>
         <div>
             <label for="producto" class="sr-only">Producto de Interés</label>
             <select 
               id="producto" 
               name="producto"
-              class="w-full bg-white/10 border border-white/20 p-4 text-white focus:outline-primary appearance-none cursor-pointer group-[.submitted]:invalid:border-red-500 focus:invalid:border-red-500" 
+              class="w-full bg-white/10 border border-white/20 p-4 text-white focus:outline-primary appearance-none cursor-pointer [&.interacted]:invalid:border-red-500 focus:invalid:border-red-500" 
               required
             >
               <option value="" disabled selected={!initialProduct} class="text-industrial-dark">Producto o Servicio de Interés *</option>
@@ -149,6 +161,7 @@ const optionsToRender = formOptions ?? defaultOptions;
               ))}
               <option value="otros" selected={initialProduct === 'otros'} class="text-industrial-dark">Asesoría / Otro</option>
             </select>        
+            <span class="validation-message">Por favor, seleccione una opción.</span>
           </div>
         <div class="md:col-span-2">
           <label for="mensaje" class="sr-only">Mensaje o requerimiento especial</label>
@@ -180,6 +193,22 @@ const optionsToRender = formOptions ?? defaultOptions;
     </div>
   </Section>
 </div>
+
+<style>
+  .validation-message {
+    display: none;
+    font-size: 0.875rem; /* text-sm */
+    line-height: 1.25rem;
+    color: #ef4444; /* red-500 */
+    margin-top: 0.25rem; /* mt-1 */
+  }
+
+  /* Show the message for an adjacent invalid input/select that has been interacted with */
+  input.interacted:invalid + .validation-message,
+  select.interacted:invalid + .validation-message {
+    display: block;
+  }
+</style>
 
 <script>
     import '../assets/scripts/contact-form.js';

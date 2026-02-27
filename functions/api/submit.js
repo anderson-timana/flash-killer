@@ -33,29 +33,43 @@ export async function onRequestPost(context) {
       access_key: accessKey,
     };
 
-    // 3. Forward to Web3Forms
+    // 3. Forward to Web3Forms using URLSearchParams (mimics standard form submission)
+    const formParams = new URLSearchParams();
+    for (const [key, value] of Object.entries(payload)) {
+      formParams.append(key, value);
+    }
+
+    const requestOrigin = request.headers.get("Origin") || new URL(request.url).origin;
+    const requestReferer = request.headers.get("Referer") || request.url;
+
     const response = await fetch("https://api.web3forms.com/submit", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
         "Accept": "application/json",
-        "User-Agent": "FlashKiller-Worker/1.0"
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
+        "Origin": requestOrigin,
+        "Referer": requestReferer
       },
-      body: JSON.stringify(payload),
+      body: formParams.toString(),
     });
 
     // Check if response is valid JSON before parsing
     const responseText = await response.text();
+    const isHtml = responseText.trim().toLowerCase().startsWith("<!doctype html") || 
+                   responseText.trim().toLowerCase().startsWith("<html");
+
     let result;
     try {
+      if (isHtml) throw new Error("Received HTML instead of JSON");
       result = JSON.parse(responseText);
     } catch (e) {
       return new Response(
         JSON.stringify({ 
           success: false, 
-          message: "Web3Forms returned an invalid response", 
+          message: isHtml ? "Web3Forms returned a challenge page (WAF block)" : "Web3Forms returned an invalid response", 
           status: response.status,
-          error: responseText.substring(0, 100) // Limit size
+          error: responseText.substring(0, 200) // Provide more context for debugging
         }),
         { status: 502, headers: { "Content-Type": "application/json" } }
       );

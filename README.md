@@ -110,6 +110,13 @@ During the final optimization phase, a robust Content Security Policy (CSP) was 
 *   **The Strategic Pivot:** As Flash Killer is an ultra-fast **static site** on a CDN, generating nonces would have required introducing Cloudflare Workers—adding unnecessary architectural complexity and operational costs. 
 *   **The Result:** I performed a **cost-benefit analysis** and pivoted to a "Classic Domain Allow-list." This ensures the site remains 100% static and maintenance-free while providing a hardened defense-in-depth against XSS by restricting execution to a verified list of industrial-grade providers (Google, hCaptcha, Web3Forms). This choice prioritizes **operational simplicity and performance** without compromising the security requirements of a B2B lead-generation platform.
 
+### The Minification-Induced Regex Challenge: A Lesson in Build Pipelines
+A subtle but critical bug was discovered where form validation regex patterns (like `telefono` and `empresa`) were breaking in production despite working in development.
+
+*   **The Problem:** The HTML minifier in the build pipeline was stripping literal backslashes from static `pattern` attributes (e.g., transforming `[\d]` into `[d]`). This simultaneously broke numeric validation and triggered `v` flag syntax errors in modern browsers for reserved characters like `&`.
+*   **The Fix:** Migrated all regex patterns from static HTML attributes to **dynamic Astro variables**. By injecting patterns via `{variable}`, the build engine treats them as dynamic content, bypassing the minifier's "cleanup" phase and ensuring the required escapes reach the client intact.
+*   **The Takeaway:** Never assume that the HTML reaching the browser is an exact byte-for-byte copy of the source code in a minified production environment. Use dynamic injection for sensitive strings containing escape characters.
+
 ---
 
 ## Technical Best Practices Implemented
