@@ -40,7 +40,7 @@ const resolvedOgImage = new URL(image, siteUrl);
 
         {/* The Content Security Policy is applied in production. */}
         {import.meta.env.PROD && (
-            <meta http-equiv="Content-Security-Policy" content="default-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://web3forms.com https://hcaptcha.com https://newassets.hcaptcha.com https://www.googletagmanager.com https://ssl.google-analytics.com https://www.google-analytics.com; connect-src 'self' https://api.web3forms.com https://hcaptcha.com https://newassets.hcaptcha.com https://www.google-analytics.com; frame-src 'self' https://hcaptcha.com https://www.google.com; img-src 'self' data: https://web3forms.com https://hcaptcha.com; style-src 'self' 'unsafe-inline'; font-src 'self' data:;" />
+            <meta http-equiv="Content-Security-Policy" content="default-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://web3forms.com https://*.hcaptcha.com https://hcaptcha.com https://newassets.hcaptcha.com https://www.googletagmanager.com https://ssl.google-analytics.com https://www.google-analytics.com; connect-src 'self' https://api.web3forms.com https://*.hcaptcha.com https://hcaptcha.com https://newassets.hcaptcha.com https://www.google-analytics.com; frame-src 'self' https://*.hcaptcha.com https://hcaptcha.com https://www.google.com; img-src 'self' data: https://web3forms.com https://*.hcaptcha.com https://hcaptcha.com; style-src 'self' 'unsafe-inline'; font-src 'self' data:;" />
         )}
 
         <!-- Google Tag Manager -->

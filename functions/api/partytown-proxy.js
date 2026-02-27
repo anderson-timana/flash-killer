@@ -1,3 +1,14 @@
+export async function onRequestOptions(context) {
+    return new Response(null, {
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, OPTIONS',
+            'Access-Control-Allow-Headers': '*',
+            'Access-Control-Max-Age': '86400',
+        },
+    });
+}
+
 export async function onRequestGet(context) {
     const { request } = context;
     const url = new URL(request.url);
@@ -10,18 +21,32 @@ export async function onRequestGet(context) {
     // Security check: Only allow specific domains to be proxied
     const allowedDomains = [
         'www.googletagmanager.com',
+        'googletagmanager.com',
         'www.google-analytics.com',
+        'google-analytics.com',
         'ssl.google-analytics.com',
-        'www.google.com'
+        'www.google.com',
+        'google.com'
     ];
     
     try {
         const target = new URL(targetUrl);
-        if (!allowedDomains.includes(target.hostname)) {
-            return new Response('Forbidden domain', { status: 403 });
+        const hostname = target.hostname;
+        
+        const isAllowed = allowedDomains.some(domain => 
+            hostname === domain || hostname.endsWith('.' + domain)
+        );
+
+        if (!isAllowed) {
+            return new Response('Forbidden domain: ' + hostname, { status: 403 });
         }
 
-        const response = await fetch(targetUrl);
+        const response = await fetch(targetUrl, {
+            headers: {
+                'User-Agent': request.headers.get('User-Agent') || 'Mozilla/5.0'
+            }
+        });
+        
         const body = await response.arrayBuffer();
         
         // Forward essential headers
@@ -29,7 +54,8 @@ export async function onRequestGet(context) {
         const contentType = response.headers.get('content-type');
         if (contentType) headers.set('content-type', contentType);
         
-        // Cache for 1 hour
+        // CORS and Caching
+        headers.set('Access-Control-Allow-Origin', '*');
         headers.set('Cache-Control', 'public, max-age=3600');
 
         return new Response(body, {
@@ -37,6 +63,6 @@ export async function onRequestGet(context) {
             headers: headers
         });
     } catch (e) {
-        return new Response('Invalid target URL', { status: 400 });
+        return new Response('Invalid target URL: ' + e.message, { status: 400 });
     }
 }
