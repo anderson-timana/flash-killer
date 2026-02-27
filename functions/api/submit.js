@@ -1,9 +1,9 @@
 import { WorkerMailer } from 'worker-mailer';
 
 export async function onRequestPost(context) {
+  const { request, env } = context;
+  
   try {
-    const { request, env } = context;
-
     // 1. Parse incoming data
     const contentType = request.headers.get("content-type") || "";
     let data = {};
@@ -23,53 +23,31 @@ export async function onRequestPost(context) {
     const emailPattern = /.+@.+\..+/;
     const ciudadPattern = /^[a-zA-ZÀ-ÿ .]+$/;
 
-    if (!data.nombre || data.nombre.length < 3 || !nombrePattern.test(data.nombre)) {
-      errors.nombre = "Nombre inválido.";
-    }
-    if (!data.empresa || data.empresa.length < 3 || !empresaPattern.test(data.empresa)) {
-      errors.empresa = "Empresa inválida.";
-    }
-    if (!data.email || !emailPattern.test(data.email)) {
-      errors.email = "Email inválido.";
-    }
-    if (!data.telefono || !telefonoPattern.test(data.telefono)) {
-      errors.telefono = "Teléfono inválido.";
-    }
-    if (!data.ciudad || data.ciudad.length < 3 || !ciudadPattern.test(data.ciudad)) {
-      errors.ciudad = "Ciudad inválida.";
-    }
-    if (!data.producto) {
-      errors.producto = "Producto no seleccionado.";
-    }
-    if (data.botcheck) {
-      errors.botcheck = "Bot detected.";
-    }
+    if (!data.nombre || data.nombre.length < 3 || !nombrePattern.test(data.nombre)) errors.nombre = "Nombre inválido.";
+    if (!data.empresa || data.empresa.length < 3 || !empresaPattern.test(data.empresa)) errors.empresa = "Empresa inválida.";
+    if (!data.email || !emailPattern.test(data.email)) errors.email = "Email inválido.";
+    if (!data.telefono || !telefonoPattern.test(data.telefono)) errors.telefono = "Teléfono inválido.";
+    if (!data.ciudad || data.ciudad.length < 3 || !ciudadPattern.test(data.ciudad)) errors.ciudad = "Ciudad inválida.";
+    if (!data.producto) errors.producto = "Producto no seleccionado.";
+    if (data.botcheck) errors.botcheck = "Bot detected.";
 
     if (Object.keys(errors).length > 0) {
-      return new Response(JSON.stringify({
-        success: false,
-        message: "Datos de formulario inválidos.",
-        errors: errors,
-      }), { status: 400, headers: { 'Content-Type': 'application/json' } });
+      return new Response(JSON.stringify({ success: false, message: "Datos inválidos.", errors }), { status: 400, headers: { 'Content-Type': 'application/json' } });
     }
 
-    // 2. SMTP Configuration from Env (STRICT)
+    // 2. SMTP Configuration
     const smtpHost = env.SMTP_HOST;
-    const smtpPort = parseInt(env.SMTP_PORT);
+    const smtpPort = parseInt(env.SMTP_PORT || "465");
     const smtpUser = env.SMTP_USER;
     const smtpPass = env.SMTP_PASS;
 
-    if (!smtpHost || !smtpPort || !smtpUser || !smtpPass) {
+    // Check if variables are missing
+    if (!smtpHost || !smtpUser || !smtpPass) {
       return new Response(JSON.stringify({
         success: false,
-        message: "Server configuration error: Missing SMTP credentials.",
-        missing: {
-          host: !smtpHost,
-          port: !smtpPort,
-          user: !smtpUser,
-          pass: !smtpPass
-        }
-      }), { status: 500, headers: { 'Content-Type': 'application/json' } });
+        message: "Missing SMTP configuration in Cloudflare Dashboard.",
+        env_check: { host: !!smtpHost, port: !!env.SMTP_PORT, user: !!smtpUser, pass: !!smtpPass }
+      }), { status: 500, headers: { "Content-Type": "application/json" } });
     }
 
     // 3. Connect to SMTP
@@ -80,6 +58,7 @@ export async function onRequestPost(context) {
       credentials: {
         username: smtpUser,
         password: smtpPass,
+        method: 'LOGIN' // Explicitly force LOGIN method for cPanel compatibility
       },
     });
 
@@ -93,32 +72,19 @@ export async function onRequestPost(context) {
       <p><strong>Ciudad:</strong> ${data.ciudad}</p>
       <p><strong>Producto de Interés:</strong> ${data.producto}</p>
       <p><strong>Mensaje:</strong><br>${(data.mensaje || "Sin mensaje").replace(/\n/g, '<br>')}</p>
-      <hr>
-      <p><small>Enviado desde el formulario de capturadoresflashkiller.com</small></p>
+      <hr><p><small>Enviado desde capturadoresflashkiller.com</small></p>
     `;
 
     // 5. Send Email
     await mailer.send({
-      from: { 
-        name: "Flash Killer Web", 
-        email: smtpUser 
-      },
-      to: { 
-        name: "Ventas Flash Killer", 
-        email: smtpUser 
-      },
-      replyTo: {
-        name: data.nombre,
-        email: data.email
-      },
+      from: { name: "Flash Killer Web", email: smtpUser },
+      to: { name: "Ventas Flash Killer", email: "ventas@capturadoresflashkiller.com" },
+      replyTo: { name: data.nombre, email: data.email },
       subject: `Cotización: ${data.empresa} | ${data.nombre}`,
       html: htmlBody,
     });
 
-    return new Response(JSON.stringify({ 
-      success: true, 
-      message: "Mensaje enviado exitosamente." 
-    }), {
+    return new Response(JSON.stringify({ success: true, message: "Mensaje enviado exitosamente." }), {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
@@ -127,8 +93,10 @@ export async function onRequestPost(context) {
     return new Response(
       JSON.stringify({ 
         success: false, 
-        message: "Error al enviar el mensaje por correo.", 
-        error: error.message
+        message: "Error al enviar el mensaje.", 
+        error: error.message,
+        // Safely reveal status of env vars to debug why auth failed
+        env_check: { host: !!env.SMTP_HOST, port: !!env.SMTP_PORT, user: !!env.SMTP_USER, pass: !!env.SMTP_PASS }
       }),
       { status: 500, headers: { "Content-Type": "application/json" } }
     );
