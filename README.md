@@ -61,14 +61,14 @@ In this phase, I identified the target audience, client needs, current stack, pa
 
 The initial phase focused on making deliberate architectural choices to set the project up for success.
 
-*   **Recommendation:** Use a static-first architecture using Astro, deployed via Cloudflare Pages, and integrated with Web3Forms. The reasoning for this recommendation was based on the client's interactions, website traffic, and form submissions. This new architecture perfectly fits the rare content updates, enhances security by default, and allows for near-fully automated maintenance.
+*   **Recommendation:** Use a static-first architecture using Astro, deployed via Cloudflare Pages, and integrated with a custom Serverless SMTP Worker. The reasoning for this recommendation was based on the client's interactions, website traffic, and form submissions. This architecture perfectly fits the rare content updates, enhances security by default, and allows for near-fully automated maintenance.
 
 *   **Technology Selection & Strategic Choices**
     *   **Core Framework (Astro):** Astro was selected as the core framework to directly meet the project's business objectives. Its **static-site-first architecture** is key to achieving near-zero running costs, bolstering security by minimizing the attack surface, and drastically reducing maintenance overhead – critical for a client with infrequent updates. Furthermore, Astro guarantees the fastest possible load times by default, delivering pre-rendered HTML. This directly translates to a superior user experience, improved SEO, and better conversion rates, fulfilling the primary goal of a fast, reliable, and highly performant lead-generation platform.
     *   **Styling (Tailwind CSS):** It was chosen for its compatibility with Astro and utility-first approach, enabling rapid and consistent UI development. This accelerates project timelines and ensures a polished, uniform brand presentation across all components. By avoiding the overhead of traditional CSS-in-JS or large CSS files, Tailwind contributes to overall project efficiency and optimal performance, making it easier to manage design updates in line with the client's long-term content strategy.
     *   **Cloudflare Pages:** The switch to a static website unlocked deployment through this powerful CDN for FREE, further improving UX, performance, and security while reducing costs to ZERO. Additionally, its free serverless workers unlock further security improvements for form submissions.
-    *   **The Odd Choice: Why Web3Forms?** 
-        **Short Answer: Low Maintenance and Enhanced Security.** While I mainly use open-source solutions, Web3Forms was selected for this project. This SaaS choice was driven by the client's specific needs: minimal technical oversight, low form submission volume (50/month, fitting the free tier of 250/month), and a critical requirement to significantly reduce spam and enhance form security without requiring constant maintenance. It offers a more robust, secure, manageable, and cheaper solution compared to a self-hosted PHP script for this context.
+    *   **The Strategic Pivot: Custom SMTP via TCP Sockets** 
+        While SaaS form providers were initially considered for their low initial setup, the project eventually pivoted to a **custom Cloudflare Worker utilizing TCP Sockets**. This architectural decision was driven by the goal of **Total Platform Ownership**. By bypassing third-party aggregators and connecting directly to the client's cPanel SMTP server, we eliminated external delivery risks, removed third-party submission limits, and ensured that lead data remains within the client's private infrastructure. This provides a more robust, professional, and zero-cost solution compared to a managed SaaS.
 
 *   **Initial Build (`feat: Finished with main products and core functionalities`):** The foundational components (`Hero`, `Navbar`, `ProductCard`) and page layouts were built, establishing a clean, component-based structure.
 
@@ -80,7 +80,7 @@ With a solid foundation, the focus shifted to refining the user experience and i
 
 *   **Dynamic Data & Content:** Product information was decoupled from the UI by centralizing it in `src/data/products.js`. This allows for easy content updates without touching the component code and powers the dynamic generation of product pages (`/productos/[id].astro`).
 
-*   **Contact Form Security Hardening:** To implement a defense-in-depth security model, the contact form submission process was enhanced. Instead of submitting directly from the client-side, the form now sends data to a Cloudflare Function. This serverless function acts as a secure proxy, handling the submission to Web3Forms using an API key stored safely as an environment variable. This ensures that no sensitive credentials are ever exposed to the user's browser, even if the service provider deems the key "safe to share."
+*   **Contact Form Evolution (SMTP Worker):** To implement a defense-in-depth security model, the contact form submission process was evolved. Instead of relying on client-side scripts or third-party SaaS providers, the form now sends data to a secure Cloudflare Function. This worker performs server-side validation, sanitizes input, and utilizes a secure TCP connection (via the `worker-mailer` library) to the company's private mail server. This approach ensures that sensitive SMTP credentials are never exposed and that the lead-generation pipeline is highly resilient and under full ownership.
 
 *   **Feature Implementation (`feat: Update product catalog...`, `feat: Add product PDFs...`):** Core business requirements were implemented, such as adding downloadable PDF technical sheets for the target technical audience and refining contact forms for improved lead-generation capabilities.
 
@@ -108,7 +108,7 @@ During the final optimization phase, a robust Content Security Policy (CSP) was 
 *   **The Technical Conflict:** The initial policy utilized `'strict-dynamic'`, a modern standard that effectively mandates **Cryptographic Nonces** (unique, per-request tokens) to authorize inline scripts. 
 *   **The AI-First Reflection:** The initial configuration was influenced by an **AI bias toward theoretical maximum security**. While highly secure, this model assumes a dynamic server-side environment capable of generating tokens on the fly.
 *   **The Strategic Pivot:** As Flash Killer is an ultra-fast **static site** on a CDN, generating nonces would have required introducing Cloudflare Workers—adding unnecessary architectural complexity and operational costs. 
-*   **The Result:** I performed a **cost-benefit analysis** and pivoted to a "Classic Domain Allow-list." This ensures the site remains 100% static and maintenance-free while providing a hardened defense-in-depth against XSS by restricting execution to a verified list of industrial-grade providers (Google, hCaptcha, Web3Forms). This choice prioritizes **operational simplicity and performance** without compromising the security requirements of a B2B lead-generation platform.
+*   **The Result:** I performed a **cost-benefit analysis** and pivoted to a "Classic Domain Allow-list." This ensures the site remains 100% static and maintenance-free while providing a hardened defense-in-depth against XSS by restricting execution to a verified list of industrial-grade providers (Google, hCaptcha). This choice prioritizes **operational simplicity and performance** without compromising the security requirements of a B2B lead-generation platform.
 
 ### The Minification-Induced Regex Challenge: A Lesson in Build Pipelines
 A subtle but critical bug was discovered where form validation regex patterns (like `telefono` and `empresa`) were breaking in production despite working in development.
@@ -129,7 +129,7 @@ This project is a living portfolio of modern web development best practices:
 -   ✅ **Advanced LCP Optimization**: Responsive preloading of critical hero images.
 -   ✅ **Main-Thread Protection**: Third-party scripts are safely handled via Partytown.
 -   ✅ **Content Security Policy (CSP)**: Implemented to mitigate XSS attacks and enforce resource loading policies.
--   ✅ **Secure Secret Management:** API keys (e.g., for Web3Forms) are handled securely using environment variables and are not exposed in the client-side codebase.
+-   ✅ **Secure Secret Management:** Critical credentials (SMTP) are handled securely using Cloudflare environment variables and are never exposed in the client-side codebase.
 -   ✅ **On-Page SEO Excellence**:
     -   Auto-generated sitemap via `@astrojs/sitemap`.
     -   Canonical URL generation to prevent duplicate content issues.

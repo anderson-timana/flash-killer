@@ -29,7 +29,7 @@ const optionsToRender = formOptions ?? defaultOptions;
 const nombrePattern = "^[a-zA-ZÀ-ÿ0-9 .]+$";
 const empresaPattern = "^[a-zA-ZÀ-ÿ0-9 .,\\&\\-]+$";
 const telefonoPattern = "^[\\d\\+\\-\\s]{9,11}$";
-const ciudadPattern = "^[a-zA-ZÀ-ÿ0-9 .]+$";
+const ciudadPattern = "^[a-zA-ZÀ-ÿ .]+$";
 ---
 <div class="bg-industrial-dark text-white">
   <Section id="contacto" padding="large" class="grid md:grid-cols-12 gap-x-12 lg:gap-x-24 gap-y-12 items-center">
@@ -66,12 +66,6 @@ const ciudadPattern = "^[a-zA-ZÀ-ÿ0-9 .]+$";
         id="contact-form"
       >
         <div>
-          <!-- Web3Forms Configuration -->
-          <input type="hidden" name="subject" id="email_subject" value="Nuevo Mensaje desde Web Flash Killer">
-          <input type="hidden" name="from_name" value="Flash Killer Web">
-          <input type="hidden" name="redirect" value="https://capturadoresflashkiller.com/gracias">
-          <!-- End of Web3Forms Configuration -->
-
           <label for="nombre" class="sr-only">Nombre</label>
           <input 
             id="nombre" 
@@ -143,7 +137,7 @@ const ciudadPattern = "^[a-zA-ZÀ-ÿ0-9 .]+$";
               required 
               minlength="3"
               pattern={ciudadPattern}
-              title="Solo letras, números, espacios y puntos"
+              title="Solo letras, espacios y puntos"
             />
             <span class="validation-message">Por favor, ingrese una ciudad válida.</span>
         </div>
