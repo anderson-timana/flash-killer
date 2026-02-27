@@ -53,19 +53,30 @@ export async function onRequestPost(context) {
       }), { status: 400, headers: { 'Content-Type': 'application/json' } });
     }
 
-    // 2. SMTP Configuration from Env
+    // 2. SMTP Configuration from Env (STRICT)
     const smtpHost = env.SMTP_HOST;
     const smtpPort = parseInt(env.SMTP_PORT);
     const smtpUser = env.SMTP_USER;
     const smtpPass = env.SMTP_PASS;
 
-    console.log(`Attempting SMTP connection to ${smtpHost}:${smtpPort} (Secure: ${smtpPort === 465})`);
+    if (!smtpHost || !smtpPort || !smtpUser || !smtpPass) {
+      return new Response(JSON.stringify({
+        success: false,
+        message: "Server configuration error: Missing SMTP credentials.",
+        missing: {
+          host: !smtpHost,
+          port: !smtpPort,
+          user: !smtpUser,
+          pass: !smtpPass
+        }
+      }), { status: 500, headers: { 'Content-Type': 'application/json' } });
+    }
 
     // 3. Connect to SMTP
     const mailer = await WorkerMailer.connect({
       host: smtpHost,
       port: smtpPort,
-      secure: smtpPort === 465, // true for 465 (Implicit TLS), false for 587 (STARTTLS)
+      secure: smtpPort === 465, 
       credentials: {
         username: smtpUser,
         password: smtpPass,
@@ -94,7 +105,7 @@ export async function onRequestPost(context) {
       },
       to: { 
         name: "Ventas Flash Killer", 
-        email: "ventas@capturadoresflashkiller.com" 
+        email: smtpUser 
       },
       replyTo: {
         name: data.nombre,
@@ -113,12 +124,11 @@ export async function onRequestPost(context) {
     });
 
   } catch (error) {
-    console.error("SMTP Error:", error);
     return new Response(
       JSON.stringify({ 
         success: false, 
         message: "Error al enviar el mensaje por correo.", 
-        error: error.message 
+        error: error.message
       }),
       { status: 500, headers: { "Content-Type": "application/json" } }
     );
