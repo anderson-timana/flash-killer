@@ -1,15 +1,4 @@
-export async function onRequestOptions(context) {
-    return new Response(null, {
-        headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET, OPTIONS',
-            'Access-Control-Allow-Headers': '*',
-            'Access-Control-Max-Age': '86400',
-        },
-    });
-}
-
-export async function onRequestGet(context) {
+export async function onRequest(context) {
     const { request } = context;
     const url = new URL(request.url);
     const targetUrl = url.searchParams.get('url');
@@ -26,7 +15,8 @@ export async function onRequestGet(context) {
         'google-analytics.com',
         'ssl.google-analytics.com',
         'www.google.com',
-        'google.com'
+        'google.com',
+        'analytics.google.com'
     ];
     
     try {
@@ -41,28 +31,47 @@ export async function onRequestGet(context) {
             return new Response('Forbidden domain: ' + hostname, { status: 403 });
         }
 
-        const response = await fetch(targetUrl, {
-            headers: {
-                'User-Agent': request.headers.get('User-Agent') || 'Mozilla/5.0'
-            }
+        // Handle CORS preflight
+        if (request.method === 'OPTIONS') {
+            return new Response(null, {
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+                    'Access-Control-Allow-Headers': '*',
+                    'Access-Control-Max-Age': '86400',
+                },
+            });
+        }
+
+        // Prepare request to target
+        const proxyRequest = new Request(targetUrl, {
+            method: request.method,
+            headers: request.headers,
+            body: request.method === 'POST' ? await request.arrayBuffer() : null,
+            redirect: 'follow'
         });
+
+        // Fetch from Google
+        const response = await fetch(proxyRequest);
         
+        // Construct clean response
         const body = await response.arrayBuffer();
+        const headers = new Headers(response.headers);
         
-        // Forward essential headers
-        const headers = new Headers();
-        const contentType = response.headers.get('content-type');
-        if (contentType) headers.set('content-type', contentType);
-        
-        // CORS and Caching
+        // Ensure CORS is set correctly for Partytown
         headers.set('Access-Control-Allow-Origin', '*');
-        headers.set('Cache-Control', 'public, max-age=3600');
+        
+        // Optimization: Browser caching for static scripts
+        if (targetUrl.includes('.js')) {
+            headers.set('Cache-Control', 'public, max-age=3600');
+        }
 
         return new Response(body, {
             status: response.status,
             headers: headers
         });
     } catch (e) {
-        return new Response('Invalid target URL: ' + e.message, { status: 400 });
+        console.error('Proxy Error:', e.message);
+        return new Response('Proxy error: ' + e.message, { status: 500 });
     }
 }

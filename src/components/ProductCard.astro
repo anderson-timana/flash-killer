@@ -13,8 +13,8 @@ interface Props {
 
 const { name, spec, imageAlt, href, image } = Astro.props;
 ---
-<div class="group border border-industrial-grey/20 p-4 bg-white h-full flex flex-col">
-  <a href={href} class="no-underline text-inherit">
+<div class="border border-industrial-grey/20 bg-white h-full transition-all shadow-sm hover:shadow-md hover:border-primary/30 p-4">
+  <a href={href} class="flex flex-col h-full no-underline text-inherit group outline-none">
     <div class="aspect-square bg-industrial-white mb-4 overflow-hidden relative flex-shrink-0">
       <div class="w-full h-full flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
         {image ? (
@@ -32,10 +32,19 @@ const { name, spec, imageAlt, href, image } = Astro.props;
         )}
       </div>
     </div>
-    <Text as="h3" variant="vr2" class="mb-2 group-hover:underline">{name}</Text>
+    
+    <Text as="h3" variant="vr2" class="mb-2 group-hover:text-primary group-focus:text-primary transition-colors">
+      {name}
+    </Text>
+    
+    <Text variant="sub" class="mb-4 text-industrial-grey">
+      {spec}
+    </Text>
+    
+    <div class="mt-auto">
+      <div class="inline-block w-full text-center py-3 bg-industrial-dark text-white font-bold text-sm uppercase group-hover:bg-primary group-focus:bg-primary transition-colors">
+        Ver Detalles
+      </div>
+    </div>
   </a>
-  <Text variant="sub" class="mb-4">{spec}</Text>
-  <div class="mt-auto">
-    <a href={href} class="inline-block w-full text-center py-3 bg-industrial-dark text-white font-bold text-sm uppercase hover:bg-primary transition-colors">Ver Detalles</a>
-  </div>
 </div>

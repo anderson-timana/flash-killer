@@ -9,29 +9,78 @@ import Text from './Text.astro';
         <Text variant="sub" class="normal-case">Especialistas en higiene industrial y control de plagas voladoras en Perú.</Text>
       </div>
       <div>
-        <Text class="font-bold mb-4">Productos</Text>
+        <Text class="font-bold mb-4 text-industrial-dark">Productos</Text>
         <ul class="space-y-2 text-base text-industrial-text">
-          <li><a href="/productos/trampas-luz-uv-para-insectos" class="hover:text-primary-dark transition-colors">Trampas Adhesivas</a></li>
-                      <li><a href="/productos/insectocutor-industrial" class="hover:text-primary-dark transition-colors">Insectocutores</a></li>
-                      <li><a href="/productos/fluorescentes-uv-matamoscas" class="hover:text-primary-dark transition-colors">Repuestos UV</a></li>
-                      <li><a href="/Catálogo-Flash_Killer.pdf" class="hover:text-primary-dark transition-colors font-semibold" target="_blank" rel="noopener noreferrer" download="Catálogo-Flash_Killer.pdf">Descargar Catálogo PDF</a></li>
-                    </ul>      </div>
+          <li><a href="/productos/trampas-luz-uv-para-insectos" class="hover:text-primary transition-colors">Trampas Adhesivas</a></li>
+          <li><a href="/productos/insectocutor-industrial" class="hover:text-primary transition-colors">Insectocutores</a></li>
+          <li><a href="/productos/fluorescentes-uv-matamoscas" class="hover:text-primary transition-colors">Repuestos UV</a></li>
+          <li><a href="/Catalogo-Flash_Killer.pdf" class="hover:text-primary transition-colors font-semibold" target="_blank" rel="noopener noreferrer" download="Catalogo-Flash_Killer.pdf">Descargar Catálogo PDF</a></li>
+        </ul>
+      </div>
       <div>
-        <Text class="font-bold mb-4">Contacto</Text>
+        <Text class="font-bold mb-4 text-industrial-dark">Contacto</Text>
         <ul class="space-y-2 text-base text-industrial-text">
-          <li class="break-words">
+          <li class="break-words flex items-center gap-2">
             <a href="mailto:ventas@capturadoresflashkiller.com" class="hover:text-primary transition-colors">
               ventas@capturadoresflashkiller.com
             </a>
+            <button 
+              class="copy-email-btn p-1 text-gray-400 hover:text-primary transition-colors" 
+              data-email="ventas@capturadoresflashkiller.com"
+              aria-label="Copiar correo electrónico"
+              title="Copiar email"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            </button>
           </li>
           <li>Lima, Perú</li>
         </ul>
       </div>
       <div>
-        <Text class="font-bold mb-4">Empresa</Text>
+        <Text class="font-bold mb-4 text-industrial-dark">Empresa</Text>
         <Text variant="sub" class="normal-case">RUC: 10096044262</Text>
-        <Text variant="sub" class="mt-2 normal-case block">Certificación C-304</Text>
-        <Text variant="sub" class="mt-2 normal-case">© 2026 Flash Killer. Todos los derechos reservados.</Text>
+        
+        <div class="mt-2 group relative inline-block">
+            <Text variant="sub" class="normal-case flex items-center gap-1 cursor-help">
+                Certificación C-304
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+            </Text>
+            <!-- Tooltip -->
+            <div class="absolute bottom-full left-0 mb-2 w-56 p-3 bg-industrial-dark text-white text-xs leading-tight rounded-sm opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 shadow-xl border border-white/10">
+                <span class="font-bold block mb-1 uppercase tracking-wider text-primary">Acero Inoxidable 304</span>
+                Garantiza máxima resistencia a la corrosión y cumplimiento sanitario exigido en la industria alimentaria.
+            </div>
+        </div>
+        
+        <Text variant="sub" class="mt-2 normal-case block italic opacity-75">© 2026 Flash Killer.</Text>
       </div>
     </Section>
   </footer>
+
+  <script>
+    function setupFooterCopy() {
+        const buttons = document.querySelectorAll('.copy-email-btn');
+        const toast = document.getElementById('copy-toast');
+
+        buttons.forEach(btn => {
+            if (btn.getAttribute('data-copy-inited-footer')) return;
+            btn.setAttribute('data-copy-inited-footer', 'true');
+
+            btn.addEventListener('click', async (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const email = btn.getAttribute('data-email');
+                if (!email) return;
+                try {
+                    await navigator.clipboard.writeText(email);
+                    if (toast) {
+                        toast.classList.add('opacity-100');
+                        setTimeout(() => toast.classList.remove('opacity-100'), 2000);
+                    }
+                } catch (err) {}
+            });
+        });
+    }
+    setupFooterCopy();
+    document.addEventListener('astro:page-load', setupFooterCopy);
+  </script>

@@ -55,7 +55,24 @@ const jsonLd = {
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
   <Navbar />
-  <main class="mt-20">
+  <main id="main-content" class="mt-20">
+    <!-- Breadcrumbs - WCAG AAA Contrast (Dark Grey on White) -->
+    <nav class="container mx-auto px-4 pt-8" aria-label="Migas de pan">
+      <ol class="flex items-center gap-2 text-[10px] md:text-xs font-bold uppercase tracking-widest text-industrial-grey">
+        <li>
+          <a href="/" class="hover:text-primary transition-colors">Inicio</a>
+        </li>
+        <li class="flex items-center gap-2">
+          <span class="text-gray-300" aria-hidden="true">/</span>
+          <a href="/productos" class="hover:text-primary transition-colors">Catálogo</a>
+        </li>
+        <li class="flex items-center gap-2">
+          <span class="text-gray-300" aria-hidden="true">/</span>
+          <span class="text-industrial-dark" aria-current="page">{name}</span>
+        </li>
+      </ol>
+    </nav>
+
     <!-- Block 1: Product Hero (Conversion Cluster) -->
     <Section padding="medium" class="grid md:grid-cols-2 gap-12 items-center">
        <div class="flex flex-col gap-4">
@@ -101,7 +118,7 @@ const jsonLd = {
                    class={`thumbnail-btn w-20 h-20 border-2 bg-industrial-white flex items-center justify-center cursor-pointer focus:outline-none transition-all ${index === 0 ? 'border-primary' : 'border-transparent hover:border-industrial-grey/30'}`}
                    data-image={img.src}
                    data-index={index}
-                   aria-label={`Ver imagen ${index + 1}`}
+                   aria-label={`Ver imagen ${index + 1} de ${name}`}
                  >
                    <Image 
                     src={img} 

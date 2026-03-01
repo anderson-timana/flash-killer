@@ -1,21 +1,24 @@
 function initContactForm() {
   const form = document.getElementById('contact-form');
-  if (!form) return;
+  
+  // 0. Performance: Prevent double-initialization on the same page session
+  if (!form || form.dataset.initialized) return;
+  form.dataset.initialized = "true";
 
   let scriptLoaded = false;
 
-  // 1. Smart Script Loader
+  // 1. Smart Script Loader: Ensures the script is only ever added once
   const loadScript = () => {
-    if (scriptLoaded) return;
+    if (scriptLoaded || document.querySelector('script[src*="turnstile"]')) return;
     scriptLoaded = true;
     const script = document.createElement('script');
-    script.src = "https://web3forms.com/client/script.js";
+    script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
     script.async = true;
     script.defer = true;
     document.body.appendChild(script);
   };
 
-  // A. Viewport Trigger
+  // A. Viewport Trigger: 300px margin is a good balance between perf and UX
   const observer = new IntersectionObserver((entries) => {
     if (entries[0].isIntersecting) {
       loadScript();
@@ -24,7 +27,7 @@ function initContactForm() {
   }, { rootMargin: '300px' });
   observer.observe(form);
 
-  // B. Navbar/Intent Trigger
+  // B. Intent Trigger: Start loading if user hovers over a contact link
   const contactLinks = document.querySelectorAll('a[href*="#contacto"], a[href*="/contactanos"]');
   contactLinks.forEach(link => {
     link.addEventListener('click', loadScript, { once: true });
@@ -51,24 +54,6 @@ function initContactForm() {
     }
   }
 
-  // 3. Dynamic Iframe Fix (hCaptcha)
-  const fixHCaptchaIframe = () => {
-    const container = form.querySelector('.h-captcha');
-    if (!container) return;
-
-    const observer = new MutationObserver(() => {
-      const iframe = container.querySelector('iframe');
-      if (iframe) {
-        iframe.setAttribute('title', 'Verificación de seguridad hCaptcha');
-        iframe.setAttribute('loading', 'lazy');
-        observer.disconnect();
-      }
-    });
-
-    observer.observe(container, { childList: true, subtree: true });
-  };
-  fixHCaptchaIframe();
-
   // 4. Security & Anti-Spam Logic
   const pageLoadTime = Date.now();
   const resultDiv = document.getElementById('result');
@@ -80,10 +65,10 @@ function initContactForm() {
     // Mark as submitted to trigger visual validation
     form.classList.add('submitted');
 
-    // A. hCaptcha Validation
-    const hCaptcha = form.querySelector('textarea[name=h-captcha-response]');
-    if (hCaptcha && !hCaptcha.value) {
-      alert("Por favor, complete el captcha de seguridad.");
+    // A. Turnstile Validation
+    const turnstileResponse = form.querySelector('[name="cf-turnstile-response"]');
+    if (turnstileResponse && !turnstileResponse.value) {
+      alert("Por favor, complete la verificación de seguridad.");
       return;
     }
 
@@ -145,17 +130,23 @@ function initContactForm() {
 
       if (response.status === 200) {
         // Success: Use the redirect URL provided in the form
-        const redirectUrl = form.querySelector('input[name="redirect"]')?.value || '/gracias';
+        const redirectUrl = form.querySelector('input[name="redirect"]')?.value || '/gracias/';
         window.location.href = redirectUrl;
       } else {
         // Error handling
         console.error(json);
         if (resultDiv) {
           resultDiv.classList.remove('hidden');
-          resultDiv.innerHTML = `<p class="text-red-400 bg-red-400/10 p-4 border border-red-400/20">Error: ${json.message || 'Ocurrió un error al enviar el formulario.'}</p>`;
+          const errorMessage = json.error || json.message || 'Ocurrió un error al enviar el formulario.';
+          resultDiv.innerHTML = `<p class="text-red-400 bg-red-400/10 p-4 border border-red-400/20">Error: ${errorMessage}</p>`;
         }
         submitBtn.disabled = false;
         submitBtn.innerHTML = originalBtnText;
+        
+        // Reset Turnstile on error if it exists
+        if (window.turnstile) {
+            window.turnstile.reset();
+        }
       }
     } catch (error) {
       console.error(error);
@@ -169,8 +160,6 @@ function initContactForm() {
   });
 }
 
-// Run on initial load
+// Single initialization logic for both standard loads and view transitions
 initContactForm();
-
-// Run on view transitions
 document.addEventListener('astro:page-load', initContactForm);

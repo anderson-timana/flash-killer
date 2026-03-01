@@ -40,7 +40,7 @@ const resolvedOgImage = new URL(image, siteUrl);
 
         {/* The Content Security Policy is applied in production. */}
         {import.meta.env.PROD && (
-            <meta http-equiv="Content-Security-Policy" content="default-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://web3forms.com https://*.hcaptcha.com https://hcaptcha.com https://newassets.hcaptcha.com https://www.googletagmanager.com https://ssl.google-analytics.com https://www.google-analytics.com; connect-src 'self' https://api.web3forms.com https://*.hcaptcha.com https://hcaptcha.com https://newassets.hcaptcha.com https://www.google-analytics.com; frame-src 'self' https://*.hcaptcha.com https://hcaptcha.com https://www.google.com; img-src 'self' data: https://web3forms.com https://*.hcaptcha.com https://hcaptcha.com; style-src 'self' 'unsafe-inline'; font-src 'self' data:;" />
+            <meta http-equiv="Content-Security-Policy" content="default-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com https://www.googletagmanager.com https://ssl.google-analytics.com https://www.google-analytics.com; connect-src 'self' https://challenges.cloudflare.com https://www.google-analytics.com; frame-src 'self' https://challenges.cloudflare.com https://www.google.com; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self' data:;" />
         )}
 
         <!-- Google Tag Manager -->
@@ -52,9 +52,7 @@ const resolvedOgImage = new URL(image, siteUrl);
         <!-- End Google Tag Manager -->
 
         <!-- Resource Hints -->
-        <link rel="preconnect" href="https://api.web3forms.com">
-        <link rel="preconnect" href="https://hcaptcha.com">
-        <link rel="preconnect" href="https://newassets.hcaptcha.com">
+        <link rel="preconnect" href="https://challenges.cloudflare.com">
         
         <!-- Primary Meta Tags -->
 		<title>{title}</title>
@@ -75,7 +73,10 @@ const resolvedOgImage = new URL(image, siteUrl);
         <meta property="twitter:description" content={description} />
         <meta property="twitter:image" content={resolvedOgImage} />
 	</head>
-	<body>
+	<body class="bg-white text-industrial-dark">
+        <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[10000] focus:bg-primary focus:text-white focus:p-4 focus:rounded-sm focus:font-bold">
+            Saltar al contenido principal
+        </a>
         <!-- Google Tag Manager (noscript) -->
         <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PZT4D69"
         height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>

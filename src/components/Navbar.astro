@@ -22,14 +22,14 @@ function isActive(href: string) {
 ---
 <nav class="fixed top-0 inset-x-0 bg-white/90 backdrop-blur-md border-b border-industrial-grey/20 z-50">
   <div class="container mx-auto px-4 h-16 lg:h-20 flex items-center justify-between">
-    <a href="/" class="flex items-center gap-2 lg:gap-3 hover:opacity-80 transition-opacity flex-shrink-0">
+    <a href="/" class="flex items-center gap-2 lg:gap-3 hover:opacity-80 transition-opacity flex-shrink-0" aria-label="Flash Killer - Inicio">
       <Image 
         src={logoImage} 
         alt="Flash Killer Logo" 
         class="w-7 h-7 lg:w-8 lg:h-8 object-contain" 
         loading="eager"
       />
-      <Text as="span" variant="vr2" class="text-primary font-bold italic tracking-tight text-lg lg:text-2xl">FLASH KILLER</Text>
+      <Text as="span" variant="vr2" class="text-primary font-bold italic tracking-tight text-lg lg:text-2xl" aria-hidden="true">FLASH KILLER</Text>
     </a>
     
     <!-- Desktop Menu -->
@@ -41,6 +41,7 @@ function isActive(href: string) {
             "transition-colors relative py-1",
             isActive(link.href) ? "text-primary" : "hover:text-primary text-industrial-dark"
           ]}
+          aria-current={isActive(link.href) ? "page" : undefined}
         >
           {link.label}
           {isActive(link.href) && (
@@ -51,7 +52,7 @@ function isActive(href: string) {
     </div>
 
     <div class="flex items-center gap-2 lg:gap-4">
-      <a href="#contacto" class="bg-primary text-white px-5 py-2.5 lg:px-6 lg:py-2 rounded-sm font-bold text-sm lg:text-base hover:bg-primary-dark transition-all">
+      <a href="/#contacto" class="bg-primary text-white px-5 py-2.5 lg:px-6 lg:py-2 rounded-sm font-bold text-sm lg:text-base hover:bg-primary-dark transition-all">
         Cotizar
       </a>
       
@@ -75,7 +76,7 @@ function isActive(href: string) {
 <div id="mobile-menu" class="fixed inset-0 bg-industrial-dark z-[9999] translate-x-full transition-transform duration-300 ease-in-out lg:hidden overflow-y-auto">
   <div class="flex flex-col min-h-full p-8">
     <div class="flex items-center justify-between mb-12">
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-2" aria-hidden="true">
           <Image src={logoImage} alt="" class="w-8 h-8 object-contain brightness-0 invert" loading="eager" />
           <Text as="span" variant="vr2" class="text-white font-bold italic tracking-tight text-xl">FLASH KILLER</Text>
       </div>
@@ -134,8 +135,15 @@ function isActive(href: string) {
     <div class="mt-auto pt-12">
       <Text variant="sub" class="text-gray-300 mb-4">Industria Peruana Certificada</Text>
       <div class="flex gap-4">
-           <div class="w-10 h-10 bg-white/10 rounded-sm flex items-center justify-center border border-white/20">
-              <span class="text-white font-bold text-xs">C304</span>
+           <div class="group relative inline-block">
+              <div class="w-10 h-10 bg-white/10 rounded-sm flex items-center justify-center border border-white/20 cursor-help">
+                  <span class="text-white font-bold text-xs">C304</span>
+              </div>
+              <!-- Tooltip -->
+              <div class="absolute bottom-full left-0 mb-2 w-48 p-3 bg-industrial-dark text-white text-[10px] leading-tight rounded-sm opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-[10000] shadow-xl border border-white/10">
+                  <span class="font-bold block mb-1 uppercase tracking-wider text-primary">Acero Inoxidable 304</span>
+                  Grado alimenticio: Garantiza máxima resistencia a la corrosión y cumplimiento sanitario industrial.
+              </div>
            </div>
       </div>
     </div>

@@ -67,8 +67,8 @@ The initial phase focused on making deliberate architectural choices to set the 
     *   **Core Framework (Astro):** Astro was selected as the core framework to directly meet the project's business objectives. Its **static-site-first architecture** is key to achieving near-zero running costs, bolstering security by minimizing the attack surface, and drastically reducing maintenance overhead – critical for a client with infrequent updates. Furthermore, Astro guarantees the fastest possible load times by default, delivering pre-rendered HTML. This directly translates to a superior user experience, improved SEO, and better conversion rates, fulfilling the primary goal of a fast, reliable, and highly performant lead-generation platform.
     *   **Styling (Tailwind CSS):** It was chosen for its compatibility with Astro and utility-first approach, enabling rapid and consistent UI development. This accelerates project timelines and ensures a polished, uniform brand presentation across all components. By avoiding the overhead of traditional CSS-in-JS or large CSS files, Tailwind contributes to overall project efficiency and optimal performance, making it easier to manage design updates in line with the client's long-term content strategy.
     *   **Cloudflare Pages:** The switch to a static website unlocked deployment through this powerful CDN for FREE, further improving UX, performance, and security while reducing costs to ZERO. Additionally, its free serverless workers unlock further security improvements for form submissions.
-    *   **The Strategic Pivot: Custom SMTP via TCP Sockets** 
-        While SaaS form providers were initially considered for their low initial setup, the project eventually pivoted to a **custom Cloudflare Worker utilizing TCP Sockets**. This architectural decision was driven by the goal of **Total Platform Ownership**. By bypassing third-party aggregators and connecting directly to the client's cPanel SMTP server, we eliminated external delivery risks, removed third-party submission limits, and ensured that lead data remains within the client's private infrastructure. This provides a more robust, professional, and zero-cost solution compared to a managed SaaS.
+    *   **The Reliability Pivot: Native Cloudflare Email** 
+        We initially implemented a custom SMTP solution using TCP Sockets (`worker-mailer`) to connect directly to the client's cPanel server. However, this approach proved to be fragile and unreliable in production, triggering intermittent 500 errors during peak usage. This led to a strategic pivot to **Cloudflare's native Email Send Binding**. This approach, which was entirely new to me, offers industrial-grade reliability with $0 maintenance. By utilizing the `env.SEND_EMAIL` capability, we ensured 100% deliverability of lead data without the complexity of managing an external SMTP connection.
 
 *   **Initial Build (`feat: Finished with main products and core functionalities`):** The foundational components (`Hero`, `Navbar`, `ProductCard`) and page layouts were built, establishing a clean, component-based structure.
 
@@ -80,13 +80,48 @@ With a solid foundation, the focus shifted to refining the user experience and i
 
 *   **Dynamic Data & Content:** Product information was decoupled from the UI by centralizing it in `src/data/products.js`. This allows for easy content updates without touching the component code and powers the dynamic generation of product pages (`/productos/[id].astro`).
 
-*   **Contact Form Evolution (SMTP Worker):** To implement a defense-in-depth security model, the contact form submission process was evolved. Instead of relying on client-side scripts or third-party SaaS providers, the form now sends data to a secure Cloudflare Function. This worker performs server-side validation, sanitizes input, and utilizes a secure TCP connection (via the `worker-mailer` library) to the company's private mail server. This approach ensures that sensitive SMTP credentials are never exposed and that the lead-generation pipeline is highly resilient and under full ownership.
+*   **Contact Form Evolution (Native Binding & Turnstile):** To implement a defense-in-depth security model, the contact form was evolved into a secure Cloudflare Function. We migrated from hCaptcha to **Cloudflare Turnstile**, providing a frictionless experience for users while maintaining robust bot protection. The worker performs server-side validation, sanitizes input with strict character limits, and utilizes Cloudflare's native mail infrastructure. This ensures the lead-generation pipeline is under full ownership and highly resilient.
 
 *   **Feature Implementation (`feat: Update product catalog...`, `feat: Add product PDFs...`):** Core business requirements were implemented, such as adding downloadable PDF technical sheets for the target technical audience and refining contact forms for improved lead-generation capabilities.
 
-### Phase 3: Performance & SEO Optimization
+### Phase 3: Performance, Accessibility & Security Audit
 
-This phase exemplifies the commitment to going beyond "just works" to "works perfectly." A full performance and SEO audit was conducted, resulting in targeted, high-impact optimizations.
+This phase exemplifies the commitment to going beyond "just works" to "works perfectly." A full audit was conducted to address technical debt and modern standards.
+
+*   **Core Web Vitals & Lazy Loading:** Optimized the Turnstile integration with **IntersectionObserver** and hover-intent triggers. This ensures security scripts only load when the user is likely to interact with the form, keeping the initial page weight minimal.
+
+*   **WCAG AAA Accessibility:**
+    - **Visible Labels:** Restored elegant, visible form labels to ensure users never lose context during entry.
+    - **Breadcrumbs:** Added high-contrast navigation trails to product pages for better orientation.
+    - **Skip to Content:** Implemented a hidden-until-focused bypass link for keyboard and screen reader users.
+    - **Branding Deduplication:** Fixed issues where brand names were announced twice by assistive technology.
+
+*   **Semantic UX Improvements:** Refactored Product Cards into a single semantic link while maintaining a "safe gutter" to prevent accidental clicks on mobile devices.
+
+*   **Defense in Depth API:** Secured the submission endpoint with **Origin validation** and strict payload length limits to prevent automated abuse and resource exhaustion.
+
+---
+
+## User Experience (UX) Enhancers
+
+Beyond core functionality and performance, several "quality of life" features were implemented to streamline the path to conversion:
+
+-   **Dynamic WhatsApp Engagement:** The floating action button (FAB) utilizes page-aware logic to pre-populate messages. When a user is on a specific product page (e.g., Flash Killer 20W), the WhatsApp link automatically generates a context-specific message: *"Buenos días. Quisiera cotizar el equipo: Flash Killer 20W."*
+-   **One-Tap Corporate Email:** Integrated a "Copy to Clipboard" utility for all instances of the corporate email address. This eliminates the friction of manual selection, accompanied by a discreet, non-intrusive toast notification for immediate feedback.
+-   **Technical Transparency (C304 Tooltips):** The "C304" industrial certification badge now features a contextual tooltip. This explains the specific benefits of Grade 304 Stainless Steel (food-grade safety and corrosion resistance) directly to the technical decision-maker.
+-   **Semantic Click Zones:** Product cards were refactored into a single semantic link area, increasing the ease of navigation while maintaining a "safe gutter" to prevent accidental clicks during mobile scrolling.
+
+---
+
+## Security Trade-offs & Lessons Learned
+
+### The CSP "Strict-Dynamic" Challenge: A Study in Pragmatic Security
+During the final optimization phase, a robust Content Security Policy (CSP) was implemented. However, a critical conflict was discovered post-deployment—a scenario common when local development environments differ from production security headers.
+
+*   **The Technical Conflict:** The initial policy utilized `'strict-dynamic'`, a modern standard that effectively mandates **Cryptographic Nonces** (unique, per-request tokens) to authorize inline scripts. 
+*   **The AI-First Reflection:** The initial configuration was influenced by an **AI bias toward theoretical maximum security**. While highly secure, this model assumes a dynamic server-side environment capable of generating tokens on the fly.
+*   **The Strategic Pivot:** As Flash Killer is an ultra-fast **static site** on a CDN, generating nonces would have required introducing Cloudflare Workers—adding unnecessary architectural complexity and operational costs. 
+*   **The Result:** I performed a **cost-benefit analysis** and pivoted to a "Classic Domain Allow-list." This ensures the site remains 100% static and maintenance-free while providing a hardened defense-in-depth against XSS by restricting execution to a verified list of industrial-grade providers (Google, Cloudflare). This choice prioritizes **operational simplicity and performance** without compromising the security requirements of a B2B lead-generation platform.
 
 *   **Core Web Vitals Audit:** A systematic review based on 2026 Core Web Vitals standards was performed to identify and eliminate loading bottlenecks.
 
@@ -124,12 +159,16 @@ A subtle but critical bug was discovered where form validation regex patterns (l
 This project is a living portfolio of modern web development best practices:
 
 -   ✅ **Performance-First Architecture**: Astro for Static Site Generation (SSG), ensuring near-instant load times.
+-   ✅ **Native Email Delivery**: Moved from SMTP to Cloudflare's `SEND_EMAIL` binding for industrial-grade reliability and zero dependency on external mail servers.
+-   ✅ **Advanced Bot Protection**: Migrated from hCaptcha to Cloudflare Turnstile with lazy-loading and server-side token verification.
+-   ✅ **WCAG AAA Compliance**: Implemented high-contrast breadcrumbs, accessible form labels, and a hidden-until-focused "Skip to Content" link.
+-   ✅ **Defensive API Design**: Secured form endpoints with Origin validation, strict character limits, and payload sanitization.
 -   ✅ **Islands Architecture**: Components are zero-JS by default, with client-side interactivity being an opt-in (`client:visible`), preventing unnecessary JavaScript from being shipped.
 -   ✅ **Asset Optimization**: Uses `astro:assets` for best-in-class image processing and `fetchpriority`/`loading` attributes to control the resource loading waterfall.
 -   ✅ **Advanced LCP Optimization**: Responsive preloading of critical hero images.
 -   ✅ **Main-Thread Protection**: Third-party scripts are safely handled via Partytown.
 -   ✅ **Content Security Policy (CSP)**: Implemented to mitigate XSS attacks and enforce resource loading policies.
--   ✅ **Secure Secret Management:** Critical credentials (SMTP) are handled securely using Cloudflare environment variables and are never exposed in the client-side codebase.
+-   ✅ **Secure Secret Management**: Critical credentials and keys are handled securely using Cloudflare environment variables.
 -   ✅ **On-Page SEO Excellence**:
     -   Auto-generated sitemap via `@astrojs/sitemap`.
     -   Canonical URL generation to prevent duplicate content issues.

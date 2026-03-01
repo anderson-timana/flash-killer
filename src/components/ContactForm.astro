@@ -28,7 +28,7 @@ const optionsToRender = formOptions ?? defaultOptions;
 // We use variables to prevent the HTML minifier from stripping backslashes
 const nombrePattern = "^[a-zA-ZÀ-ÿ0-9 .]+$";
 const empresaPattern = "^[a-zA-ZÀ-ÿ0-9 .,\\&\\-]+$";
-const telefonoPattern = "^[\\d\\+\\-\\s]{9,11}$";
+const telefonoPattern = "^[\\d\\+\\-\\s]{9}$";
 const ciudadPattern = "^[a-zA-ZÀ-ÿ .]+$";
 ---
 <div class="bg-industrial-dark text-white">
@@ -44,134 +44,165 @@ const ciudadPattern = "^[a-zA-ZÀ-ÿ .]+$";
       
       <div class="mt-12 pt-12 border-t border-white/10 space-y-8 hidden md:block">
         <div>
-          <Text variant="sub" class="text-primary mb-2 font-bold">Email Corporativo</Text>
-          <Text variant="body" class="text-white">
-            <a href="mailto:ventas@capturadoresflashkiller.com" class="hover:text-primary transition-colors">
-              ventas@capturadoresflashkiller.com
-            </a>
-          </Text>
+          <Text variant="sub" class="text-primary mb-2 font-bold uppercase tracking-wider">Email Corporativo</Text>
+          <div class="flex items-center gap-2">
+            <Text variant="body" class="text-white">
+              <a href="mailto:ventas@capturadoresflashkiller.com" class="hover:text-primary transition-colors">
+                ventas@capturadoresflashkiller.com
+              </a>
+            </Text>
+            <button 
+              class="copy-email-btn p-1.5 text-gray-500 hover:text-primary transition-colors" 
+              data-email="ventas@capturadoresflashkiller.com"
+              aria-label="Copiar correo electrónico"
+              title="Copiar email"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            </button>
+          </div>
         </div>
         <div>
-          <Text variant="sub" class="text-primary mb-2 font-bold">Respuesta Garantizada</Text>
+          <Text variant="sub" class="text-primary mb-2 font-bold uppercase tracking-wider">Respuesta Garantizada</Text>
           <Text variant="body" class="text-white">Atención técnica en menos de 24 horas hábiles.</Text>
         </div>
       </div>
     </div>
 
-    <div class="md:col-span-7 bg-white/5 p-8 md:p-12 border border-white/10 rounded-sm">
+    <div class="md:col-span-7 bg-white/5 p-8 md:p-12 border border-white/10 rounded-sm relative">
+      <div class="mb-6 flex justify-end">
+        <span class="text-[10px] uppercase tracking-widest text-gray-500 font-bold italic">* Campos obligatorios</span>
+      </div>
+
       <form 
         action="/api/submit" 
         method="POST" 
-        class="grid grid-cols-1 md:grid-cols-2 gap-6 group" 
+        class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6 group" 
         id="contact-form"
       >
-        <div>
-          <label for="nombre" class="sr-only">Nombre</label>
+        <div class="flex flex-col gap-2">
+          <label for="nombre" class="text-base md:text-lg font-medium text-gray-300 ml-1">Nombre completo *</label>
           <input 
             id="nombre" 
             type="text" 
             name="nombre"
-            placeholder="Nombre completo *" 
+            placeholder="Ej: Juan Pérez" 
             autocomplete="name"
-            class="w-full bg-white/10 border border-white/20 p-4 text-white focus:outline-primary placeholder-industrial-grey [&.interacted]:invalid:border-red-500 focus:invalid:border-red-500" 
+            class="w-full bg-white/10 border border-white/20 p-4 text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent placeholder-industrial-grey/30 [&.interacted]:invalid:border-red-500 transition-all" 
             required
+            aria-required="true"
             minlength="3"
             pattern={nombrePattern}
             title="Solo letras, números, espacios y puntos permitidos"
           />
           <span class="validation-message">Por favor, ingrese un nombre válido.</span>
         </div>
-        <div>
-          <label for="empresa" class="sr-only">Empresa</label>
+
+        <div class="flex flex-col gap-2">
+          <label for="empresa" class="text-base md:text-lg font-medium text-gray-300 ml-1">Empresa *</label>
           <input 
             id="empresa" 
             type="text" 
             name="empresa"
-            placeholder="Empresa *" 
+            placeholder="Nombre de su empresa" 
             autocomplete="organization"
-            class="w-full bg-white/10 border border-white/20 p-4 text-white focus:outline-primary placeholder-industrial-grey [&.interacted]:invalid:border-red-500 focus:invalid:border-red-500" 
+            class="w-full bg-white/10 border border-white/20 p-4 text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent placeholder-industrial-grey/30 [&.interacted]:invalid:border-red-500 transition-all" 
             required 
+            aria-required="true"
             minlength="3"
             pattern={empresaPattern}
             title="Solo letras, números, espacios y puntos permitidos"
           />
           <span class="validation-message">Por favor, ingrese un nombre de empresa válido.</span>
         </div>
-        <div>
-          <label for="email" class="sr-only">Email corporativo</label>
+
+        <div class="flex flex-col gap-2">
+          <label for="email" class="text-base md:text-lg font-medium text-gray-300 ml-1">Email corporativo *</label>
           <input 
             id="email" 
             type="email" 
             name="email"
-            placeholder="Email corporativo *" 
+            placeholder="correo@empresa.com" 
             autocomplete="email"
-            class="w-full bg-white/10 border border-white/20 p-4 text-white focus:outline-primary placeholder-industrial-grey [&.interacted]:invalid:border-red-500 focus:invalid:border-red-500" 
+            class="w-full bg-white/10 border border-white/20 p-4 text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent placeholder-industrial-grey/30 [&.interacted]:invalid:border-red-500 transition-all" 
             required
+            aria-required="true"
             title="Ingresa un correo válido" 
           />
           <span class="validation-message">Por favor, ingrese un email válido.</span>
         </div>
-        <div>
-          <label for="telefono" class="sr-only">Teléfono / WhatsApp</label>
+
+        <div class="flex flex-col gap-2">
+          <label for="telefono" class="text-base md:text-lg font-medium text-gray-300 ml-1">Teléfono / WhatsApp *</label>
           <input 
             id="telefono" 
             type="tel" 
             name="telefono"
-            placeholder="Teléfono / WhatsApp *" 
+            placeholder="999888777" 
             autocomplete="tel"
-            class="w-full bg-white/10 border border-white/20 p-4 text-white focus:outline-primary placeholder-industrial-grey [&.interacted]:invalid:border-red-500 focus:invalid:border-red-500" 
+            class="w-full bg-white/10 border border-white/20 p-4 text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent placeholder-industrial-grey/30 [&.interacted]:invalid:border-red-500 transition-all" 
             required 
+            aria-required="true"
             pattern={telefonoPattern}
             title="Ingrese un número de teléfono válido (9 dígitos)"
           />
           <span class="validation-message">Por favor, ingrese un teléfono válido.</span>
         </div>
-        <div>
-            <label for="ciudad" class="sr-only">Ciudad</label>
+
+        <div class="flex flex-col gap-2">
+            <label for="ciudad" class="text-base md:text-lg font-medium text-gray-300 ml-1">Ciudad *</label>
             <input 
               id="ciudad" 
               type="text" 
               name="ciudad"
-              placeholder="Ciudad (Envío a todo el Perú) *" 
-              class="w-full bg-white/10 border border-white/20 p-4 text-white focus:outline-primary placeholder-industrial-grey [&.interacted]:invalid:border-red-500 focus:invalid:border-red-500" 
+              placeholder="Ej: Lima, Arequipa..." 
+              class="w-full bg-white/10 border border-white/20 p-4 text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent placeholder-industrial-grey/30 [&.interacted]:invalid:border-red-500 transition-all" 
               required 
+              aria-required="true"
               minlength="3"
               pattern={ciudadPattern}
               title="Solo letras, espacios y puntos"
             />
             <span class="validation-message">Por favor, ingrese una ciudad válida.</span>
         </div>
-        <div>
-            <label for="producto" class="sr-only">Producto de Interés</label>
-            <select 
-              id="producto" 
-              name="producto"
-              class="w-full bg-white/10 border border-white/20 p-4 text-white focus:outline-primary appearance-none cursor-pointer [&.interacted]:invalid:border-red-500 focus:invalid:border-red-500" 
-              required
-            >
-              <option value="" disabled selected={!initialProduct} class="text-industrial-dark">Producto o Servicio de Interés *</option>
-              {optionsToRender.map(option => (
-                <option value={option.id} selected={initialProduct === option.id} class="text-industrial-dark">{option.name}</option>
-              ))}
-              <option value="otros" selected={initialProduct === 'otros'} class="text-industrial-dark">Asesoría / Otro</option>
-            </select>        
+
+        <div class="flex flex-col gap-2">
+            <label for="producto" class="text-base md:text-lg font-medium text-gray-300 ml-1">Producto de Interés *</label>
+            <div class="relative">
+              <select 
+                id="producto" 
+                name="producto"
+                class="w-full bg-white/10 border border-white/20 p-4 text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent appearance-none cursor-pointer [&.interacted]:invalid:border-red-500 transition-all" 
+                required
+                aria-required="true"
+              >
+                <option value="" disabled selected={!initialProduct} class="text-industrial-dark">Seleccione una opción *</option>
+                {optionsToRender.map(option => (
+                  <option value={option.id} selected={initialProduct === option.id} class="text-industrial-dark">{option.name}</option>
+                ))}
+                <option value="otros" selected={initialProduct === 'otros'} class="text-industrial-dark">Asesoría / Otro</option>
+              </select>
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
+                <svg class="h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+              </div>
+            </div>
             <span class="validation-message">Por favor, seleccione una opción.</span>
           </div>
-        <div class="md:col-span-2">
-          <label for="mensaje" class="sr-only">Mensaje o requerimiento especial</label>
+
+        <div class="md:col-span-2 flex flex-col gap-2">
+          <label for="mensaje" class="text-base md:text-lg font-medium text-gray-300 ml-1">Mensaje o requerimiento especial</label>
           <textarea 
             id="mensaje" 
             name="mensaje"
-            placeholder="Describa su requerimiento (ej: cantidad, dimensiones de la planta)" 
-            class="w-full bg-white/10 border border-white/20 p-4 text-white h-32 focus:outline-primary placeholder-industrial-grey"
+            placeholder="Describa su requerimiento (cantidad, dimensiones de la planta, etc.)" 
+            class="w-full bg-white/10 border border-white/20 p-4 text-white h-32 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent placeholder-industrial-grey/30 transition-all"
           ></textarea>
         </div>
-        <!-- hCaptcha Protection -->
+
+        <!-- Cloudflare Turnstile Protection -->
         <div 
-          class="h-captcha md:col-span-2 min-h-[78px]" 
-          data-captcha="true" 
+          class="cf-turnstile md:col-span-2 min-h-[65px]" 
+          data-sitekey="0x4AAAAAAACkbdl85_9lVc_Dv" 
           data-theme="dark"
-          title="Verificación de seguridad hCaptcha"
           data-loading="lazy"
         ></div>
 
@@ -180,7 +211,7 @@ const ciudadPattern = "^[a-zA-ZÀ-ÿ .]+$";
 
         <div id="result" class="md:col-span-2 hidden"></div>
 
-        <button type="submit" class="md:col-span-2 bg-primary text-white py-4 font-bold uppercase tracking-widest hover:bg-primary-dark transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+        <button type="submit" class="md:col-span-2 bg-primary text-white py-4 font-bold uppercase tracking-widest hover:bg-primary-dark transition-all focus:ring-2 focus:ring-offset-2 focus:ring-primary shadow-lg active:scale-[0.98]">
           Solicitar Cotización
         </button>
       </form>
@@ -188,16 +219,22 @@ const ciudadPattern = "^[a-zA-ZÀ-ÿ .]+$";
   </Section>
 </div>
 
+<div id="copy-toast" role="status" aria-live="polite" class="fixed bottom-24 left-1/2 -translate-x-1/2 bg-industrial-dark text-white px-6 py-3 rounded-sm shadow-2xl opacity-0 transition-opacity duration-300 pointer-events-none z-[200] text-sm font-bold border border-white/10">
+    Email copiado al portapapeles
+</div>
+
 <style>
   .validation-message {
     display: none;
-    font-size: 0.875rem; /* text-sm */
-    line-height: 1.25rem;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
     color: #ef4444; /* red-500 */
-    margin-top: 0.25rem; /* mt-1 */
+    margin-top: 0.5rem;
+    margin-left: 0.25rem;
   }
 
-  /* Show the message for an adjacent invalid input/select that has been interacted with */
   input.interacted:invalid + .validation-message,
   select.interacted:invalid + .validation-message {
     display: block;
@@ -206,4 +243,34 @@ const ciudadPattern = "^[a-zA-ZÀ-ÿ .]+$";
 
 <script>
     import '../assets/scripts/contact-form.js';
+
+    function setupCopyEmail() {
+        const buttons = document.querySelectorAll('.copy-email-btn');
+        const toast = document.getElementById('copy-toast');
+
+        buttons.forEach(btn => {
+            if (btn.getAttribute('data-copy-inited')) return;
+            btn.setAttribute('data-copy-inited', 'true');
+
+            btn.addEventListener('click', async (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const email = btn.getAttribute('data-email');
+                if (!email) return;
+
+                try {
+                    await navigator.clipboard.writeText(email);
+                    if (toast) {
+                        toast.classList.add('opacity-100');
+                        setTimeout(() => toast.classList.remove('opacity-100'), 2000);
+                    }
+                } catch (err) {
+                    console.error('Failed to copy: ', err);
+                }
+            });
+        });
+    }
+
+    setupCopyEmail();
+    document.addEventListener('astro:page-load', setupCopyEmail);
 </script>
