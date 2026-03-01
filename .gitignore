@@ -5,7 +5,6 @@
 
 # CloudFlare
 /.wrangler
-wrangler.toml
 
 # Secrets
 .env
