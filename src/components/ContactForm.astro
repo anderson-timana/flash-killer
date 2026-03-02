@@ -243,12 +243,12 @@ const ciudadPattern = "^[a-zA-ZÀ-ÿ .]+$";
 <script>
     import '../assets/scripts/contact-form.js';
 
-    // Lazy load non-essential email utilities
+    // Lazy load non-essential contact utilities
     window.addEventListener('load', () => {
         if ('requestIdleCallback' in window) {
-            requestIdleCallback(() => import('../assets/scripts/email-utils.js'));
+            requestIdleCallback(() => import('../assets/scripts/contact-utils.js'));
         } else {
-            setTimeout(() => import('../assets/scripts/email-utils.js'), 1000);
+            setTimeout(() => import('../assets/scripts/contact-utils.js'), 1000);
         }
     });
 </script>

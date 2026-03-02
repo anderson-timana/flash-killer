@@ -114,10 +114,12 @@ This phase exemplifies the commitment to going beyond "just works" to "works per
 
 *   **Security Enhancements:**
     - **Defense in Depth API:** Secured the submission endpoint with **Origin validation** and strict payload length limits to prevent automated abuse and resource exhaustion.
-    - **Email Security & Privacy**:
-        - **Cloudflare Scraper Shield Integration**: Automated obfuscation of `mailto:` links to prevent harvester bots from discovering corporate email addresses.
-        - **Protected Copy-to-Clipboard**: Implemented a "DOM-Aware" copy utility that only reads the email text *after* Cloudflare has safely decoded it for a human user, closing common `data-attribute` backdoors.
-        - **Secure Secret Management**: All critical credentials (e.g., `RESEND_API_KEY`, `DESTINATION_EMAIL`) are handled as encrypted Cloudflare Secrets, isolated from source control and the `wrangler.toml` file.
+    - **Contact Security & Privacy (Anti-Scraping):**
+        - **Cloudflare Scraper Shield Integration:** Automated obfuscation of `mailto:` links to prevent harvester bots from discovering corporate email addresses.
+        - **WhatsApp Number Obfuscation:** Implemented **Base64 encoding** for direct WhatsApp links (FAB and thank-you page). Numbers are only decoded and hydrated on the client side, effectively hiding them from static HTML scrapers.
+        - **Protected Copy-to-Clipboard:** Implemented a "DOM-Aware" copy utility that only reads the email text *after* Cloudflare has safely decoded it for a human user, closing common `data-attribute` backdoors.
+        - **Secure Secret Management:** All critical credentials (e.g., `RESEND_API_KEY`, `DESTINATION_EMAIL`) are handled as encrypted Cloudflare Secrets, isolated from source control and the `wrangler.toml` file.
+
 
 #### User Experience (UX) Enhancers
 
@@ -156,7 +158,7 @@ This project is a living portfolio of modern web development best practices:
 -   ✅ **Performance-First Architecture**: Astro for Static Site Generation (SSG), ensuring near-instant load times.
 -   ✅ **Industrial-Grade Email Delivery**: Migrated to the **Resend API** for high deliverability, robust error handling, and a generous free tier that shelters the project from future policy changes.
 -   ✅ **Advanced Bot Protection**: Migrated from hCaptcha to Cloudflare Turnstile with lazy-loading and server-side token verification.
--   ✅ **Email Security & Privacy**: Automated obfuscation of `mailto:` links to prevent harvester bots from discovering corporate email addresses.
+-   ✅ **Email Security & Privacy**: Automated obfuscation of `mailto:`, `wa.me` links, and phone number to prevent harvester bots from discovering corporate contact vectors (email & phone).
 -   ✅ **WCAG AAA Compliance**: Implemented high-contrast breadcrumbs, accessible form labels, and a hidden-until-focused "Skip to Content" link.
 -   ✅ **Defensive API Design**: Secured form endpoints with Origin validation, strict character limits, and payload sanitization.
 -   ✅ **Islands Architecture**: Components are zero-JS by default, with client-side interactivity being an opt-in (`client:visible`), preventing unnecessary JavaScript from being shipped.

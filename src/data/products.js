@@ -15,7 +15,7 @@ import BalastroElectronico from '../assets/images/Balastro-electronico.webp';
 export const products = [
     { 
         id: 'trampas-luz-uv-para-insectos',
-        name: "Flash Killer 20W", 
+        name: "Capturador FK 20W", 
         subtitle: "Trampa de Luz UV con Placa Adhesiva",
         spec: "Trampa Adhesiva UV | Cobertura 120m²",
         metaDescription: "Trampa de luz UV Flash Killer 20W en acero inoxidable 304. Captura higiénica y silenciosa de insectos voladores. Ideal para auditorías HACCP y DIGESA en Perú.",
@@ -37,7 +37,7 @@ export const products = [
     },
     { 
         id: 'insectocutor-industrial',
-        name: "Insectocutor", 
+        name: "Insectocutor FK", 
         subtitle: "Barras Electroshock | Acero Inoxidable",
         spec: "Barras Electroshock | Acero Inoxidable",
         metaDescription: "Insectocutor industrial Flash Killer en acero inoxidable C-304. Alta potencia de choque de 2500mA para control de plagas en almacenes y zonas de carga en Perú.",
@@ -59,7 +59,7 @@ export const products = [
     },
     { 
         id: 'trampas-luz-uv-decorativas',
-        name: "Flash Killer Decorativo", 
+        name: "Capturador Decorativo", 
         subtitle: "Trampa de Luz UV Decorativa con Placa Adhesiva",
         spec: "Trampa Decorativa UV Adhesiva | Cobertura 80 m²",
         metaDescription: "Trampa de luz UV Flash Killer con diseño decorativo. Captura higiénica de insectos voladores. Ideal para auditorías HACCP y DIGESA en Perú.",
