@@ -27,14 +27,17 @@ function initContactForm() {
   }, { rootMargin: '300px' });
   observer.observe(form);
 
-  // B. Intent Trigger: Start loading if user hovers over a contact link
+  // B. Intent Trigger: Start loading if user hovers over a contact link or focuses the form
   const contactLinks = document.querySelectorAll('a[href*="#contacto"], a[href*="/contactanos"]');
   contactLinks.forEach(link => {
     link.addEventListener('click', loadScript, { once: true });
     link.addEventListener('mouseenter', loadScript, { once: true });
   });
 
-  // C. Instant Validation Feedback on Blur
+  // C. Accessibility Trigger: Load script if a keyboard user tabs into the form
+  form.addEventListener('focusin', loadScript, { once: true });
+
+  // D. Instant Validation Feedback on Blur
   const inputsWithValidation = form.querySelectorAll('[required], [pattern], [minlength]');
   inputsWithValidation.forEach(input => {
     input.addEventListener('blur', () => {
