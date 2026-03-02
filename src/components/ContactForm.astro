@@ -1,8 +1,7 @@
 ---
 import Section from './Section.astro';
 import Text from './Text.astro';
-import { products } from '../data/products.js';
-import { services } from '../data/services.js';
+import { productsLite, servicesLite } from '../data/options.js';
 
 interface Option {
   id: string;
@@ -19,10 +18,7 @@ interface Props {
 
 const { title, hook, body, initialProduct, formOptions } = Astro.props;
 
-const allProducts = products.map(p => ({ id: p.id, name: p.name }));
-const allServices = services.map(s => ({ id: s.id, name: s.name }));
-
-const defaultOptions = [...allProducts, ...allServices];
+const defaultOptions = [...productsLite, ...servicesLite];
 const optionsToRender = formOptions ?? defaultOptions;
 
 // We use variables to prevent the HTML minifier from stripping backslashes

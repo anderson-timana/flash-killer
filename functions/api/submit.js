@@ -1,5 +1,4 @@
-import { products } from '../../src/data/products.js';
-import { services } from '../../src/data/services.js';
+import { productsLite, servicesLite } from '../../src/data/options.js';
 
 export async function onRequestPost(context) {
   const { request, env } = context;
@@ -54,7 +53,7 @@ export async function onRequestPost(context) {
     }
 
     // 3.1. Resolve Product/Service Name
-    const allOptions = [...products, ...services];
+    const allOptions = [...productsLite, ...servicesLite];
     const selectedOption = allOptions.find(opt => opt.id === data.producto);
     const productDisplayName = selectedOption ? selectedOption.name : (data.producto === 'otros' ? 'Asesoría / Otro' : data.producto);
 
