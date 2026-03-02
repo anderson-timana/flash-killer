@@ -48,7 +48,7 @@ export async function onRequestPost(context) {
       return new Response(JSON.stringify({ success: false, error: "Datos inválidos.", details: errors }), { status: 400, headers: { 'Content-Type': 'application/json' } });
     }
 
-    // 3. Turnstile Verification
+    // 4. Turnstile Verification
     const turnstileToken = data['cf-turnstile-response'];
     const turnstileSecret = env.TURNSTILE_SECRET_KEY;
     
@@ -69,60 +69,63 @@ export async function onRequestPost(context) {
         return new Response(JSON.stringify({ success: false, error: "Token de seguridad faltante." }), { status: 400 });
     }
 
-    // 4. Check for SEND_EMAIL binding and Destination Var
-    if (!env.SEND_EMAIL) {
-      throw new Error("SEND_EMAIL binding is missing. Ensure you are running with 'wrangler pages dev'.");
+    // 5. Environment Validation for Resend
+    const resendApiKey = env.RESEND_API_KEY;
+    const destinationEmail = env.DESTINATION_EMAIL;
+    
+    if (!resendApiKey) {
+      console.error("Missing RESEND_API_KEY");
+      throw new Error("El servicio de correo no está configurado (API Key faltante).");
     }
     
-    const destinationEmail = env.DESTINATION_EMAIL;
     if (!destinationEmail) {
-      throw new Error("DESTINATION_EMAIL environment variable is missing.");
+      console.error("Missing DESTINATION_EMAIL");
+      throw new Error("El servicio de correo no está configurado (Destinatario faltante).");
     }
 
-    // 5. Construct Email Payload
+    // 6. Construct Email Content
     const htmlBody = `
-      <h2>Nuevo Mensaje de Contacto</h2>
-      <p><strong>Nombre:</strong> ${data.nombre}</p>
-      <p><strong>Empresa:</strong> ${data.empresa}</p>
-      <p><strong>Email:</strong> ${data.email}</p>
-      <p><strong>Teléfono:</strong> ${data.telefono}</p>
-      <p><strong>Ciudad:</strong> ${data.ciudad}</p>
-      <p><strong>Producto de Interés:</strong> ${data.producto}</p>
-      <p><strong>Mensaje:</strong><br>${(data.mensaje || "Sin mensaje").replace(/\n/g, '<br>')}</p>
-      <hr><p><small>Enviado desde capturadoresflashkiller.com</small></p>
+      <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #eee; padding: 20px;">
+        <h2 style="color: #d97706; border-bottom: 2px solid #d97706; padding-bottom: 10px;">Nuevo Mensaje de Contacto</h2>
+        <p><strong>Nombre:</strong> ${data.nombre}</p>
+        <p><strong>Empresa:</strong> ${data.empresa}</p>
+        <p><strong>Email:</strong> ${data.email}</p>
+        <p><strong>Teléfono:</strong> ${data.telefono}</p>
+        <p><strong>Ciudad:</strong> ${data.ciudad}</p>
+        <p><strong>Producto de Interés:</strong> ${data.producto}</p>
+        <div style="background: #f9f9f9; padding: 15px; border-left: 4px solid #d97706; margin-top: 20px;">
+          <p><strong>Mensaje:</strong></p>
+          <p>${(data.mensaje || "Sin mensaje").replace(/\n/g, '<br>')}</p>
+        </div>
+        <hr style="margin-top: 30px; border: 0; border-top: 1px solid #eee;">
+        <p style="font-size: 12px; color: #666; text-align: center;">Enviado desde capturadoresflashkiller.com</p>
+      </div>
     `.trim();
 
-    const emailPayload = {
-      from: { email: "ventas@capturadoresflashkiller.com", name: "Flash Killer Website" },
-      to: [{ email: destinationEmail, name: "Flash Killer" }],
-      reply_to: { email: data.email, name: data.nombre },
-      subject: `Cotización: ${data.empresa} | ${data.nombre}`,
-      content: [
-        {
-          type: "text/html",
-          value: htmlBody
-        }
-      ]
-    };
+    // 7. Send Email via Resend API
+    const resendResponse = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${resendApiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        from: 'Flash Killer Website <ventas@capturadoresflashkiller.com>',
+        to: destinationEmail,
+        reply_to: `${data.nombre} <${data.email}>`,
+        subject: `Cotización: ${data.empresa} | ${data.nombre}`,
+        html: htmlBody
+      })
+    });
 
-    // 6. Send Email via Cloudflare native Email Send Binding
-    try {
-      await env.SEND_EMAIL.send_email(emailPayload);
-    } catch (sendError) {
-      // Local Development Workaround
-      if (sendError.message.includes("does not implement the method \"send_email\"")) {
-        console.warn("--- LOCAL SIMULATION ---");
-        console.warn("Email Send Binding called, but local runtime doesn't support the method.");
-        console.log("To:", destinationEmail);
-        console.log("Subject:", emailPayload.subject);
-        console.log("Payload:", JSON.stringify(emailPayload, null, 2));
-        console.warn("------------------------");
-      } else {
-        throw sendError;
-      }
+    const resendResult = await resendResponse.json();
+
+    if (!resendResponse.ok) {
+      console.error("Resend API Error:", resendResult);
+      throw new Error(resendResult.message || "Error al enviar el correo a través de Resend.");
     }
 
-    return new Response(JSON.stringify({ success: true }), {
+    return new Response(JSON.stringify({ success: true, id: resendResult.id }), {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
