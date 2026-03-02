@@ -158,7 +158,7 @@ This project is a living portfolio of modern web development best practices:
 -   ✅ **Performance-First Architecture**: Astro for Static Site Generation (SSG), ensuring near-instant load times.
 -   ✅ **Industrial-Grade Email Delivery**: Migrated to the **Resend API** for high deliverability, robust error handling, and a generous free tier that shelters the project from future policy changes.
 -   ✅ **Advanced Bot Protection**: Migrated from hCaptcha to Cloudflare Turnstile with lazy-loading and server-side token verification.
--   ✅ **Email Security & Privacy**: Automated obfuscation of `mailto:`, `wa.me` links, and phone number to prevent harvester bots from discovering corporate contact vectors (email & phone).
+-   ✅ **Contact Data Security & Privacy**: Automated obfuscation of `mailto:`, `wa.me` links, and phone number to prevent harvester bots from discovering corporate contact vectors (email & phone).
 -   ✅ **WCAG AAA Compliance**: Implemented high-contrast breadcrumbs, accessible form labels, and a hidden-until-focused "Skip to Content" link.
 -   ✅ **Defensive API Design**: Secured form endpoints with Origin validation, strict character limits, and payload sanitization.
 -   ✅ **Islands Architecture**: Components are zero-JS by default, with client-side interactivity being an opt-in (`client:visible`), preventing unnecessary JavaScript from being shipped.
