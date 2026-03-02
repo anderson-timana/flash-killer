@@ -47,13 +47,12 @@ const ciudadPattern = "^[a-zA-ZÀ-ÿ .]+$";
           <Text variant="sub" class="text-primary mb-2 font-bold uppercase tracking-wider">Email Corporativo</Text>
           <div class="flex items-center gap-2">
             <Text variant="body" class="text-white">
-              <a href="mailto:ventas@capturadoresflashkiller.com" class="hover:text-primary transition-colors">
+              <a href="mailto:ventas@capturadoresflashkiller.com" class="email-to-copy hover:text-primary transition-colors">
                 ventas@capturadoresflashkiller.com
               </a>
             </Text>
             <button 
               class="copy-email-btn p-1.5 text-gray-500 hover:text-primary transition-colors" 
-              data-email="ventas@capturadoresflashkiller.com"
               aria-label="Copiar correo electrónico"
               title="Copiar email"
             >
@@ -244,33 +243,12 @@ const ciudadPattern = "^[a-zA-ZÀ-ÿ .]+$";
 <script>
     import '../assets/scripts/contact-form.js';
 
-    function setupCopyEmail() {
-        const buttons = document.querySelectorAll('.copy-email-btn');
-        const toast = document.getElementById('copy-toast');
-
-        buttons.forEach(btn => {
-            if (btn.getAttribute('data-copy-inited')) return;
-            btn.setAttribute('data-copy-inited', 'true');
-
-            btn.addEventListener('click', async (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                const email = btn.getAttribute('data-email');
-                if (!email) return;
-
-                try {
-                    await navigator.clipboard.writeText(email);
-                    if (toast) {
-                        toast.classList.add('opacity-100');
-                        setTimeout(() => toast.classList.remove('opacity-100'), 2000);
-                    }
-                } catch (err) {
-                    console.error('Failed to copy: ', err);
-                }
-            });
-        });
-    }
-
-    setupCopyEmail();
-    document.addEventListener('astro:page-load', setupCopyEmail);
+    // Lazy load non-essential email utilities
+    window.addEventListener('load', () => {
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(() => import('../assets/scripts/email-utils.js'));
+        } else {
+            setTimeout(() => import('../assets/scripts/email-utils.js'), 1000);
+        }
+    });
 </script>

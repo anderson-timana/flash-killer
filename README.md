@@ -112,11 +112,14 @@ This phase exemplifies the commitment to going beyond "just works" to "works per
 
 *   **Semantic UX Improvements:** Refactored Product Cards into a single semantic link while maintaining a "safe gutter" to prevent accidental clicks on mobile devices.
 
-*   **Defense in Depth API:** Secured the submission endpoint with **Origin validation** and strict payload length limits to prevent automated abuse and resource exhaustion.
+*   **Security Enhancements:**
+    - **Defense in Depth API:** Secured the submission endpoint with **Origin validation** and strict payload length limits to prevent automated abuse and resource exhaustion.
+    - **Email Security & Privacy**:
+        - **Cloudflare Scraper Shield Integration**: Automated obfuscation of `mailto:` links to prevent harvester bots from discovering corporate email addresses.
+        - **Protected Copy-to-Clipboard**: Implemented a "DOM-Aware" copy utility that only reads the email text *after* Cloudflare has safely decoded it for a human user, closing common `data-attribute` backdoors.
+        - **Secure Secret Management**: All critical credentials (e.g., `RESEND_API_KEY`, `DESTINATION_EMAIL`) are handled as encrypted Cloudflare Secrets, isolated from source control and the `wrangler.toml` file.
 
----
-
-## User Experience (UX) Enhancers
+#### User Experience (UX) Enhancers
 
 Beyond core functionality and performance, several "quality of life" features were implemented to streamline the path to conversion:
 
@@ -153,6 +156,7 @@ This project is a living portfolio of modern web development best practices:
 -   ✅ **Performance-First Architecture**: Astro for Static Site Generation (SSG), ensuring near-instant load times.
 -   ✅ **Industrial-Grade Email Delivery**: Migrated to the **Resend API** for high deliverability, robust error handling, and a generous free tier that shelters the project from future policy changes.
 -   ✅ **Advanced Bot Protection**: Migrated from hCaptcha to Cloudflare Turnstile with lazy-loading and server-side token verification.
+-   ✅ **Email Security & Privacy**: Automated obfuscation of `mailto:` links to prevent harvester bots from discovering corporate email addresses.
 -   ✅ **WCAG AAA Compliance**: Implemented high-contrast breadcrumbs, accessible form labels, and a hidden-until-focused "Skip to Content" link.
 -   ✅ **Defensive API Design**: Secured form endpoints with Origin validation, strict character limits, and payload sanitization.
 -   ✅ **Islands Architecture**: Components are zero-JS by default, with client-side interactivity being an opt-in (`client:visible`), preventing unnecessary JavaScript from being shipped.

@@ -101,16 +101,7 @@ function initContactForm() {
         }
     }
 
-    // E. Dynamic Subject Line
-    const subjectInput = document.getElementById('email_subject');
-    const nombreInput = document.getElementById('nombre');
-    const empresaInput = document.getElementById('empresa');
-    
-    if (subjectInput && nombreInput && empresaInput) {
-        subjectInput.value = `Cotización: ${empresaInput.value} | ${nombreInput.value}`;
-    }
-
-    // 4. AJAX Submission
+    // E. AJAX Submission
     const formData = new FormData(form);
     const originalBtnText = submitBtn.innerHTML;
     
