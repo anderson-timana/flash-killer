@@ -1,3 +1,6 @@
+import { products } from '../../src/data/products.js';
+import { services } from '../../src/data/services.js';
+
 export async function onRequestPost(context) {
   const { request, env } = context;
   
@@ -34,12 +37,14 @@ export async function onRequestPost(context) {
     const telefonoPattern = /^[\d\+\-\s]{9,15}$/;
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const ciudadPattern = /^[a-zA-ZÀ-ÿ .]{3,100}$/;
+    const rucDniPattern = /^[0-9]{9,11}$/;
 
     if (!data.nombre || !nombrePattern.test(data.nombre)) errors.nombre = "Nombre inválido (3-100 caracteres).";
     if (!data.empresa || !empresaPattern.test(data.empresa)) errors.empresa = "Empresa inválida (3-100 caracteres).";
     if (!data.email || !emailPattern.test(data.email) || data.email.length > 100) errors.email = "Email inválido.";
     if (!data.telefono || !telefonoPattern.test(data.telefono)) errors.telefono = "Teléfono inválido.";
     if (!data.ciudad || !ciudadPattern.test(data.ciudad)) errors.ciudad = "Ciudad inválida.";
+    if (!data.rucDni || !rucDniPattern.test(data.rucDni)) errors.rucDni = "RUC o DNI inválido (9-11 dígitos).";
     if (!data.producto) errors.producto = "Producto no seleccionado.";
     if (data.mensaje && data.mensaje.length > 2000) errors.mensaje = "Mensaje demasiado largo (máx 2000 caracteres).";
     if (data.botcheck) errors.botcheck = "Bot detected.";
@@ -47,6 +52,11 @@ export async function onRequestPost(context) {
     if (Object.keys(errors).length > 0) {
       return new Response(JSON.stringify({ success: false, error: "Datos inválidos.", details: errors }), { status: 400, headers: { 'Content-Type': 'application/json' } });
     }
+
+    // 3.1. Resolve Product/Service Name
+    const allOptions = [...products, ...services];
+    const selectedOption = allOptions.find(opt => opt.id === data.producto);
+    const productDisplayName = selectedOption ? selectedOption.name : (data.producto === 'otros' ? 'Asesoría / Otro' : data.producto);
 
     // 4. Turnstile Verification
     const turnstileToken = data['cf-turnstile-response'];
@@ -89,10 +99,11 @@ export async function onRequestPost(context) {
         <h2 style="color: #d97706; border-bottom: 2px solid #d97706; padding-bottom: 10px;">Nuevo Mensaje de Contacto</h2>
         <p><strong>Nombre:</strong> ${data.nombre}</p>
         <p><strong>Empresa:</strong> ${data.empresa}</p>
+        <p><strong>RUC o DNI:</strong> ${data.rucDni}</p>
         <p><strong>Email:</strong> ${data.email}</p>
         <p><strong>Teléfono:</strong> ${data.telefono}</p>
         <p><strong>Ciudad:</strong> ${data.ciudad}</p>
-        <p><strong>Producto de Interés:</strong> ${data.producto}</p>
+        <p><strong>Producto de Interés:</strong> ${productDisplayName}</p>
         <div style="background: #f9f9f9; padding: 15px; border-left: 4px solid #d97706; margin-top: 20px;">
           <p><strong>Mensaje:</strong></p>
           <p>${(data.mensaje || "Sin mensaje").replace(/\n/g, '<br>')}</p>
