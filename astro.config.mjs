@@ -3,10 +3,17 @@ import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
 import compress from '@playform/compress';
 import partytown from '@astrojs/partytown';
+import cloudflare from '@astrojs/cloudflare';
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://capturadoresflashkiller.com',
+  output: 'static',
+  adapter: cloudflare({
+    platformProxy: {
+      enabled: true,
+    },
+  }),
   integrations: [
     tailwind(), 
     sitemap(), 
