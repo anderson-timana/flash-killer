@@ -2,7 +2,7 @@ import { defineAction, ActionError } from 'astro:actions';
 import { z } from 'astro:schema';
 import { productsLite, servicesLite } from '../data/options.js';
 
-const cyrillicPattern = /[а-яё]/i;
+const cyrillicPattern = /[\u0400-\u04FF]/;
 
 const cyrillicRefinement = (val: string, ctx: z.RefinementCtx) => {
   if (cyrillicPattern.test(val)) {
@@ -31,10 +31,10 @@ export const server = {
       empresa: z.string().min(3).max(100).regex(/^[a-zA-ZÀ-ÿ0-9 .,\&\\-]+$/).superRefine(cyrillicRefinement).superRefine(noLinksRefinement),
       rucDni: z.string().regex(/^[0-9]{9,11}$/),
       email: z.string().email().max(100).superRefine(cyrillicRefinement),
-      telefono: z.string().regex(/^[\d\+\-\s]{9,15}$/),
+      telefono: z.string().regex(/^[0-9]{9,11}$/),
       ciudad: z.string().min(3).max(100).regex(/^[a-zA-ZÀ-ÿ .]+$/).superRefine(cyrillicRefinement).superRefine(noLinksRefinement),
       producto: z.string().min(1),
-      mensaje: z.string().min(10).max(1000).superRefine(cyrillicRefinement).superRefine(noLinksRefinement).optional().or(z.literal('')),
+      mensaje: z.string().min(10).max(1200).superRefine(cyrillicRefinement).superRefine(noLinksRefinement).optional().or(z.literal('')),
       'cf-turnstile-response': z.string().min(1),
       botcheck: z.string().max(0).optional(), // Honeypot
     }),
