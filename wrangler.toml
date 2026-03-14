@@ -2,3 +2,6 @@ name = "flash-killer-website"
 compatibility_date = "2024-11-01"
 compatibility_flags = [ "nodejs_compat" ]
 pages_build_output_dir = "./dist"
+
+[vars]
+PUBLIC_TURNSTILE_SITE_KEY = "0x4AAAAAACkbdl85_9lVc_Dv"
