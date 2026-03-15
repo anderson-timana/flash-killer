@@ -24,7 +24,7 @@ const optionsToRender = formOptions ?? defaultOptions;
 // We use variables to prevent the HTML minifier from stripping backslashes
 const nombrePattern = "^[a-zA-ZÀ-ÿ0-9 .]+$";
 const empresaPattern = "^[a-zA-ZÀ-ÿ0-9 .,\\&\\-]+$";
-const telefonoPattern = "^[\\d\\+\\-\\s]{9}$";
+const telefonoPattern = "^[0-9]{9,11}$";
 const ciudadPattern = "^[a-zA-ZÀ-ÿ .]+$";
 const rucDniPattern = "^[0-9]{9,11}$";
 ---
@@ -155,9 +155,9 @@ const rucDniPattern = "^[0-9]{9,11}$";
             required 
             aria-required="true"
             pattern={telefonoPattern}
-            title="Ingrese un número de teléfono válido (9 dígitos)"
+            title="Ingrese un número de teléfono válido (9 a 11 dígitos)"
           />
-          <span class="validation-message">Por favor, ingrese un teléfono válido.</span>
+          <span class="validation-message">Por favor, ingrese un teléfono válido (9 a 11 dígitos).</span>
         </div>
 
         <div class="flex flex-col gap-2">
@@ -207,13 +207,15 @@ const rucDniPattern = "^[0-9]{9,11}$";
             name="mensaje"
             placeholder="Describa su requerimiento (cantidad, dimensiones de la planta, etc.)" 
             class="w-full bg-white/10 border border-white/20 p-4 text-white h-32 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent placeholder-industrial-grey/30 transition-all"
+            minlength="10"
+            maxlength="1200"
           ></textarea>
         </div>
 
         <!-- Cloudflare Turnstile Protection -->
         <div 
           class="cf-turnstile md:col-span-2 min-h-[65px]" 
-          data-sitekey="0x4AAAAAACkbdl85_9lVc_Dv"
+          data-sitekey={import.meta.env.PUBLIC_TURNSTILE_SITE_KEY}
           data-theme="dark"
           data-loading="lazy"
         ></div>

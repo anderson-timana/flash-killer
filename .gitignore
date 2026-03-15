@@ -8,6 +8,7 @@
 
 # Secrets
 .env
+.dev.vars
 
 # Dev
 /artifacts

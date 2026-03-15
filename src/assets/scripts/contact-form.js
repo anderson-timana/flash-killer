@@ -1,3 +1,5 @@
+import { actions, isActionError } from 'astro:actions';
+
 function initContactForm() {
   const form = document.getElementById('contact-form');
   
@@ -81,30 +83,7 @@ function initContactForm() {
       return;
     }
 
-    // C. Link Trap
-    const textInputs = form.querySelectorAll('input[type="text"], input[type="tel"]');
-    const linkPattern = /(https?:\/\/|www\.|ftp:\/\/)/i;
-    
-    for (const input of Array.from(textInputs)) {
-        if (linkPattern.test(input.value)) {
-            alert('Por seguridad, no se permiten enlaces (URLs) en los campos de contacto.');
-            input.focus();
-            return;
-        }
-    }
-
-    // D. Script Trap
-    const mensajeField = document.getElementById('mensaje');
-    if (mensajeField && mensajeField.value) {
-        const cyrillicPattern = /[\u0400-\u04FF]/;
-        if (cyrillicPattern.test(mensajeField.value)) {
-            alert('Por seguridad, solo se permiten caracteres latinos (español/inglés).');
-            mensajeField.focus();
-            return;
-        }
-    }
-
-    // E. AJAX Submission
+    // E. Astro Action Submission
     const formData = new FormData(form);
     const originalBtnText = submitBtn.innerHTML;
     
@@ -112,26 +91,30 @@ function initContactForm() {
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<span class="animate-pulse">Enviando...</span>';
       
-      const response = await fetch(form.action, {
-        method: 'POST',
-        body: formData,
-        headers: {
-          'Accept': 'application/json'
-        }
-      });
+      const { data, error } = await actions.contact(formData);
 
-      const json = await response.json();
-
-      if (response.status === 200) {
+      if (!error) {
         // Success: Use the redirect URL provided in the form
         const redirectUrl = form.querySelector('input[name="redirect"]')?.value || '/gracias/';
         window.location.href = redirectUrl;
       } else {
         // Error handling
-        console.error(json);
+        console.error(error);
         if (resultDiv) {
           resultDiv.classList.remove('hidden');
-          const errorMessage = json.error || json.message || 'Ocurrió un error al enviar el formulario.';
+          let errorMessage = 'Ocurrió un error al enviar el formulario.';
+
+          if (isActionError(error)) {
+              errorMessage = error.message;
+
+              // If it's a validation error (Zod), we can be more specific
+              if (error.code === 'BAD_REQUEST' && error.fields) {
+                  const fields = error.fields;
+                  const firstErrorField = Object.keys(fields)[0];
+                  errorMessage = `Error en ${firstErrorField}: ${fields[firstErrorField][0]}`;
+              }
+          }
+
           resultDiv.innerHTML = `<p class="text-red-400 bg-red-400/10 p-4 border border-red-400/20">Error: ${errorMessage}</p>`;
         }
         submitBtn.disabled = false;
@@ -142,8 +125,8 @@ function initContactForm() {
             window.turnstile.reset();
         }
       }
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error(err);
       if (resultDiv) {
         resultDiv.classList.remove('hidden');
         resultDiv.innerHTML = `<p class="text-red-400 bg-red-400/10 p-4 border border-red-400/20">Error de conexión. Por favor, intente nuevamente.</p>`;
