@@ -215,7 +215,7 @@ const rucDniPattern = "^[0-9]{9,11}$";
         <!-- Cloudflare Turnstile Protection -->
         <div 
           class="cf-turnstile md:col-span-2 min-h-[65px]" 
-          data-sitekey={import.meta.env.PUBLIC_TURNSTILE_SITE_KEY}
+          data-sitekey={typeof import.meta.env.PUBLIC_TURNSTILE_SITE_KEY === 'string' ? import.meta.env.PUBLIC_TURNSTILE_SITE_KEY : undefined}
           data-theme="dark"
           data-loading="lazy"
         ></div>

@@ -7,7 +7,7 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "preview:local": "PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA npm run build && npx wrangler pages dev ./dist",
+    "preview:local": "PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA npm run build && npx wrangler pages dev ./dist --compatibility-date=2024-11-01 --compatibility-flags=nodejs_compat",
     "astro": "astro"
   },
   "dependencies": {

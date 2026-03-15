@@ -42,10 +42,10 @@ export const server = {
       const { env } = (context.locals as any).runtime || {};
 
       if (!env) {
-          console.error("Cloudflare runtime environment not found.");
+          console.error("Cloudflare runtime environment not found. Ensure the project is running on Cloudflare Pages/Workers.");
           throw new ActionError({
               code: 'INTERNAL_SERVER_ERROR',
-              message: 'Error de configuración del servidor.',
+              message: 'Error de configuración: Entorno de ejecución no encontrado.',
           });
       }
 
@@ -68,11 +68,14 @@ export const server = {
         });
         const verifyData: any = await verifyResponse.json();
         if (!verifyData.success) {
+            console.error("Turnstile verification failed:", verifyData['error-codes']);
             throw new ActionError({
                 code: 'BAD_REQUEST',
                 message: 'Verificación de seguridad fallida. Intente de nuevo.',
             });
         }
+      } else {
+          console.warn("TURNSTILE_SECRET_KEY not found in environment. Skipping verification.");
       }
 
       // 3. Resolve Product Name
@@ -84,11 +87,19 @@ export const server = {
       const resendApiKey = env.RESEND_API_KEY;
       const destinationEmail = env.DESTINATION_EMAIL;
 
-      if (!resendApiKey || !destinationEmail) {
-        console.error("Missing RESEND_API_KEY or DESTINATION_EMAIL");
+      if (!resendApiKey) {
+        console.error("RESEND_API_KEY not found in environment.");
         throw new ActionError({
             code: 'INTERNAL_SERVER_ERROR',
-            message: 'El servicio de correo no está configurado correctamente.',
+            message: 'Error de configuración: API key de correo faltante.',
+        });
+      }
+
+      if (!destinationEmail) {
+        console.error("DESTINATION_EMAIL not found in environment.");
+        throw new ActionError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: 'Error de configuración: Email de destino faltante.',
         });
       }
 
