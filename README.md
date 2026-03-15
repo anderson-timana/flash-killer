@@ -97,6 +97,8 @@ With a solid foundation, the focus shifted to refining the user experience and i
 
 This phase exemplifies the commitment to going beyond "just works" to "works perfectly." A full audit was conducted to address technical debt and modern standards.
 
+*   **Generative Engine Optimization (GEO):** Enhanced the site's visibility for AI engines (Gemini, ChatGPT, Perplexity) by implementing comprehensive **JSON-LD Structured Data**. This includes spam-protected Organization schema that links the website to official social profiles and contact points without exposing corporate email addresses to scrapers.
+
 *   **Core Web Vitals:** A systematic review based on 2026 Core Web Vitals standards was performed to identify and eliminate loading bottlenecks. 
     - **Lazy Loading:** Optimized the Turnstile integration with **IntersectionObserver** and hover-intent triggers. This ensures security scripts only load when the user is likely to interact with the form, keeping the initial page weight minimal.
     - **LCP Optimization:** The Largest Contentful Paint (LCP) element—the hero image—was optimized by implementing responsive **`<link rel="preload">`** tags. This instructs the browser to fetch this critical asset with the highest priority, significantly improving perceived load time.
@@ -159,6 +161,7 @@ This project is a living portfolio of modern web development best practices:
 -   ✅ **Type-Safe Backend Logic**: Implemented **Astro Actions** for form handling, providing built-in Zod validation, structured error handling, and end-to-end type safety.
 -   ✅ **Industrial-Grade Email Delivery**: **Resend API** for high deliverability, robust error handling, and a generous free tier that shelters the project from future policy changes.
 -   ✅ **Advanced Bot Protection**: Cloudflare Turnstile with lazy-loading and server-side token verification.
+-   ✅ **Generative Engine Optimization (GEO)**: Implemented advanced **JSON-LD Structured Data** (Organization & Products) to ensure the business is accurately represented and cited by AI search engines and LLMs.
 -   ✅ **Contact Data Security & Privacy**: Automated obfuscation of `mailto:`, `wa.me` links, and phone number to prevent harvester bots from discovering corporate contact vectors (email & phone).
 -   ✅ **WCAG AAA Compliance**: Implemented high-contrast breadcrumbs, accessible form labels, and a hidden-until-focused "Skip to Content" link.
 -   ✅ **Defensive API Design**: Secured form endpoints with Origin validation, strict character limits, and payload sanitization.

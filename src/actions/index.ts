@@ -34,7 +34,13 @@ export const server = {
       telefono: z.string().regex(/^[0-9]{9,11}$/),
       ciudad: z.string().min(3).max(100).regex(/^[a-zA-ZÀ-ÿ .]+$/).superRefine(cyrillicRefinement).superRefine(noLinksRefinement),
       producto: z.string().min(1),
-      mensaje: z.string().min(10).max(1200).superRefine(cyrillicRefinement).superRefine(noLinksRefinement).optional().or(z.literal('')),
+      mensaje: z.union([z.string(), z.null(), z.undefined()])
+        .transform(v => v ?? "")
+        .refine(val => val === "" || (val.length >= 10 && val.length <= 1200), {
+          message: "Si incluye un mensaje, este debe tener entre 10 y 1200 caracteres."
+        })
+        .superRefine(cyrillicRefinement)
+        .superRefine(noLinksRefinement),
       'cf-turnstile-response': z.string().min(1),
       botcheck: z.string().max(0).optional(), // Honeypot
     }),

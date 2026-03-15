@@ -72,6 +72,29 @@ const resolvedOgImage = new URL(image, siteUrl);
         <meta property="twitter:title" content={title} />
         <meta property="twitter:description" content={description} />
         <meta property="twitter:image" content={resolvedOgImage} />
+
+        <!-- JSON-LD / SEO -->
+        <script type="application/ld+json" set:html={JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "name": "Flash Killer",
+          "url": siteUrl.toString(),
+          "logo": new URL("/images/favicon.png", siteUrl).toString(),
+          "description": description,
+          "sameAs": [
+            "https://www.facebook.com/capturadoresdemoscas",
+            "https://www.linkedin.com/company/insectocapturadores-flash-killer/"
+          ],
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "PE"
+          },
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "sales",
+            "url": new URL("/contactanos", siteUrl).toString()
+          }
+        })} />
 	</head>
 	<body class="bg-white text-industrial-dark">
         <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[10000] focus:bg-primary focus:text-white focus:p-4 focus:rounded-sm focus:font-bold">
