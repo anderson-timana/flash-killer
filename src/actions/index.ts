@@ -94,7 +94,7 @@ export const server = {
 
       const htmlBody = `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #eee; padding: 20px;">
-          <h2 style="color: #d97706; border-bottom: 2px solid #d97706; padding-bottom: 10px;">Nuevo Mensaje de Contacto (Action)</h2>
+          <h2 style="color: #d97706; border-bottom: 2px solid #d97706; padding-bottom: 10px;">Nuevo Mensaje de Contacto</h2>
           <p><strong>Nombre:</strong> ${input.nombre}</p>
           <p><strong>Empresa:</strong> ${input.empresa}</p>
           <p><strong>RUC o DNI:</strong> ${input.rucDni}</p>

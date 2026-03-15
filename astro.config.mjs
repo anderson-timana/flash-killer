@@ -14,11 +14,6 @@ export default defineConfig({
       enabled: true,
     },
   }),
-  image: {
-    service: {
-      entrypoint: 'astro/assets/services/sharp',
-    },
-  },
   integrations: [
     tailwind(), 
     sitemap(), 
@@ -42,6 +37,7 @@ export default defineConfig({
   prefetch: false,
   build: {
     inlineStylesheets: 'always',
+    imageService: 'compile'
   },
   redirects: {
     '/contacto': '/contactanos',
