@@ -89,7 +89,7 @@ With a solid foundation, the focus shifted to refining the user experience and i
 
 *   **Dynamic Data & Content:** Product information was decoupled from the UI by centralizing it in `src/data/products.js`. This allows for easy content updates without touching the component code and powers the dynamic generation of product pages (`/productos/[id].astro`).
 
-*   **Contact Form Evolution (Resend API & Turnstile):** To implement a defense-in-depth security model, the contact form was evolved into a secure Cloudflare Function. We migrated from hCaptcha to **Cloudflare Turnstile**, providing a frictionless experience for users while maintaining robust bot protection. The worker performs server-side validation, sanitizes input with strict character limits, and utilizes the **Resend API** for mail delivery. This ensures the lead-generation pipeline is highly resilient, flexible (with custom `reply_to` headers), and under full ownership.
+*   **Contact Form Evolution (Astro Actions, Resend API & Turnstile):** To implement a defense-in-depth security model, the contact form was evolved into a secure **Astro Action**. I leveraged **Cloudflare Turnstile**, providing a frictionless experience for users while maintaining robust bot protection. The action handler performs strict **Zod-based server-side validation**, including custom refinements to block Cyrillic characters and URLs (anti-spam), uses a **honeypot** for silent bot detection, and utilizes the **Resend API** for reliable mail delivery. This ensures the lead-generation pipeline is highly resilient, type-safe, and under full ownership.
 
 *   **Feature Implementation (`feat: Update product catalog...`, `feat: Add product PDFs...`):** Core business requirements were implemented, such as adding downloadable PDF technical sheets for the target technical audience and refining contact forms for improved lead-generation capabilities.
 
@@ -156,8 +156,9 @@ A subtle but critical bug was discovered where form validation regex patterns (l
 This project is a living portfolio of modern web development best practices:
 
 -   ✅ **Performance-First Architecture**: Astro for Static Site Generation (SSG), ensuring near-instant load times.
--   ✅ **Industrial-Grade Email Delivery**: Migrated to the **Resend API** for high deliverability, robust error handling, and a generous free tier that shelters the project from future policy changes.
--   ✅ **Advanced Bot Protection**: Migrated from hCaptcha to Cloudflare Turnstile with lazy-loading and server-side token verification.
+-   ✅ **Type-Safe Backend Logic**: Implemented **Astro Actions** for form handling, providing built-in Zod validation, structured error handling, and end-to-end type safety.
+-   ✅ **Industrial-Grade Email Delivery**: **Resend API** for high deliverability, robust error handling, and a generous free tier that shelters the project from future policy changes.
+-   ✅ **Advanced Bot Protection**: Cloudflare Turnstile with lazy-loading and server-side token verification.
 -   ✅ **Contact Data Security & Privacy**: Automated obfuscation of `mailto:`, `wa.me` links, and phone number to prevent harvester bots from discovering corporate contact vectors (email & phone).
 -   ✅ **WCAG AAA Compliance**: Implemented high-contrast breadcrumbs, accessible form labels, and a hidden-until-focused "Skip to Content" link.
 -   ✅ **Defensive API Design**: Secured form endpoints with Origin validation, strict character limits, and payload sanitization.
