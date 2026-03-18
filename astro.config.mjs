@@ -38,7 +38,7 @@ export default defineConfig({
   build: {
     inlineStylesheets: 'always',
     imageService: 'compile'
-  },
+  }/*,
   redirects: {
     '/contacto': '/contactanos',
     '/cotiza': '/contactanos',
@@ -49,5 +49,5 @@ export default defineConfig({
     '/balastros-electricos-lamparas-uv': '/productos/balastros-electricos-lamparas-uv',
     '/trampas-luz-uv-para-insectos': '/productos/trampas-luz-uv-para-insectos',
     '/productos/tubos-fluorescentes-matamoscas': '/productos/fluorescentes-uv-matamoscas',
-  }
+  }*/
 });
