@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import logoImage from '../assets/images/favicon-medium.png';
+import logoImage from '../assets/images/favicon.svg';
 import Text from './Text.astro';
 import { products } from '../data/products';
 
@@ -25,7 +25,9 @@ function isActive(href: string) {
     <a href="/" class="flex items-center gap-2 lg:gap-3 hover:opacity-80 transition-opacity flex-shrink-0" aria-label="Flash Killer - Inicio">
       <Image 
         src={logoImage} 
-        alt="Flash Killer Logo" 
+        alt="Flash Killer Logo"
+        width={40}
+        height={40}
         class="w-7 h-7 lg:w-8 lg:h-8 object-contain" 
         loading="eager"
       />
@@ -133,15 +135,15 @@ function isActive(href: string) {
     </div>
 
     <div class="mt-auto pt-12">
-      <Text variant="sub" class="text-gray-300 mb-4">Industria Peruana Certificada</Text>
+      <Text variant="sub" class="text-[14px] text-gray-300 mb-4">Industria Peruana Certificada</Text>
       <div class="flex gap-4">
            <div class="group relative inline-block">
-              <div class="w-10 h-10 bg-white/10 rounded-sm flex items-center justify-center border border-white/20 cursor-help">
+              <div class="text-[12px]w-10 h-10 w-12 bg-white/10 rounded-sm flex items-center justify-center border border-white/20 cursor-help">
                   <span class="text-white font-bold text-xs">C304</span>
               </div>
               <!-- Tooltip -->
-              <div class="absolute bottom-full left-0 mb-2 w-48 p-3 bg-industrial-dark text-white text-[10px] leading-tight rounded-sm opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-[10000] shadow-xl border border-white/10">
-                  <span class="font-bold block mb-1 uppercase tracking-wider text-primary">Acero Inoxidable 304</span>
+              <div class="absolute bottom-full left-0 mb-2 w-48 p-3 bg-industrial-dark text-white text-[12px] leading-tight rounded-sm opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-[10000] shadow-xl border border-white/10">
+                  <span class="font-bold block mb-1 uppercase tracking-wider text-white">Acero Inoxidable 304</span>
                   Grado alimenticio: Garantiza máxima resistencia a la corrosión y cumplimiento sanitario industrial.
               </div>
            </div>

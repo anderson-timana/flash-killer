@@ -8,6 +8,7 @@ import ProductTechShowcase from '../../components/ProductTechShowcase.astro';
 import Footer from '../../components/Footer.astro';
 import { products } from '../../data/products';
 import { Image } from 'astro:assets';
+import { PrerenderDynamicEndpointPathCollide } from 'node_modules/astro/dist/core/errors/errors-data';
 
 export function getStaticPaths() {
   return products.map(product => ({
@@ -16,7 +17,7 @@ export function getStaticPaths() {
   }));
 }
 
-const { name, subtitle, desc, specs, safety, images, metaDescription, pdf } = Astro.props;
+const { name, subtitle, desc, specs, safety, images, metaDescription, pdf, imageAlt, imageAlts, price } = Astro.props;
 
 // Use explicit metaDescription if provided, otherwise fallback to truncated desc
 const finalMetaDescription = metaDescription || `${desc.slice(0, 155)}...`;
@@ -41,6 +42,7 @@ const jsonLd = {
     "@type": "Offer",
     "url": Astro.url.toString(),
     "availability": "https://schema.org/InStock",
+    "price": price,
     "priceCurrency": "PEN"
   }
 };
@@ -58,16 +60,16 @@ const jsonLd = {
   <main id="main-content" class="mt-20">
     <!-- Breadcrumbs - WCAG AAA Contrast (Dark Grey on White) -->
     <nav class="container mx-auto px-4 pt-8" aria-label="Migas de pan">
-      <ol class="flex items-center gap-2 text-[10px] md:text-xs font-bold uppercase tracking-widest text-industrial-grey">
+      <ol class="flex items-center gap-2 text-[12px] md:text-xs font-bold uppercase tracking-widest text-industrial-text">
         <li>
           <a href="/" class="hover:text-primary transition-colors">Inicio</a>
         </li>
         <li class="flex items-center gap-2">
-          <span class="text-gray-300" aria-hidden="true">/</span>
+          <span class="text-gray-700" aria-hidden="true">/</span>
           <a href="/productos" class="hover:text-primary transition-colors">Catálogo</a>
         </li>
         <li class="flex items-center gap-2">
-          <span class="text-gray-300" aria-hidden="true">/</span>
+          <span class="text-gray-700" aria-hidden="true">/</span>
           <span class="text-industrial-dark" aria-current="page">{name}</span>
         </li>
       </ol>
@@ -81,7 +83,7 @@ const jsonLd = {
                 <Image 
                   id="main-image" 
                   src={images[0]} 
-                  alt={name} 
+                  alt={imageAlt || name} 
                   width={800}
                   height={800}
                   class="w-full h-full object-contain p-8 animate-fade-in transition-opacity duration-300"
@@ -118,7 +120,7 @@ const jsonLd = {
                    class={`thumbnail-btn w-20 h-20 border-2 bg-industrial-white flex items-center justify-center cursor-pointer focus:outline-none transition-all ${index === 0 ? 'border-primary' : 'border-transparent hover:border-industrial-grey/30'}`}
                    data-image={img.src}
                    data-index={index}
-                   aria-label={`Ver imagen ${index + 1} de ${name}`}
+                   aria-label={`Ver imagen: ${imageAlts?.[index] || name}`}
                  >
                    <Image 
                     src={img} 
@@ -138,7 +140,7 @@ const jsonLd = {
        <div>
           <!-- Decoupled SEO Hierarchy: H2/VR1 for Visual Hook, H1/VR3 for SEO Intent -->
           <Text as="h2" variant="vr1" class="mb-2">{name}</Text>
-          <Text as="h1" variant="vr3" class="mb-6 text-industrial-grey">{subtitle}</Text>
+          <Text as="h1" variant="vr3" class="mb-6 text-industrial-text">{subtitle}</Text>
           
           <Text variant="body" class="mb-8">{desc}</Text>
           
@@ -191,7 +193,7 @@ const jsonLd = {
     let currentIndex = 0;
     const images = Array.from(thumbnails).map(t => t.getAttribute('data-image'));
 
-    function updateGallery(index) {
+    function updateGallery(index: number) {
         const imageUrl = images[index];
         if (!imageUrl) return;
         
@@ -201,7 +203,7 @@ const jsonLd = {
             mainImage.style.opacity = '1';
         }, 150);
 
-        thumbnails.forEach((t, i) => {
+        thumbnails.forEach((t: Element, i: number) => {
             if (i === index) {
                 t.classList.add('border-primary');
                 t.classList.remove('border-transparent');
@@ -213,7 +215,7 @@ const jsonLd = {
         currentIndex = index;
     }
 
-    thumbnails.forEach((thumb, index) => {
+    thumbnails.forEach((thumb: Element, index: number) => {
       thumb.addEventListener('click', () => updateGallery(index));
     });
 

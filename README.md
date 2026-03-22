@@ -15,8 +15,8 @@ This project utilized an AI-first methodology, where I directed AI tools to gene
 
 To validate the "Modern Web Engineering" claims below, full Lighthouse performance audits were conducted. These reports demonstrate the tangible impact of migrating from a legacy WordPress stack to this optimized Astro architecture.
 
-*   📊 **[View New Site Performance Report](https://htmlpreview.github.io/?https://github.com/your-username/flash-killer-v2/blob/main/reports/new-site-performance.html)** — *Near-perfect scores across all metrics (Performance, Accessibility, Best Practices, SEO).*
-*   📉 **[View Old Site Performance Report](https://htmlpreview.github.io/?https://github.com/your-username/flash-killer-v2/blob/main/reports/old-site-performance.html)** — *Baseline for comparison showing the legacy state.*
+*   📊 **[View New Site Performance Report](https://htmlpreview.github.io/?https://github.com/anderson-timana/flash-killer/blob/main/reports/new-site-performance.html)** — *Near-perfect scores across all metrics (Performance, Accessibility, Best Practices, SEO).*
+*   📉 **[View Old Site Performance Report](https://htmlpreview.github.io/?https://github.com/anderson-timana/flash-killer/blob/main/reports/old-site-performance.html)** — *Baseline for comparison showing the legacy state.*
 
 ---
 

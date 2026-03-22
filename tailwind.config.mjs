@@ -4,8 +4,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#058ec4', // Flash Killer Blue (Brand Base)
-        'primary-dark': '#026e99', // Accessible Text Blue (4.5:1 on white)
+        primary: '#00597A', // Flash Killer Blue (Brand Base) #058ec4
+        'primary-dark': '#00455F', // Accessible Text Blue (4.5:1 on white) #00597A
         industrial: {
           white: '#F9FAFB',
           grey: '#A5A9B4', // Stainless Steel Grey (Decorative/Borders only)

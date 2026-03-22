@@ -9,6 +9,7 @@ import cloudflare from '@astrojs/cloudflare';
 export default defineConfig({
   site: 'https://capturadoresflashkiller.com',
   output: 'static',
+  trailingSlash: 'ignore',
   adapter: cloudflare({
     platformProxy: {
       enabled: true,
@@ -36,18 +37,8 @@ export default defineConfig({
   ],
   prefetch: false,
   build: {
+    format: 'directory',
     inlineStylesheets: 'always',
     imageService: 'compile'
-  }/*,
-  redirects: {
-    '/contacto': '/contactanos',
-    '/cotiza': '/contactanos',
-    '/faqs': '/contactanos',
-    '/insectocutor-industrial': '/productos/insectocutor-industrial',
-    '/trampas-adhesivas-para-insectos': '/productos/trampas-adhesivas-para-insectos',
-    '/tubos-fluorescentes-matamoscas': '/productos/fluorescentes-uv-matamoscas',
-    '/balastros-electricos-lamparas-uv': '/productos/balastros-electricos-lamparas-uv',
-    '/trampas-luz-uv-para-insectos': '/productos/trampas-luz-uv-para-insectos',
-    '/productos/tubos-fluorescentes-matamoscas': '/productos/fluorescentes-uv-matamoscas',
-  }*/
+  }
 });

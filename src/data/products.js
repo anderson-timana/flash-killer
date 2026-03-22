@@ -18,6 +18,11 @@ export const products = [
         name: "Capturador FK 20W", 
         subtitle: "Trampa de Luz UV con Placa Adhesiva",
         spec: "Trampa Adhesiva UV | Cobertura 120m²",
+        imageAlt: "Trampa de luz UV Flash Killer 20W de acero inoxidable encendida",
+        imageAlts: [
+            "Vista frontal de la trampa de luz UV Capturador FK 20W encendida",
+            "Vista frontal del Capturador FK 20W apagado mostrando su acabado en acero inoxidable"
+        ],
         metaDescription: "Trampa de luz UV Flash Killer 20W en acero inoxidable 304. Captura higiénica y silenciosa de insectos voladores. Ideal para auditorías HACCP y DIGESA en Perú.",
         desc: "Las trampas de luz UV son un eficiente y seguro dispositivo orientado a la captura, control y monitoreo de insectos voladores en áreas sensibles. Silenciosas e higiénicas.",
         images: [
@@ -33,13 +38,19 @@ export const products = [
             { label: "Tubos", value: "2 x 20 Watts UV" },
             { label: "Peso", value: "3 Kg" }
         ],
-        safety: ["No tóxico", "Sin químicos", "Apagar antes de limpiar"]
+        safety: ["No tóxico", "Sin químicos", "Apagar antes de limpiar"],
+        price: "377.60"
     },
     { 
         id: 'insectocutor-industrial',
         name: "Insectocutor FK", 
         subtitle: "Barras Electroshock | Acero Inoxidable",
         spec: "Barras Electroshock | Acero Inoxidable",
+        imageAlt: "Equipo Insectocutor FK industrial con barras de electroshock",
+        imageAlts: [
+            "Equipo Insectocutor FK industrial encendido con luz UV-A",
+            "Insectocutor FK industrial apagado mostrando las barras metálicas"
+        ],
         metaDescription: "Insectocutor industrial Flash Killer en acero inoxidable C-304. Alta potencia de choque de 2500mA para control de plagas en almacenes y zonas de carga en Perú.",
         desc: "Alta potencia de choque. Ideales para almacenes y zonas de carga. 2500 miliamperios en barras.",
         images: [
@@ -55,13 +66,19 @@ export const products = [
             { label: "Tubos", value: "2 x 20 Watts UV" },
             { label: "Balastro", value: "Electrónico 2x20w" }
         ],
-        safety: ["Voltaje solo para insectos voladores", "Usar zapatos dieléctricos para instalación"]
+        safety: ["Voltaje solo para insectos voladores", "Usar zapatos dieléctricos para instalación"],
+        price: "180.00"
     },
     { 
         id: 'trampas-luz-uv-decorativas',
         name: "Capturador Decorativo", 
         subtitle: "Trampa de Luz UV Decorativa con Placa Adhesiva",
         spec: "Trampa Decorativa UV Adhesiva | Cobertura 80 m²",
+        imageAlt: "Capturador decorativo de insectos en acero inoxidable",
+        imageAlts: [
+            "Trampa de luz UV decorativa modelo Trapecio",
+            "Trampa de luz UV decorativa modelo Pollo para áreas comerciales"
+        ],
         metaDescription: "Trampa de luz UV Flash Killer con diseño decorativo. Captura higiénica de insectos voladores. Ideal para auditorías HACCP y DIGESA en Perú.",
         desc: "Las trampas de luz UV decorativas no disrumpen el diseño de sus espacios y son igual de eficientes para la captura, control y monitoreo de insectos voladores en áreas sensibles. Silenciosas e higiénicas.",
         images: [
@@ -78,7 +95,8 @@ export const products = [
             { label: "Balastro", value: "1 x 2 de 10 Watts" },
             { label: "Peso", value: "Variable" }
         ],
-        safety: ["No tóxico", "Sin químicos", "Apagar antes de limpiar"]
+        safety: ["No tóxico", "Sin químicos", "Apagar antes de limpiar"],
+        price: "400.00"
     },
     { 
         id: 'fluorescentes-uv-matamoscas',
@@ -99,13 +117,15 @@ export const products = [
             { label: "Consumo", value: "40 Watts" },
             { label: "Vida Útil", value: "8000 horas" }
         ],
-        safety: ["No quemar", "No tirar al agua/mar"]
+        safety: ["No quemar", "No tirar al agua/mar"],
+        price: "35.00"
     },
     { 
         id: 'trampas-adhesivas-para-insectos',
         name: "Placas Adhesivas FKY/FKB", 
         subtitle: "Insumos FKY/FKB | 100% Inerte",
         spec: "Insumos FKY/FKB | 100% Inerte",
+        imageAlt: "Placas adhesivas amarillas y negras para trampas de luz UV",
         metaDescription: "Placas adhesivas FKY/FKB para captura de insectos. Insumos 100% inertes y no tóxicos. Repuestos certificados para mantenimiento de trampas de luz UV en Perú.",
         desc: "Trampas de pegamento de cartón con una duración promedio de 60/90 días. Adhesivo 100% inerte, sin tóxicos.",
         images: [
@@ -120,13 +140,15 @@ export const products = [
             { label: "Color", value: "Amarillo (FKY) / Negro (FKB)" },
             { label: "Cambio", value: "20-30 días (Verano), 30-45 días (Invierno)" }
         ],
-        safety: ["No tóxico", "No ingerir", "Uso solo personal técnico"]
+        safety: ["No tóxico", "No ingerir", "Uso solo personal técnico"],
+        price: "4.72"
     },
     { 
         id: 'balastros-electricos-lamparas-uv',
         name: "Balastros Eléctricos", 
         subtitle: "Componentes de Ingeniería | Estabilidad UV",
         spec: "Repuestos 30W/40W | Estabilidad Eléctrica",
+        imageAlt: "Balastro electrónico para equipos de luz UV industrial",
         metaDescription: "Balastros electrónicos para lámparas UV industriales. Garantizan estabilidad eléctrica y maximizan la vida útil de sus equipos de captura de insectos Flash Killer.",
         desc: "Los balastros eléctricos son fundamentales para garantizar la estabilidad eléctrica y la vida útil de sus lámparas UV. Diseñados específicamente para funcionar en condiciones industriales 24/7.",
         images: [
@@ -145,6 +167,7 @@ export const products = [
             "Encendido instantáneo sin parpadeo",
             "Alta eficiencia energética",
             "Baja emisión de calor"
-        ]
+        ],
+        price: "35.00"
     }
 ];

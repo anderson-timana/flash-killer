@@ -19,7 +19,7 @@ const { specs, safety } = Astro.props;
         <div class="space-y-4">
           {specs.map((spec) => (
             <div class="flex justify-between items-end border-b border-industrial-grey/20 pb-2">
-              <span class="text-xs uppercase font-bold text-industrial-grey tracking-widest">{spec.label}</span>
+              <span class="text-xs uppercase font-bold text-industrial-text tracking-widest">{spec.label}</span>
               <span class="text-industrial-dark font-semibold text-right">{spec.value}</span>
             </div>
           ))}

@@ -6,12 +6,13 @@ import Text from './Text.astro';
 interface Props {
   name: string;
   spec: string;
-  imageAlt: string;
+  imageAlt?: string;
   href: string;
   image?: ImageMetadata;
 }
 
 const { name, spec, imageAlt, href, image } = Astro.props;
+const finalAlt = imageAlt || name;
 ---
 <div class="border border-industrial-grey/20 bg-white h-full transition-all shadow-sm hover:shadow-md hover:border-primary/30 p-4">
   <a href={href} class="flex flex-col h-full no-underline text-inherit group outline-none">
@@ -20,15 +21,15 @@ const { name, spec, imageAlt, href, image } = Astro.props;
         {image ? (
           <Image 
             src={image} 
-            alt={imageAlt} 
-            width={450}
-            height={450}
+            alt={finalAlt} 
+            width={350}
+            height={350}
             class="w-full h-full object-contain p-4" 
             loading="lazy"
             decoding="async"
           />
         ) : (
-          <Text variant="sub">{imageAlt}</Text>
+          <Text variant="sub">{finalAlt}</Text>
         )}
       </div>
     </div>
@@ -37,7 +38,7 @@ const { name, spec, imageAlt, href, image } = Astro.props;
       {name}
     </Text>
     
-    <Text variant="sub" class="mb-4 text-industrial-grey">
+    <Text variant="sub" class="mb-4 text-industrial-text">
       {spec}
     </Text>
     

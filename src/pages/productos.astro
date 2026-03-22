@@ -31,7 +31,7 @@ const productOptions = products.map(p => ({ id: p.id, name: p.name }));
           <ProductCard 
             name={product.name} 
             spec={product.spec} 
-            imageAlt={product.name}
+            imageAlt={product.imageAlt}
             href={`/productos/${product.id}`}
             image={product.images[0]} 
           />

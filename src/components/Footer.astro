@@ -5,11 +5,11 @@ import Text from './Text.astro';
 <footer class="bg-white border-t border-industrial-grey/10 py-12">
     <Section padding="none" class="grid grid-cols-1 md:grid-cols-4 gap-8">
       <div class="col-span-1 md:col-span-1">
-        <Text variant="vr2" class="text-primary font-bold italic mb-4">FLASH KILLER</Text>
+        <Text as="h2" variant="vr2" class="text-primary font-bold italic mb-4">FLASH KILLER</Text>
         <Text variant="sub" class="normal-case">Especialistas en higiene industrial y control de plagas voladoras en Perú.</Text>
       </div>
       <div>
-        <Text class="font-bold mb-4 text-industrial-dark">Productos</Text>
+        <Text as="h3" class="font-bold mb-4 text-industrial-dark">Productos</Text>
         <ul class="space-y-2 text-base text-industrial-text">
           <li><a href="/productos/trampas-luz-uv-para-insectos" class="hover:text-primary transition-colors">Trampas Adhesivas</a></li>
           <li><a href="/productos/insectocutor-industrial" class="hover:text-primary transition-colors">Insectocutores</a></li>
@@ -18,14 +18,14 @@ import Text from './Text.astro';
         </ul>
       </div>
       <div>
-        <Text class="font-bold mb-4 text-industrial-dark">Contacto</Text>
+        <Text as="h3" class="font-bold mb-4 text-industrial-dark">Contacto</Text>
         <ul class="space-y-2 text-base text-industrial-text">
           <li class="break-words flex items-center gap-2">
             <a href="mailto:ventas@capturadoresflashkiller.com" class="hover:text-primary transition-colors">
               ventas@capturadoresflashkiller.com
             </a>
             <button 
-              class="copy-email-btn p-1 text-gray-400 hover:text-primary transition-colors" 
+              class="copy-email-btn p-1 text-gray-700 hover:text-primary transition-colors" 
               aria-label="Copiar correo electrónico"
               title="Copiar email"
             >
@@ -36,7 +36,7 @@ import Text from './Text.astro';
         </ul>
       </div>
       <div>
-        <Text class="font-bold mb-4 text-industrial-dark">Empresa</Text>
+        <Text as="h3" class="font-bold mb-4 text-industrial-dark">Empresa</Text>
         <Text variant="sub" class="normal-case">RUC: 10096044262</Text>
         
         <div class="mt-2 group relative inline-block">
@@ -46,12 +46,12 @@ import Text from './Text.astro';
             </Text>
             <!-- Tooltip -->
             <div class="absolute bottom-full left-0 mb-2 w-56 p-3 bg-industrial-dark text-white text-xs leading-tight rounded-sm opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 shadow-xl border border-white/10">
-                <span class="font-bold block mb-1 uppercase tracking-wider text-primary">Acero Inoxidable 304</span>
+                <span class="font-bold block mb-1 uppercase tracking-wider text-white">Acero Inoxidable 304</span>
                 Garantiza máxima resistencia a la corrosión y cumplimiento sanitario exigido en la industria alimentaria.
             </div>
         </div>
         
-        <Text variant="sub" class="mt-2 normal-case block italic opacity-75">© 2026 Flash Killer.</Text>
+        <Text variant="sub" class="mt-2 normal-case block italic text-industrial-text">© 2026 Flash Killer.</Text>
       </div>
     </Section>
   </footer>

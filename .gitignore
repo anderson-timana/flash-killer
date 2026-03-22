@@ -14,6 +14,7 @@
 /artifacts
 /prompts
 /context
+/Info Files
 session_summary.md
 commit_message.txt
 tmp.md
