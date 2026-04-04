@@ -9,15 +9,16 @@ const normalizedPath = pathname.endsWith('/') && pathname !== '/' ? pathname.sli
 
 const navLinks = [
   { href: "/", label: "Inicio" },
-  { href: "/productos", label: "Catálogo", hasSubmenu: true },
-  { href: "/servicios", label: "Servicios" },
-  { href: "/conocenos", label: "Conócenos" },
-  { href: "/contactanos", label: "Contacto" },
+  { href: "/productos/", label: "Catálogo", hasSubmenu: true },
+  { href: "/servicios/", label: "Servicios" },
+  { href: "/conocenos/", label: "Conócenos" },
+  { href: "/contactanos/", label: "Contacto" },
 ];
 
 function isActive(href: string) {
   if (href === '/') return normalizedPath === '/';
-  return normalizedPath.startsWith(href);
+  const normalizedHref = href.endsWith('/') ? href.slice(0, -1) : href;
+  return normalizedPath.startsWith(normalizedHref);
 }
 ---
 <nav class="fixed top-0 inset-x-0 bg-white/90 backdrop-blur-md border-b border-industrial-grey/20 z-50">
@@ -119,7 +120,7 @@ function isActive(href: string) {
             <div id="catalog-submenu" class="hidden flex-col gap-4 pl-4 pt-4 animate-fade-in">
               {products.map(product => (
                 <a 
-                  href={`/productos/${product.id}`} 
+                  href={`/productos/${product.id}/`} 
                   class:list={[
                     "text-lg transition-colors",
                     normalizedPath === `/productos/${product.id}` ? "text-primary font-semibold" : "text-gray-300 hover:text-white"

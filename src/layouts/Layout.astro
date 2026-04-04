@@ -9,6 +9,7 @@ interface Props {
     image?: string;
     preloadDesktopImage?: string;
     preloadMobileImage?: string;
+    noindex?: boolean;
 }
 
 const { 
@@ -16,7 +17,8 @@ const {
     description = "Líderes en trampas de luz UV e insectocutores de acero inoxidable 304 en Perú. Cumplimiento garantizado para auditorías DIGESA y HACCP.",
     image = defaultOgImage.src,
     preloadDesktopImage,
-    preloadMobileImage
+    preloadMobileImage,
+    noindex = false
 } = Astro.props;
 
 // siteUrl is used to resolve absolute URLs for SEO and social sharing.
@@ -59,6 +61,7 @@ const resolvedOgImage = new URL(image, siteUrl);
         <!-- Primary Meta Tags -->
 		<title>{title}</title>
 		<meta name="description" content={description} />
+        {noindex && <meta name="robots" content="noindex, nofollow" />}
         <link rel="canonical" href={canonicalURL} />
 
         <!-- Open Graph / Facebook -->

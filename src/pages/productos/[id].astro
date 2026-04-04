@@ -18,9 +18,11 @@ export function getStaticPaths() {
 }
 
 const { name, subtitle, desc, specs, safety, images, metaDescription, pdf, imageAlt, imageAlts, price } = Astro.props;
+const descriptionParagraphs = Array.isArray(desc) ? desc : [desc];
+const descriptionText = descriptionParagraphs.join(' ');
 
 // Use explicit metaDescription if provided, otherwise fallback to truncated desc
-const finalMetaDescription = metaDescription || `${desc.slice(0, 155)}...`;
+const finalMetaDescription = metaDescription || `${descriptionText.slice(0, 155)}...`;
 
 // Get the first image URL for OG tags
 const ogImage = images && images.length > 0 ? images[0].src : undefined;
@@ -32,7 +34,7 @@ const jsonLd = {
   "@context": "https://schema.org/",
   "@type": "Product",
   "name": name,
-  "description": desc,
+  "description": descriptionText,
   "image": ogImage ? new URL(ogImage, siteUrl).toString() : undefined,
   "brand": {
     "@type": "Brand",
@@ -66,7 +68,7 @@ const jsonLd = {
         </li>
         <li class="flex items-center gap-2">
           <span class="text-gray-700" aria-hidden="true">/</span>
-          <a href="/productos" class="hover:text-primary transition-colors">Catálogo</a>
+          <a href="/productos/" class="hover:text-primary transition-colors">Catálogo</a>
         </li>
         <li class="flex items-center gap-2">
           <span class="text-gray-700" aria-hidden="true">/</span>
@@ -142,7 +144,11 @@ const jsonLd = {
           <Text as="h2" variant="vr1" class="mb-2">{name}</Text>
           <Text as="h1" variant="vr3" class="mb-6 text-industrial-text">{subtitle}</Text>
           
-          <Text variant="body" class="mb-8">{desc}</Text>
+          <div class="mb-8 space-y-4">
+            {descriptionParagraphs.map((paragraph) => (
+              <Text variant="body">{paragraph}</Text>
+            ))}
+          </div>
           
           <div class="flex flex-col items-start gap-4">
             <a href="#cotizar" class="bg-primary text-white px-8 py-4 rounded-sm text-lg font-bold hover:scale-105 transition-transform inline-block">
