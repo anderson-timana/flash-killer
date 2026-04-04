@@ -9,7 +9,7 @@ import cloudflare from '@astrojs/cloudflare';
 export default defineConfig({
   site: 'https://capturadoresflashkiller.com',
   output: 'static',
-  trailingSlash: 'ignore',
+  trailingSlash: 'always',
   adapter: cloudflare({
     platformProxy: {
       enabled: true,

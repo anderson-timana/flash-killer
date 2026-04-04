@@ -22,10 +22,7 @@ const {
 // siteUrl is used to resolve absolute URLs for SEO and social sharing.
 const siteUrl = Astro.site ? new URL(Astro.site) : new URL(Astro.url.origin);
 
-// Resilient Canonical URL: Consistently remove trailing slashes (except root) 
-// to prevent duplicate content issues when trailingSlash is 'ignore'
-const path = Astro.url.pathname.replace(/\/$/, '') || '/';
-const canonicalURL = new URL(path, siteUrl);
+const canonicalURL = new URL(Astro.url.pathname, siteUrl);
 
 const resolvedOgImage = new URL(image, siteUrl);
 ---
