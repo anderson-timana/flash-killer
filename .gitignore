@@ -15,7 +15,9 @@
 /prompts
 /context
 /Info Files
+/for-analysis
 session_summary.md
 commit_message.txt
 tmp.md
 .codex
+SEMANTIC_RECOVERY.md

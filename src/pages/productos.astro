@@ -12,7 +12,7 @@ const productOptions = products.map(p => ({ id: p.id, name: p.name }));
 ---
 
 <Layout 
-  title="Catálogo de Insectocutores y Trampas de Luz UV | Flash Killer"
+  title="Catálogo de Matainsectos Industriales y Repuestos en Perú | Flash Killer"
   description="Explore nuestra gama de trampas de luz UV, placas adhesivas y repuestos industriales. Soluciones certificadas para el control de plagas en áreas sensibles."
 >
   <Navbar />
@@ -36,6 +36,22 @@ const productOptions = products.map(p => ({ id: p.id, name: p.name }));
             image={product.images[0]} 
           />
         ))}
+      </div>
+    </Section>
+    <Section padding="medium" class="bg-industrial-white border-y border-industrial-grey/10">
+      <div class="max-w-4xl mx-auto">
+        <Text as="h2" variant="vr2" class="mb-6 text-center">Especialistas en Control Sanitario y Desinsectación</Text>
+        <div class="space-y-4 text-industrial-dark">
+          <Text variant="body">
+            En Flash Killer, fabricamos <strong>capturadores de moscas (insectocaptores)</strong> e <strong>insectocutores</strong> industriales diseñados para satisfacer las más altas exigencias de la industria alimentaria en el Perú. Ya sea que necesite un matainsectos con trampas de pegamento 100% inerte para áreas sensibles, o un insectocutor de alta potencia para almacenes, nuestros equipos le aseguran un control sanitario efectivo.
+          </Text>
+          <Text variant="body">
+            Todos nuestros dispositivos están construidos con los más altos estándares industriales y cuentan con un cuerpo de Acero 304 resistente a la corrosión y utilizan tubos fluorescentes inastillables UV-A para atraer de manera eficiente a moscas, mosquitos y polillas.
+          </Text>
+          <Text variant="body">
+            Con nuestra ayuda, es posible mantener sus instalaciones libres de plagas y asegurar el cumplimiento de auditorías internacionales FDH, CODEX Alimentarius, normas SQF y regulaciones de Digesa y el Ministerio de Salud.
+          </Text>
+        </div>
       </div>
     </Section>
     <ContactForm 
