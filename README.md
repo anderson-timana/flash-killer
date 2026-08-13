@@ -102,7 +102,7 @@ This phase exemplifies the commitment to going beyond "just works" to "works per
 *   **Core Web Vitals:** A systematic review based on 2026 Core Web Vitals standards was performed to identify and eliminate loading bottlenecks. 
     - **Lazy Loading:** Optimized the Turnstile integration with **IntersectionObserver** and hover-intent triggers. This ensures security scripts only load when the user is likely to interact with the form, keeping the initial page weight minimal.
     - **LCP Optimization:** The Largest Contentful Paint (LCP) element—the hero image—was optimized by implementing responsive **`<link rel="preload">`** tags. This instructs the browser to fetch this critical asset with the highest priority, significantly improving perceived load time.
-    - **Third-Party Script Sanitization & Proxying:** Google Tag Manager, a common performance bottleneck, was integrated using **Astro's Partytown**. To resolve production CORS errors and further protect user privacy, a **custom Serverless Proxy** was implemented via **Cloudflare Pages Functions**. This ensures all analytics requests originate from the same domain, keeping the console clean and the main thread completely unblocked.
+    - **Zero-Main-Thread Third-Party Script Offloading (Cloudflare Edge Integration):** Third-party analytics and tracking tags (Google Tag Manager, Google Analytics, Meta Pixel) are served and offloaded via **Cloudflare's Edge Integration**. By executing and proxying tag beacons at the edge level before reaching the browser, main-thread JavaScript overhead is completely eliminated—replacing client-side worker dependencies like Partytown with a faster, server-side edge architecture.
     - **Zero-Request Styling:** Implemented full **CSS inlining** (`inlineStylesheets: 'always'`) to eliminate render-blocking network requests for stylesheets. This optimized the critical discovery chain, allowing the browser to prioritize the Inter font family and the LCP hero image significantly earlier in the waterfall.
     - **Context-Aware Image Optimization:** Refined the asset pipeline to generate specifically sized thumbnails (450px for grids, 100px for galleries) and hero images (800px). This ensures mobile users receive the smallest possible payload without compromising the visual fidelity of the high-end industrial products.
 
@@ -168,7 +168,7 @@ This project is a living portfolio of modern web development best practices:
 -   ✅ **Islands Architecture**: Components are zero-JS by default, with client-side interactivity being an opt-in (`client:visible`), preventing unnecessary JavaScript from being shipped.
 -   ✅ **Asset Optimization**: Uses `astro:assets` for best-in-class image processing and `fetchpriority`/`loading` attributes to control the resource loading waterfall.
 -   ✅ **Advanced LCP Optimization**: Responsive preloading of critical hero images.
--   ✅ **Main-Thread Protection**: Third-party scripts are safely handled via Partytown.
+-   ✅ **Zero-Main-Thread Script Offloading**: Third-party tracking tags are executed and proxied at the edge via Cloudflare, eliminating main-thread browser overhead without needing client-side web workers.
 -   ✅ **Content Security Policy (CSP)**: Implemented to mitigate XSS attacks and enforce resource loading policies.
 -   ✅ **Secure Secret Management**: Critical credentials and keys (like `RESEND_API_KEY`) are handled securely using Cloudflare environment variables.
 -   ✅ **On-Page SEO Excellence**:

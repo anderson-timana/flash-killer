@@ -15,6 +15,6 @@ const paddings = {
   large: 'py-64pt md:py-96pt',
 };
 ---
-<Tag class:list={['container mx-auto px-4', paddings[padding], className]} {...props}>
+<Tag class:list={['container mx-auto px-4', paddings[padding as keyof typeof paddings], className]} {...props}>
   <slot />
 </Tag>
